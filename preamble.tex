@@ -1,0 +1,479 @@
+% \documentclass{article}
+\documentclass[10pt,letterpaper]{amsart}
+% \documentclass[10pt,letterpaper,nocolor]{amsart}
+
+\usepackage{amsmath, amssymb, amsthm}
+
+\usepackage[letterpaper, margin=1in]{geometry}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\newcommand{\citecolor}{NavyBlue}
+\hypersetup{
+  bookmarksnumbered=true, 
+  colorlinks=true, 
+  linkcolor=\citecolor, 
+  citecolor=\citecolor, 
+  filecolor=\citecolor, 
+  menucolor=\citecolor, 
+  urlcolor=\citecolor, 
+  pdfnewwindow=true, 
+}
+% \let\fullref\autoref
+% %
+% %  \autoref is very crude.  It uses counters to distinguish environments
+% %  so that if say {lemma} uses the {theorem} counter, then autrorefs
+% %  which should come out Lemma X.Y in fact come out Theorem X.Y.  To
+% %  correct this give each its own counter eg:
+% %                 \newtheorem{theorem}{Theorem}[section]
+% %                 \newtheorem{lemma}{Lemma}[section]
+% %  and then equate the counters by commands like:
+% %                 \makeatletter
+% %                   \let\c@lemma\c@theorem
+% %                  \makeatother
+% %
+% %  To work correctly the environment name must have a corrresponding 
+% %  \XXXautorefname defined.  The following command does the job:
+% %
+% \def\makeautorefname#1#2{\expandafter\def\csname#1autorefname\endcsname{#2}}
+% %
+% %  Some standard autorefnames.  If the environment name for an autoref 
+% %  you need is not listed below, add a similar line to your TeX file:
+% %  
+% %\makeautorefname{equation}{Equation}%
+% \def\equationautorefname~#1\null{(#1)\null}
+% \makeautorefname{footnote}{footnote}%
+% \makeautorefname{item}{item}%
+% \makeautorefname{figure}{Figure}%
+% \makeautorefname{table}{Table}%
+% \makeautorefname{part}{Part}%
+% \makeautorefname{appendix}{Appendix}%
+% \makeautorefname{chapter}{Chapter}%
+% \makeautorefname{section}{Section}%
+% \makeautorefname{subsection}{Section}%
+% \makeautorefname{subsubsection}{Section}%
+% \makeautorefname{theorem}{Theorem}%
+% \makeautorefname{corollary}{Corollary}%
+% \makeautorefname{lemma}{Lemma}%
+% \makeautorefname{proposition}{Proposition}%
+% \makeautorefname{property}{Property}
+% \makeautorefname{conjecture}{Conjecture}%
+% \makeautorefname{definition}{Definition}%
+% \makeautorefname{notation}{Notation}
+% \makeautorefname{notations}{Notations}
+% \makeautorefname{remark}{Remark}%
+% \makeautorefname{question}{Question}%
+% \makeautorefname{example}{Example}%
+% \makeautorefname{axiom}{Axiom}%
+% \makeautorefname{claim}{Claim}%
+% \makeautorefname{assumption}{Assumption}%
+% \makeautorefname{assumptions}{Assumptions}%
+% \makeautorefname{construction}{Construction}%
+% \makeautorefname{problem}{Problem}%
+% \makeautorefname{warning}{Warning}%
+% \makeautorefname{observation}{Observation}%
+% \makeautorefname{convention}{Convention}%
+
+% \makeautorefname{thm}{Theorem}
+% \makeautorefname{cor}{Corollary}
+% \makeautorefname{lem}{Lemma}
+% \makeautorefname{prop}{Proposition}
+% \makeautorefname{defn}{Definition}
+% \makeautorefname{rem}{Remark}
+% \makeautorefname{obs}{Observation}
+
+% % %
+% % %                  *** End of hyperref stuff ***
+
+
+
+
+% ========== Theorem Styles ==========
+\usepackage{thmtools}
+\usepackage[framemethod=TikZ]{mdframed}
+
+
+
+
+% \makeatletter
+
+% \@ifclasswith{amsart}{nocolor}{
+%   \declaretheoremstyle[headfont=\headfont, bodyfont=\normalfont]{thmgreenbox}
+%   \declaretheoremstyle[headfont=\headfont, bodyfont=\normalfont]{thmredbox}
+%   \declaretheoremstyle[headfont=\headfont, bodyfont=\normalfont]{thmbluebox}
+%   \declaretheoremstyle[headfont=\headfont, bodyfont=\normalfont]{thmblueline}
+%   % \declaretheoremstyle[headfont=\headfont, bodyfont=\normalfont, numbered=no, qed=\qedsymbol ]{thmproofbox}
+%   % \declaretheorem[style=thmproofbox, name=Proof]{replacementproof}
+%   % \renewenvironment{proof}[1][\proofname]{\begin{replacementproof}}{\end{replacementproof}}
+% }{
+%   \declaretheoremstyle[
+%     headfont=\headfont\color{ForestGreen!70!black}, bodyfont=\normalfont,
+%     mdframed={
+%       linewidth=2pt,
+%       rightline=false, topline=false, bottomline=false,
+%       linecolor=ForestGreen, backgroundcolor=ForestGreen!3,
+%     }
+%   ]{thmgreenbox}
+
+%   \declaretheoremstyle[
+%     headfont=\headfont\color{NavyBlue!70!black}, bodyfont=\normalfont,
+%     mdframed={
+%       linewidth=2pt,
+%       rightline=false, topline=false, bottomline=false,
+%       linecolor=NavyBlue, backgroundcolor=NavyBlue!3,
+%     }
+%   ]{thmbluebox}
+
+%   \declaretheoremstyle[
+%     headfont=\headfont\color{NavyBlue!70!black}, bodyfont=\normalfont,
+%     mdframed={
+%       linewidth=2pt,
+%       rightline=false, topline=false, bottomline=false,
+%       linecolor=NavyBlue
+%     }
+%   ]{thmblueline}
+
+%   \declaretheoremstyle[
+%     headfont=\headfont\color{RawSienna!70!black}, bodyfont=\normalfont\itshape,
+%     mdframed={
+%       linewidth=2pt,
+%       rightline=false, topline=false, bottomline=false,
+%       linecolor=RawSienna, backgroundcolor=RawSienna!3,
+%     }
+%   ]{thmredbox}
+
+
+%   % \declaretheoremstyle[
+%   %     headfont=\headfont\color{NavyBlue!70!black}, bodyfont=\normalfont,
+%   %     numbered=no,
+%   %     mdframed={
+%   %         linewidth=1.5pt,
+%   %         rightline=false, topline=false, bottomline=false,
+%   %         linecolor=NavyBlue, backgroundcolor=NavyBlue!1,
+%   %     },
+%   % ]{thmexplanationbox}
+
+% }
+
+% \makeatother
+
+% ========== Theorem Styles ==========
+% set proofs environment
+% \declaretheoremstyle[
+%   headfont=\bfseries, bodyfont=\normalfont,
+%   numbered=no,
+%   qed=\qedsymbol
+% ]{thmproofbox}
+% \declaretheorem[style=thmproofbox, name=Proof]{replacementproof}
+% \renewenvironment{proof}[1][\proofname]{\vspace{-10pt}\begin{replacementproof}}{\end{replacementproof}}
+
+
+% % theoremstyle{plain} --- default
+% \usepackage{chngcntr}
+% \counterwithin{equation}{section}
+
+% % \swapnumbers
+
+% \renewcommand{\theequation}{\arabic{equation}}
+
+
+% \mdfsetup{skipabove=1em, skipbelow=0em, innertopmargin=5pt, innerbottommargin=6pt}
+\mdfsetup{
+  skipabove = 12pt, 
+  skipbelow = 0pt, 
+  linewidth = 1pt,
+  innertopmargin = 2mm,
+  innerbottommargin = 3.5mm,
+  innerleftmargin = 3mm,
+  innerrightmargin = 3mm, 
+  roundcorner = 3pt
+} % adjusts boundaries of boxes
+
+\newcommand{\thmboxstyle}[4]{
+  \mdfdefinestyle{#2}{
+    linecolor = #3,
+    backgroundcolor = #4,
+    nobreak = true
+  }
+  \declaretheoremstyle[
+    headfont = \bfseries\color{#3},
+    % headfont = \sffamily\bfseries\color{#3},
+    mdframed = {style = #2},
+    headpunct = {\\[0.5pt]},
+    postheadspace = {0pt},
+  ]{#1}
+}
+
+% five different colors of boxes
+
+% define colors:
+\definecolor{color1}{HTML}{052E66} % blue
+\definecolor{color2}{HTML}{8F0A00} % red
+\definecolor{color3}{HTML}{2B4E2C} % green
+\definecolor{color4}{HTML}{663352} % purple
+\definecolor{color5}{HTML}{764506} % orange
+\definecolor{color6}{HTML}{440793} % 
+% \definecolor{color5}{HTML}{663352} % 
+% \definecolor{color5}{HTML}{663352} % 
+
+\thmboxstyle{thmbox}{mdthmbox}{color1}{color1!5}
+\thmboxstyle{defbox}{mddefbox}{color2}{color2!5}
+\thmboxstyle{exbox}{mdexbox}{color3}{color3!5}
+\thmboxstyle{lembox}{mdlembox}{color4}{color4!5}
+\thmboxstyle{notebox}{mdnotebox}{color5}{color5!5}
+\thmboxstyle{problembox}{mdproblembox}{color6}{color6!5}
+
+% \thmboxstyle{defbox}{mdredbox}{red}{orange!5}
+% \thmboxstyle{defbox}{mdredbox}{RawSienna}{orange!5}
+% \thmboxstyle{thmbox}{mdbluebox}{blue!90!red}{cyan!4}
+% \thmboxstyle{thmbox}{mdbluebox}{NavyBlue!90!red}{cyan!4}
+% \thmboxstyle{exbox}{mdgreenbox}{green!70!black}{teal!4}
+
+
+
+\declaretheorem[style = thmbox, name = Theorem, numberwithin = section]{theorem}
+\declaretheorem[style = thmbox, name = Theorem, numbered = no]{theorem*}
+\declaretheorem[style = thmbox, name = Proposition, sibling = theorem]{proposition}
+\declaretheorem[style = thmbox, name = Proposition, numbered = no]{proposition*}
+\declaretheorem[style = thmbox, name = Corollary, sibling = theorem]{corollary}
+\declaretheorem[style = thmbox, name = Corollary, numbered = no]{corollary*}
+\declaretheorem[style = thmbox, name = Conjecture, sibling = theorem]{conjecture}
+\declaretheorem[style = thmbox, name = Conjecture, numbered = no]{conjecture*}
+
+\declaretheorem[style = lembox, name = Lemma, sibling = theorem]{lemma}
+\declaretheorem[style = lembox, name = Lemma, numbered = no]{lemma*}
+
+\declaretheorem[style = defbox, name = Definition, sibling = theorem]{definition}
+\declaretheorem[style = defbox, name = Definition, numbered = no]{definition*}
+
+\declaretheorem[style = exbox, name = Example, sibling = theorem]{example}
+\declaretheorem[style = exbox, name = Example, numbered = no]{example*}
+
+\declaretheorem[style = notebox, name = Remark, sibling=theorem]{remark}
+\declaretheorem[style = notebox, name = Remark, numbered=no]{remark*}
+\declaretheorem[style = notebox, name = Fact, sibling = theorem]{fact}
+\declaretheorem[style = notebox, name = Fact, numbered = no]{fact*}
+\declaretheorem[style = notebox, name = Claim, sibling = theorem]{claim}
+\declaretheorem[style = notebox, name = Claim, numbered = no]{claim*}
+\declaretheorem[style = notebox, name = Notation, sibling = theorem]{notation}
+\declaretheorem[style = notebox, name = Notation, numbered = no]{notation*}
+
+\declaretheorem[style = problembox, name = Problem, sibling = theorem]{problem}
+\declaretheorem[style = problembox, name = Problem, numbered = no]{problem*}
+\declaretheorem[style = problembox, name = Question, sibling = theorem]{question}
+\declaretheorem[style = problembox, name = Question, numbered = no]{question*}
+
+
+
+
+
+
+
+
+
+% ==================== Ref ====================
+\usepackage{cleveref}
+\usepackage{framed}
+
+
+
+% ==================== Graphics ====================
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+\graphicspath{{./images/}}
+
+
+
+% ==================== MATH ====================
+\usepackage{todonotes}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{nth}
+
+\newcommand{\ds}{\displaystyle}
+
+
+
+
+% ==================== GENERAL MATH SYMBOLS ====================
+% vocab:
+\newcommand{\vocab}[1]{\textit{\textbf{\color{black!90}\boldmath #1}}}
+
+% inverse trigs: \arcsec, \arccot, \arccsc
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+
+% contradiction
+% \newcommand{\contradiction}{
+%   \ensuremath{{\Rightarrow\mspace{-2mu}\Leftarrow}}
+% }
+\newcommand{\contradiction}{
+  {\hbox{
+    \setbox0=\hbox{\(\mkern-3mu{\times}\mkern-3mu\)}
+    \setbox1=\hbox to0pt{\hss\copy0\hss}
+    \copy0\raisebox{0.5\wd0}{\copy1}\raisebox{-0.5\wd0}{\box1}\box0}
+  }
+}
+
+% \abs and \norm
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+% floor and ceil
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+
+% === shotcuts for mathbb, mathcal, and mathscr === 
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\FF}{\mathbb{F}}
+% expanding \cX to \mathcal{X} for any capital letter X
+\usepackage{xparse}
+\usepackage{expl3}
+\ExplSyntaxOn
+\clist_map_inline:nn {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+{
+  \cs_new:cpn { c#1 } { \mathcal{#1} }
+}
+\ExplSyntaxOff
+% === mathscr === 
+\newcommand{\sA}{\mathscr{A}}
+\newcommand{\sB}{\mathscr{B}}
+\newcommand{\sC}{\mathscr{C}}
+\newcommand{\sS}{\mathscr{S}}
+
+\newcommand{\sk}{\mathscr{k}}
+\newcommand{\sK}{\mathscr{K}}
+\newcommand{\sL}{\mathscr{L}}
+\newcommand{\sT}{\mathscr{T}}
+\newcommand{\sU}{\mathscr{U}}
+\newcommand{\sV}{\mathscr{V}}
+
+
+
+
+
+
+% ==================== MATH, BY AREA ====================
+% ========== Set Theory ==========
+% complement: \complement
+\let\Oldcomplement\complement
+\renewcommand{\complement}[0]{\mathsf{c}}
+
+% better looking mod:
+\renewcommand{\mod}[1]{\ \text{mod}\ #1}
+
+% nicer emptyset
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+% set: cardinality - \card
+\newcommand{\card}[1]{\left|#1\right|}
+
+% ========== Point Set Topology ==========
+\DeclareMathOperator{\Int}{Int}
+
+% ========== Probability ==========
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+% Probability: \Prob
+% \newcommand{\Prob}[1]{\text{I\kern-0.15em P}[#1]}
+\newcommand{\Prob}[1]{\mathbf{P}[#1]}
+
+% ========== Linear Algebra ==========
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\RREF}{RREF}
+\DeclareMathOperator{\almu}{almu}
+\DeclareMathOperator{\gemu}{gemu}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Span}{span}
+\newcommand\spanset[1]{\ensuremath\Span\left(#1\right)}
+% bar: \overbar
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+% nicer underbar: \narrowunderbar
+\newcommand{\narrowunderbar}[1]{\mkern 1.5mu\underline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+% nicer vector: \vect
+% \newcommand{\vect}[1]{\boldsymbol{\narrowunderbar{#1}}}
+\newcommand{\vect}[1]{\narrowunderbar{#1}}
+
+% matrices
+\newcommand{\bmat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\vmat}[1]{\begin{vmatrix} #1 \end{vmatrix}}
+\newcommand{\pmat}[1]{\begin{pmatrix} #1 \end{pmatrix}}
+ 
+% augmented matrix
+% \newenvironment{amatrix}[1]{%
+%   \left[\begin{array}{@{}*{#1}{c}|c@{}}
+% }{%
+%   \end{array}\right]
+% }
+
+% ========== Analysis ==========
+\DeclareMathOperator{\dd}{d}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\dist}{dist}
+
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand*{\I}{\mathrm{i}}
+
+% weak star convergence
+\newcommand{\weakstarto}{\stackrel{\ast}{\rightharpoonup}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+% ========= Font/Style misc. =========
+% \usepackage{eulervm}
+% \usepackage{libertine}
+% \usepackage{helvet} % PSNFSS Font, in every TeX distribution
+% \renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage[cal=cm]{mathalpha}
+
+% \usepackage[small]{titlesec}
+% conflicts with the use of \section when using amsart
+
+% \renewcommand{\arraystretch}{1.25}
+
+
+
+
+
