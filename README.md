@@ -1,4 +1,4 @@
-# latex
+# LaTeX
 
 Files I use for taking math notes using LaTeX. 
 
