@@ -1,12 +1,14 @@
 .PHONY: clean, view
-filename = main
+filename = test
 
 
 $(filename): $(filename).tex
+	mkdir -p aux
 	latexmk ./$@ -pdf -jobname=./aux/$(filename)
+	mv ./aux/$(filename).pdf ./$(filename).pdf
 
-view: aux/$(filename).pdf
-	open aux/$(filename).pdf -a Skim
+view: $(filename).pdf
+	open $(filename).pdf -a Skim
 
 clean:
 	latexmk -c -output-directory=aux
