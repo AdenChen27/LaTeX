@@ -13,6 +13,8 @@ Files I use for taking math notes using LaTeX.
         package, [lindrew](https://web.stanford.edu/~lindrew/lindrew.sty). 
 
     - Check out [a sample document](https://www.overleaf.com/read/psgmvhwzppnr#adf899) using `adenc.sty` on Overleaf.
+ 
+    - See end of this document for a `.tex` template using `adenc.sty`. 
 
 - `Makefile`
     
@@ -27,4 +29,26 @@ Files I use for taking math notes using LaTeX.
     - Change relevant commands for `make view` if you're not on mac or do not have [skim](https://skim-app.sourceforge.io/) installed. 
 
 - See also my vim Ultisnips [snippets](https://github.com/AdenChen27/dotfiles/blob/main/vim/UltiSnips/tex.snippets). 
+
+
+
+### `.tex` template using `adenc.sty`:
+
+```tex
+\documentclass[10pt,letterpaper]{amsart}
+\usepackage{adenc}
+% \usepackage[nocolor]{adenc}
+
+\title{Sample Document}
+\author{Aden Chen}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\end{document}
+```
+
 
