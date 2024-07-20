@@ -1,0 +1,321 @@
+\ProvidesPackage{adenc}[2024/06/20]
+
+
+\newif\ifadenccolor \adenccolortrue % use color by default
+\DeclareOption{nocolor}{\adenccolorfalse}
+
+\ProcessOptions*
+
+
+
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathrsfs}
+
+\usepackage[letterpaper, margin=1in]{geometry}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+
+
+% ========== HYPERREF STYLES ==========
+\usepackage{hyperref}
+\newcommand{\citecolor}{NavyBlue}
+\hypersetup{
+  bookmarksnumbered=true, 
+  colorlinks=true, 
+  linkcolor=\citecolor, 
+  citecolor=\citecolor, 
+  filecolor=\citecolor, 
+  menucolor=\citecolor, 
+  urlcolor=\citecolor, 
+  pdfnewwindow=true, 
+}
+
+% ========== THEOREM STYLES ==========
+\usepackage{thmtools}
+\usepackage[framemethod=TikZ]{mdframed}
+
+
+\mdfsetup{
+  skipabove = 12pt, 
+  skipbelow = 0pt, 
+  linewidth = 1pt,
+  innertopmargin = 2mm,
+  innerbottommargin = 3.5mm,
+  innerleftmargin = 3mm,
+  innerrightmargin = 3mm, 
+  roundcorner = 3pt
+} % adjusts boundaries of boxes
+
+
+% \thmboxstyle{mdfdefinestyle name}{declaretheoremstyle name}{foreground color}{background color}
+\newcommand{\thmboxstyle}[4]{
+  \mdfdefinestyle{#2}{
+    linecolor = #3,
+    backgroundcolor = #4,
+    nobreak = true
+  }
+  \declaretheoremstyle[
+    headfont = \bfseries\color{#3},
+    mdframed = {style = #2},
+    headpunct = {\\[0.5pt]},
+    postheadspace = {0pt},
+  ]{#1}
+}
+
+
+% colors for theorem environments
+\definecolor{color1}{HTML}{052E66} % blue, thmbox
+\definecolor{color2}{HTML}{8F0A00} % red, defbox
+\definecolor{color3}{HTML}{2B4E2C} % green, exbox
+\definecolor{color4}{HTML}{440793} % purple, notebox
+\definecolor{color5}{HTML}{764506} % orange, probbox
+
+
+\ifadenccolor
+  \thmboxstyle{thmbox}{mdthmbox}{color1}{color1!5}
+  \thmboxstyle{defbox}{mddefbox}{color2}{color2!5}
+  \thmboxstyle{exbox}{mdexbox}{color3}{color3!5}
+  \thmboxstyle{notebox}{mdnotebox}{color4}{color4!5}
+  \thmboxstyle{probbox}{mdprobbox}{color5}{color5!5}
+\else
+  \thmboxstyle{thmbox}{mdthmbox}{black}{white}
+  \thmboxstyle{defbox}{mddefbox}{black}{white}
+  \thmboxstyle{exbox}{mdexbox}{black}{white}
+  \thmboxstyle{notebox}{mdnotebox}{black}{white}
+  \thmboxstyle{probbox}{mdprobbox}{black}{white}
+\fi
+
+
+
+\declaretheorem[style = thmbox, name = Theorem, numberwithin = section]{theorem}
+\declaretheorem[style = thmbox, name = Theorem, numbered = no]{theorem*}
+\declaretheorem[style = thmbox, name = Lemma, sibling = theorem]{lemma}
+\declaretheorem[style = thmbox, name = Lemma, numbered = no]{lemma*}
+\declaretheorem[style = thmbox, name = Proposition, sibling = theorem]{proposition}
+\declaretheorem[style = thmbox, name = Proposition, numbered = no]{proposition*}
+\declaretheorem[style = thmbox, name = Corollary, sibling = theorem]{corollary}
+\declaretheorem[style = thmbox, name = Corollary, numbered = no]{corollary*}
+\declaretheorem[style = thmbox, name = Conjecture, sibling = theorem]{conjecture}
+\declaretheorem[style = thmbox, name = Conjecture, numbered = no]{conjecture*}
+
+\declaretheorem[style = defbox, name = Definition, sibling = theorem]{definition}
+\declaretheorem[style = defbox, name = Definition, numbered = no]{definition*}
+
+\declaretheorem[style = exbox, name = Example, sibling = theorem]{example}
+\declaretheorem[style = exbox, name = Example, numbered = no]{example*}
+
+\declaretheorem[style = notebox, name = Remark, sibling=theorem]{remark}
+\declaretheorem[style = notebox, name = Remark, numbered=no]{remark*}
+\declaretheorem[style = notebox, name = Fact, sibling = theorem]{fact}
+\declaretheorem[style = notebox, name = Fact, numbered = no]{fact*}
+\declaretheorem[style = notebox, name = Claim, sibling = theorem]{claim}
+\declaretheorem[style = notebox, name = Claim, numbered = no]{claim*}
+\declaretheorem[style = notebox, name = Notation, sibling = theorem]{notation}
+\declaretheorem[style = notebox, name = Notation, numbered = no]{notation*}
+
+\declaretheorem[style = probbox, name = Problem, sibling = theorem]{problem}
+\declaretheorem[style = probbox, name = Problem, numbered = no]{problem*}
+\declaretheorem[style = probbox, name = Question, sibling = theorem]{question}
+\declaretheorem[style = probbox, name = Question, numbered = no]{question*}
+
+
+
+
+
+
+% ==================== REFERENCES ====================
+\usepackage{cleveref}
+\usepackage{framed}
+
+
+% ==================== GRAPHICS ====================
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+% \graphicspath{{./images/}}
+
+
+% ==================== MATH ====================
+\usepackage{todonotes}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{bbm}
+\usepackage{nth}
+
+\newcommand{\ds}{\displaystyle}
+
+
+
+
+% ==================== GENERAL MATH SYMBOLS ====================
+% vocab:
+\newcommand{\vocab}[1]{\textit{\textbf{\color{black!90}\boldmath #1}}}
+
+% inverse trigs: \arcsec, \arccot, \arccsc
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+
+% contradiction
+% \newcommand{\contradiction}{
+%   \ensuremath{{\Rightarrow\mspace{-2mu}\Leftarrow}}
+% }
+\newcommand{\contradiction}{
+  {\hbox{
+    \setbox0=\hbox{\(\mkern-3mu{\times}\mkern-3mu\)}
+    \setbox1=\hbox to0pt{\hss\copy0\hss}
+    \copy0\raisebox{0.5\wd0}{\copy1}\raisebox{-0.5\wd0}{\box1}\box0}
+  }
+}
+
+% better looking mod:
+\renewcommand{\mod}[1]{\ \text{mod}\ #1}
+
+
+% \abs and \norm
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+% floor and ceil
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+
+% === shotcuts for mathbb, mathcal, and mathscr === 
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\FF}{\mathbb{F}}
+% === expanding \cX to \mathcal{X} for any capital letter X === 
+\usepackage{xparse}
+\usepackage{expl3}
+\ExplSyntaxOn
+\clist_map_inline:nn {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+{
+  \cs_new:cpn { c#1 } { \mathcal{#1} }
+}
+\ExplSyntaxOff
+
+% === mathscr === 
+\newcommand{\sA}{\mathscr{A}}
+\newcommand{\sB}{\mathscr{B}}
+\newcommand{\sC}{\mathscr{C}}
+\newcommand{\sS}{\mathscr{S}}
+
+\newcommand{\sK}{\mathscr{K}}
+\newcommand{\sL}{\mathscr{L}}
+\newcommand{\sT}{\mathscr{T}}
+\newcommand{\sU}{\mathscr{U}}
+\newcommand{\sV}{\mathscr{V}}
+
+
+
+
+
+
+% ==================== MATH, BY AREA ====================
+% ========== Set Theory ==========
+% complement: \complement
+\let\Oldcomplement\complement
+\renewcommand{\complement}[0]{\mathsf{c}}
+
+% nicer emptyset
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+% set: cardinality - \card
+\newcommand{\card}[1]{\left|#1\right|}
+
+% ========== Point Set Topology ==========
+\DeclareMathOperator{\Int}{Int}
+
+% ========== Probability ==========
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Prob}{\mathbb{P}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+% Probability: \Prob
+% \newcommand{\Prob}[1]{\text{I\kern-0.15em P}[#1]}
+% \newcommand{\Prob}[1]{\mathbf{P}[#1]}
+% \newcommand{\Prob}{\mathbf{P}}
+
+% ========== Linear Algebra ==========
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\RREF}{RREF}
+\DeclareMathOperator{\almu}{almu}
+\DeclareMathOperator{\gemu}{gemu}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Span}{span}
+
+\newcommand\spanset[1]{\ensuremath\Span\left(#1\right)}
+% bar: \overbar
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+% nicer underbar: \narrowunderbar
+\newcommand{\narrowunderbar}[1]{\mkern 1.5mu\underline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+% nicer vector: \vect
+% \newcommand{\vect}[1]{\boldsymbol{\narrowunderbar{#1}}}
+\newcommand{\vect}[1]{\narrowunderbar{#1}}
+
+% matrices
+\newcommand{\bmat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\vmat}[1]{\begin{vmatrix} #1 \end{vmatrix}}
+\newcommand{\pmat}[1]{\begin{pmatrix} #1 \end{pmatrix}}
+
+% ========== Analysis ==========
+\DeclareMathOperator{\dd}{d}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\dist}{dist}
+
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand*{\I}{\mathrm{i}}
+
+% weak star convergence:
+\newcommand{\weakstarto}{\stackrel{\ast}{\rightharpoonup}}
+
+
+
+
+
+
+
+
+
+% ========= Font/Style misc. =========
+% \usepackage{eulervm}
+% \usepackage{libertine}
+% \usepackage{helvet} % PSNFSS Font, in every TeX distribution
+% \renewcommand{\familydefault}{\sfdefault}
+
+% \usepackage{newtxtext}
+% \usepackage{newtxmath}
+\usepackage[cal=cm]{mathalpha}
+
+% \usepackage[small]{titlesec}
+% conflicts with the use of \section when using amsart
+
+% \renewcommand{\arraystretch}{1.25}
+
+
+
+
+
