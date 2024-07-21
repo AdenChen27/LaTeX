@@ -1,0 +1,125 @@
+\documentclass[10pt,letterpaper]{amsart}
+\usepackage{../adenc}
+% \usepackage[plain]{../adenc}
+% \usepackage[nocolor]{../adenc}
+
+\title{Sample Document}
+\author{Aden Chen}
+% \date{July 2024}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\noindent
+\textbf{Check out the \href{https://github.com/AdenChen27/latex}{github repo}. }
+
+\section{Theorem Environments}
+
+\begin{definition}
+  A \vocab{definition} is a definition, by definition. 
+\end{definition}
+
+\begin{lemma}
+  Cool lemma. 
+\end{lemma}
+
+\begin{theorem}
+  Cool theorem. 
+\end{theorem}
+
+\begin{corollary}
+  Cool corollary. 
+\end{corollary}
+
+\begin{remark}
+  A quite remarkable remark. 
+\end{remark}
+
+\begin{example}
+  Nice example. 
+\end{example}
+
+\begin{problem}
+  Cool problem. 
+\end{problem}
+
+\begin{proof}
+  Nice proof.
+\end{proof}
+
+\begin{itemize}
+  \item Numbering can be turned off by using the corresponding \verb|*| versions of the environments (e.g. \verb|theorem*| instead of \verb|theorem|). 
+  \item Use \verb|\usepackage[nocolor]{adenc}| to produce only black and white theorem environments; use \verb|\usepackage[plain]{adenc}|  to use the default theorem environments: \texttt{definition}, \texttt{plain}, and \texttt{remark}.
+\end{itemize}
+
+
+\section{Features}
+
+\subsection{General math symbols}
+\begin{itemize}
+  \item A vocab command for styling new vocabulary (in, for example, definitions): \vocab{the vocab command} (\verb|\vocab{the vocab command}|). 
+  \item A contradiction symbol: \(\contradiction\) (\verb|\contradiction|). 
+  \item Short cuts for \verb|\mathbb| (\verb|\XX| for \verb|\mathbb{X}|), \verb|\mathcal| (\verb|\cX| for \verb|\mathcal{X}|), and \verb|\mathscr| (\verb|\sX| for \verb|\mathscr{X}|). E.g. \(\RR\) (\verb|\RR|), \(\cT\) (\verb|\cT|), \(\sK\) (\verb|\sK|). (Note that these shortcuts are not available for all letters.)
+  
+  \item A better looking mod: \(x \equiv y \mod 3\) (\verb|x \equiv y \mod 3|). 
+\end{itemize}
+
+
+\subsection{Math symbols by field}
+\subsubsection*{Set Theory}
+\begin{itemize}
+  \item A better looking complement symbol: \(A^\complement\) (\verb|A^\complement|).
+  \item A better empty set symbol: \(\emptyset\) (\verb|\emptyset|). 
+  \item A cardinality command: \(\card{A}\) (\verb|\card{A}|). 
+  \item A interior operator: \(\Int A\) (\verb|\Int A|). 
+\end{itemize}
+
+\subsubsection*{Probability}
+\begin{itemize} 
+  \item Operators: \(\Prob \E \var \Var \Cov\) (\verb|\Prob \E \var \Var \Cov|). 
+\end{itemize}
+
+\subsubsection*{Linear Algebra}
+\begin{itemize} 
+  \item Operators: \(\Id \Ker \tr \rank \RREF \almu \gemu \sign \Span\) \\
+    (\verb|\Id \Ker \tr \rank \RREF \almu \gemu \sign \Span|). 
+  \item Command for vectors: \(\vect{v}\) (\verb|\vect{v}|).
+  \item Matrices: \[
+    \bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}
+  \]
+  (\verb|\bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}|). 
+\end{itemize}
+
+\subsubsection*{Analysis}
+\begin{itemize} 
+  \item Differentiation operator: \(\dd x\) (\verb|\dd x|).
+  \item Imaginary number: \(\I\) (\verb|\I|).
+  \item Operators: \(\supp \epi \dist \Re \Im\) (\verb|\supp \epi \dist \Re \Im|).
+\end{itemize}
+
+
+\subsection{Miscellaneous}
+\begin{itemize}
+  \item Use \verb|\ds| as a shorthand for \verb|\displaystyle|. 
+\end{itemize}
+
+
+\section{Credits}
+I have stolen a lot of stuff from \href{https://web.stanford.edu/~lindrew/}{Andrew Lin}'s package, \href{https://web.stanford.edu/~lindrew/lindrew.sty}{lindrew}, and \href{https://github.com/gillescastel}{Gilles Castel}'s \href{https://github.com/gillescastel/lecture-notes/blob/master/algebraic-topology/preamble.tex}{preamble file} for his \href{https://github.com/gillescastel/lecture-notes}{lecture notes}. 
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
