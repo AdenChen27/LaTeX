@@ -16,6 +16,8 @@ Files I use for taking math notes using LaTeX.
  
     - See end of this document for a `.tex` template using `adenc.sty`. 
 
+    - Two options are available: `nocolor` and `plain`. Pass `nocolor` (`\usepackage[nocolor]{adenc}`) to produce only black and white theorem environments; pass `plain` (`\usepackage[plain]{adenc}`)  to use the default theorem environments: `definition`, `plain`, and `remark`.
+
 - `Makefile`
     
     - I use this make file when I'm not using vimtex. 

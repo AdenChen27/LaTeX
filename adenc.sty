@@ -1,8 +1,13 @@
 \ProvidesPackage{adenc}[2024/06/20]
 
 
-\newif\ifadenccolor \adenccolortrue % use color by default
+\newif\ifadenccolor \adenccolortrue
+\newif\ifadencplain \adencplainfalse
+
+% \usepackage[nocolor]{adenc} to produce only black and white theorem environments.
 \DeclareOption{nocolor}{\adenccolorfalse}
+% \usepackage[plain]{adenc} to use the default theorem environments: `definition`, `plain`, and `remark`.
+\DeclareOption{plain}{\adencplaintrue}
 
 \ProcessOptions*
 
@@ -87,38 +92,75 @@
 \fi
 
 
+\ifadencplain
+  \declaretheorem[style = plain, name = Theorem, numberwithin = section]{theorem}
+  \declaretheorem[style = plain, name = Theorem, numbered = no]{theorem*}
+  \declaretheorem[style = plain, name = Lemma, sibling = theorem]{lemma}
+  \declaretheorem[style = plain, name = Lemma, numbered = no]{lemma*}
+  \declaretheorem[style = plain, name = Proposition, sibling = theorem]{proposition}
+  \declaretheorem[style = plain, name = Proposition, numbered = no]{proposition*}
+  \declaretheorem[style = plain, name = Corollary, sibling = theorem]{corollary}
+  \declaretheorem[style = plain, name = Corollary, numbered = no]{corollary*}
 
-\declaretheorem[style = thmbox, name = Theorem, numberwithin = section]{theorem}
-\declaretheorem[style = thmbox, name = Theorem, numbered = no]{theorem*}
-\declaretheorem[style = thmbox, name = Lemma, sibling = theorem]{lemma}
-\declaretheorem[style = thmbox, name = Lemma, numbered = no]{lemma*}
-\declaretheorem[style = thmbox, name = Proposition, sibling = theorem]{proposition}
-\declaretheorem[style = thmbox, name = Proposition, numbered = no]{proposition*}
-\declaretheorem[style = thmbox, name = Corollary, sibling = theorem]{corollary}
-\declaretheorem[style = thmbox, name = Corollary, numbered = no]{corollary*}
-\declaretheorem[style = thmbox, name = Conjecture, sibling = theorem]{conjecture}
-\declaretheorem[style = thmbox, name = Conjecture, numbered = no]{conjecture*}
+  \declaretheorem[style = definition, name = Definition, sibling = theorem]{definition}
+  \declaretheorem[style = definition, name = Definition, numbered = no]{definition*}
 
-\declaretheorem[style = defbox, name = Definition, sibling = theorem]{definition}
-\declaretheorem[style = defbox, name = Definition, numbered = no]{definition*}
+  \declaretheorem[style = plain, name = Example, sibling = theorem]{example}
+  \declaretheorem[style = plain, name = Example, numbered = no]{example*}
 
-\declaretheorem[style = exbox, name = Example, sibling = theorem]{example}
-\declaretheorem[style = exbox, name = Example, numbered = no]{example*}
+  \declaretheorem[style = remark, name = Remark, sibling=theorem]{remark}
+  \declaretheorem[style = remark, name = Remark, numbered=no]{remark*}
+  \declaretheorem[style = remark, name = Fact, sibling = theorem]{fact}
+  \declaretheorem[style = remark, name = Fact, numbered = no]{fact*}
+  \declaretheorem[style = remark, name = Claim, sibling = theorem]{claim}
+  \declaretheorem[style = remark, name = Claim, numbered = no]{claim*}
+  \declaretheorem[style = remark, name = Notation, sibling = theorem]{notation}
+  \declaretheorem[style = remark, name = Notation, numbered = no]{notation*}
+  \declaretheorem[style = remark, name = Conjecture, sibling = theorem]{conjecture}
+  \declaretheorem[style = remark, name = Conjecture, numbered = no]{conjecture*}
 
-\declaretheorem[style = notebox, name = Remark, sibling=theorem]{remark}
-\declaretheorem[style = notebox, name = Remark, numbered=no]{remark*}
-\declaretheorem[style = notebox, name = Fact, sibling = theorem]{fact}
-\declaretheorem[style = notebox, name = Fact, numbered = no]{fact*}
-\declaretheorem[style = notebox, name = Claim, sibling = theorem]{claim}
-\declaretheorem[style = notebox, name = Claim, numbered = no]{claim*}
-\declaretheorem[style = notebox, name = Notation, sibling = theorem]{notation}
-\declaretheorem[style = notebox, name = Notation, numbered = no]{notation*}
+  \declaretheorem[style = plain, name = Problem, sibling = theorem]{problem}
+  \declaretheorem[style = plain, name = Problem, numbered = no]{problem*}
+  \declaretheorem[style = plain, name = Question, sibling = theorem]{question}
+  \declaretheorem[style = plain, name = Question, numbered = no]{question*}
+\else
+  \declaretheorem[style = thmbox, name = Theorem, numberwithin = section]{theorem}
+  \declaretheorem[style = thmbox, name = Theorem, numbered = no]{theorem*}
+  \declaretheorem[style = thmbox, name = Lemma, sibling = theorem]{lemma}
+  \declaretheorem[style = thmbox, name = Lemma, numbered = no]{lemma*}
+  \declaretheorem[style = thmbox, name = Proposition, sibling = theorem]{proposition}
+  \declaretheorem[style = thmbox, name = Proposition, numbered = no]{proposition*}
+  \declaretheorem[style = thmbox, name = Corollary, sibling = theorem]{corollary}
+  \declaretheorem[style = thmbox, name = Corollary, numbered = no]{corollary*}
 
-\declaretheorem[style = probbox, name = Problem, sibling = theorem]{problem}
-\declaretheorem[style = probbox, name = Problem, numbered = no]{problem*}
-\declaretheorem[style = probbox, name = Question, sibling = theorem]{question}
-\declaretheorem[style = probbox, name = Question, numbered = no]{question*}
+  \declaretheorem[style = defbox, name = Definition, sibling = theorem]{definition}
+  \declaretheorem[style = defbox, name = Definition, numbered = no]{definition*}
 
+  \declaretheorem[style = exbox, name = Example, sibling = theorem]{example}
+  \declaretheorem[style = exbox, name = Example, numbered = no]{example*}
+
+  \declaretheorem[style = notebox, name = Remark, sibling=theorem]{remark}
+  \declaretheorem[style = notebox, name = Remark, numbered=no]{remark*}
+  \declaretheorem[style = notebox, name = Fact, sibling = theorem]{fact}
+  \declaretheorem[style = notebox, name = Fact, numbered = no]{fact*}
+  \declaretheorem[style = notebox, name = Claim, sibling = theorem]{claim}
+  \declaretheorem[style = notebox, name = Claim, numbered = no]{claim*}
+  \declaretheorem[style = notebox, name = Notation, sibling = theorem]{notation}
+  \declaretheorem[style = notebox, name = Notation, numbered = no]{notation*}
+  \declaretheorem[style = notebox, name = Conjecture, sibling = theorem]{conjecture}
+  \declaretheorem[style = notebox, name = Conjecture, numbered = no]{conjecture*}
+
+  \declaretheorem[style = probbox, name = Problem, sibling = theorem]{problem}
+  \declaretheorem[style = probbox, name = Problem, numbered = no]{problem*}
+  \declaretheorem[style = probbox, name = Question, sibling = theorem]{question}
+  \declaretheorem[style = probbox, name = Question, numbered = no]{question*}
+\fi
+
+
+% proof environment style:
+\declaretheoremstyle[headfont=\bfseries, bodyfont=\normalfont, numbered=no, qed=\qedsymbol ]{thmproofbox}
+\declaretheorem[numbered=no, style=thmproofbox, name=Proof]{replacementproof}
+\renewenvironment{proof}[1][\proofname]{\begin{replacementproof}}{\end{replacementproof}}
 
 
 
@@ -143,9 +185,7 @@
 \usepackage{enumitem}
 \usepackage{bbm}
 \usepackage{nth}
-
 \newcommand{\ds}{\displaystyle}
-
 
 
 
@@ -172,7 +212,6 @@
 
 % better looking mod:
 \renewcommand{\mod}[1]{\ \text{mod}\ #1}
-
 
 % \abs and \norm
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
@@ -224,20 +263,15 @@
 
 
 
-
-
-
 % ==================== MATH, BY AREA ====================
 % ========== Set Theory ==========
 % complement: \complement
 \let\Oldcomplement\complement
 \renewcommand{\complement}[0]{\mathsf{c}}
-
 % nicer emptyset
 \let\oldemptyset\emptyset
 \let\emptyset\varnothing
-
-% set: cardinality - \card
+% cardinality: \card
 \newcommand{\card}[1]{\left|#1\right|}
 
 % ========== Point Set Topology ==========
@@ -249,10 +283,6 @@
 \DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\Prob}{\mathbb{P}}
 \DeclareMathOperator{\E}{\mathbb{E}}
-% Probability: \Prob
-% \newcommand{\Prob}[1]{\text{I\kern-0.15em P}[#1]}
-% \newcommand{\Prob}[1]{\mathbf{P}[#1]}
-% \newcommand{\Prob}{\mathbf{P}}
 
 % ========== Linear Algebra ==========
 \DeclareMathOperator{\Id}{Id}
@@ -288,9 +318,6 @@
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \newcommand*{\I}{\mathrm{i}}
-
-% weak star convergence:
-\newcommand{\weakstarto}{\stackrel{\ast}{\rightharpoonup}}
 
 
 
