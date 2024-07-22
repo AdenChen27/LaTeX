@@ -98,7 +98,7 @@
 \definecolor{color4}{HTML}{440793} % purple, notebox
 \definecolor{color5}{HTML}{764506} % orange, probbox
 
-% if no color passed, use black and white
+% if option `nocolor` passed, use black and white
 \ifadenccolor
   \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
   \getThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
@@ -128,6 +128,7 @@
   \newcommand{\probboxStyle}{probbox}
 \fi
 
+% declare theorem environments
 \declaretheorem[style = \thmboxStyle, name = Theorem, numberwithin = section]{theorem}
 \declaretheorem[style = \thmboxStyle, name = Theorem, numbered = no]{theorem*}
 \declaretheorem[style = \thmboxStyle, name = Lemma, sibling = theorem]{lemma}
@@ -192,7 +193,7 @@
 
 
 % ==================== GENERAL MATH SYMBOLS ====================
-% vocab:
+% \vocab:
 \newcommand{\vocab}[1]{\textit{\textbf{\color{black!90}\boldmath #1}}}
 
 % inverse trigs: \arcsec, \arccot, \arccsc
