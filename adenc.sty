@@ -1,6 +1,7 @@
 \ProvidesPackage{adenc}[2024/06/20]
 
 
+% ========== PACKAGE OPTIONS ==========
 \newif\ifadenccolor \adenccolortrue
 \newif\ifadencplain \adencplainfalse
 
@@ -10,7 +11,6 @@
 \DeclareOption{plain}{\adencplaintrue}
 
 \ProcessOptions*
-
 
 
 
@@ -24,7 +24,13 @@
 
 % ========== HYPERREF STYLES ==========
 \usepackage{hyperref}
-\newcommand{\citecolor}{NavyBlue}
+% citecolor: NavyBlue by default; blue if option `plain` used
+\ifadencplain
+  \newcommand{\citecolor}{blue}
+\else
+  \newcommand{\citecolor}{NavyBlue}
+\fi
+
 \hypersetup{
   bookmarksnumbered=true, 
   colorlinks=true, 
@@ -40,7 +46,6 @@
 \usepackage{thmtools}
 \usepackage[framemethod=TikZ]{mdframed}
 
-
 \mdfsetup{
   skipabove = 10pt, 
   skipbelow = 0pt, 
@@ -50,12 +55,11 @@
   innerleftmargin = 10pt,
   innerrightmargin = 10pt, 
   roundcorner = 3pt
-} % adjusts boundaries of boxes
+}
 
-
-% \thmboxstyle{mdfdefinestyle name}{declaretheoremstyle name}{foreground color}{background color}
 % normal box: line skip after label
-\newcommand{\thmboxstyle}[4]{
+% (usage: `\getThmboxStyle{md style name}{theorem style name}{foreground color}{background color}`)
+\newcommand{\getThmboxStyle}[4]{
   \mdfdefinestyle{#2}{
     linecolor = #3,
     backgroundcolor = #4,
@@ -70,14 +74,14 @@
 }
 
 % compact box: no line skip after label
-\newcommand{\compactthmboxstyle}[4]{
+\newcommand{\getCompactThmboxStyle}[4]{
   \mdfdefinestyle{#2}{
     linecolor = #3,
     backgroundcolor = #4,
     nobreak = true, 
     skipabove = 5pt, 
     innertopmargin = 3pt,
-    innerbottommargin = 5pt, 
+    innerbottommargin = 7pt, 
   }
   \declaretheoremstyle[
     headfont = \bfseries\color{#3},
@@ -94,85 +98,68 @@
 \definecolor{color4}{HTML}{440793} % purple, notebox
 \definecolor{color5}{HTML}{764506} % orange, probbox
 
-
+% if no color passed, use black and white
 \ifadenccolor
-  \thmboxstyle{thmbox}{mdthmbox}{color1}{color1!5}
-  \thmboxstyle{defbox}{mddefbox}{color2}{color2!5}
-  \compactthmboxstyle{exbox}{mdexbox}{color3}{color3!5}
-  \compactthmboxstyle{notebox}{mdnotebox}{color4}{color4!5}
-  \compactthmboxstyle{probbox}{mdprobbox}{color5}{color5!5}
+  \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
+  \getThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
+  \getCompactThmboxStyle{exbox}{mdexbox}{color3}{color3!5}
+  \getCompactThmboxStyle{notebox}{mdnotebox}{color4}{color4!5}
+  \getCompactThmboxStyle{probbox}{mdprobbox}{color5}{color5!5}
 \else
-  \thmboxstyle{thmbox}{mdthmbox}{black}{white}
-  \thmboxstyle{defbox}{mddefbox}{black}{white}
-  \compactthmboxstyle{exbox}{mdexbox}{black}{white}
-  \compactthmboxstyle{notebox}{mdnotebox}{black}{white}
-  \compactthmboxstyle{probbox}{mdprobbox}{black}{white}
+  \getThmboxStyle{thmbox}{mdthmbox}{black}{white}
+  \getThmboxStyle{defbox}{mddefbox}{black}{white}
+  \getCompactThmboxStyle{exbox}{mdexbox}{black}{white}
+  \getCompactThmboxStyle{notebox}{mdnotebox}{black}{white}
+  \getCompactThmboxStyle{probbox}{mdprobbox}{black}{white}
 \fi
 
-
+% if option `plain` passed, use default styles: `plain`, `definition`, and `remark`
 \ifadencplain
-  \declaretheorem[style = plain, name = Theorem, numberwithin = section]{theorem}
-  \declaretheorem[style = plain, name = Theorem, numbered = no]{theorem*}
-  \declaretheorem[style = plain, name = Lemma, sibling = theorem]{lemma}
-  \declaretheorem[style = plain, name = Lemma, numbered = no]{lemma*}
-  \declaretheorem[style = plain, name = Proposition, sibling = theorem]{proposition}
-  \declaretheorem[style = plain, name = Proposition, numbered = no]{proposition*}
-  \declaretheorem[style = plain, name = Corollary, sibling = theorem]{corollary}
-  \declaretheorem[style = plain, name = Corollary, numbered = no]{corollary*}
-
-  \declaretheorem[style = definition, name = Definition, sibling = theorem]{definition}
-  \declaretheorem[style = definition, name = Definition, numbered = no]{definition*}
-
-  \declaretheorem[style = plain, name = Example, sibling = theorem]{example}
-  \declaretheorem[style = plain, name = Example, numbered = no]{example*}
-
-  \declaretheorem[style = remark, name = Remark, sibling=theorem]{remark}
-  \declaretheorem[style = remark, name = Remark, numbered=no]{remark*}
-  \declaretheorem[style = remark, name = Fact, sibling = theorem]{fact}
-  \declaretheorem[style = remark, name = Fact, numbered = no]{fact*}
-  \declaretheorem[style = remark, name = Claim, sibling = theorem]{claim}
-  \declaretheorem[style = remark, name = Claim, numbered = no]{claim*}
-  \declaretheorem[style = remark, name = Notation, sibling = theorem]{notation}
-  \declaretheorem[style = remark, name = Notation, numbered = no]{notation*}
-  \declaretheorem[style = remark, name = Conjecture, sibling = theorem]{conjecture}
-  \declaretheorem[style = remark, name = Conjecture, numbered = no]{conjecture*}
-
-  \declaretheorem[style = plain, name = Problem, sibling = theorem]{problem}
-  \declaretheorem[style = plain, name = Problem, numbered = no]{problem*}
-  \declaretheorem[style = plain, name = Question, sibling = theorem]{question}
-  \declaretheorem[style = plain, name = Question, numbered = no]{question*}
+  \newcommand{\thmboxStyle}{plain}
+  \newcommand{\defboxStyle}{definition}
+  \newcommand{\exboxStyle}{remark}
+  \newcommand{\noteboxStyle}{remark}
+  \newcommand{\probboxStyle}{remark}
 \else
-  \declaretheorem[style = thmbox, name = Theorem, numberwithin = section]{theorem}
-  \declaretheorem[style = thmbox, name = Theorem, numbered = no]{theorem*}
-  \declaretheorem[style = thmbox, name = Lemma, sibling = theorem]{lemma}
-  \declaretheorem[style = thmbox, name = Lemma, numbered = no]{lemma*}
-  \declaretheorem[style = thmbox, name = Proposition, sibling = theorem]{proposition}
-  \declaretheorem[style = thmbox, name = Proposition, numbered = no]{proposition*}
-  \declaretheorem[style = thmbox, name = Corollary, sibling = theorem]{corollary}
-  \declaretheorem[style = thmbox, name = Corollary, numbered = no]{corollary*}
-
-  \declaretheorem[style = defbox, name = Definition, sibling = theorem]{definition}
-  \declaretheorem[style = defbox, name = Definition, numbered = no]{definition*}
-
-  \declaretheorem[style = exbox, name = Example, sibling = theorem]{example}
-  \declaretheorem[style = exbox, name = Example, numbered = no]{example*}
-
-  \declaretheorem[style = notebox, name = Remark, sibling=theorem]{remark}
-  \declaretheorem[style = notebox, name = Remark, numbered=no]{remark*}
-  \declaretheorem[style = notebox, name = Fact, sibling = theorem]{fact}
-  \declaretheorem[style = notebox, name = Fact, numbered = no]{fact*}
-  \declaretheorem[style = notebox, name = Claim, sibling = theorem]{claim}
-  \declaretheorem[style = notebox, name = Claim, numbered = no]{claim*}
-  \declaretheorem[style = notebox, name = Notation, sibling = theorem]{notation}
-  \declaretheorem[style = notebox, name = Notation, numbered = no]{notation*}
-  \declaretheorem[style = notebox, name = Conjecture, sibling = theorem]{conjecture}
-  \declaretheorem[style = notebox, name = Conjecture, numbered = no]{conjecture*}
-
-  \declaretheorem[style = probbox, name = Problem, sibling = theorem]{problem}
-  \declaretheorem[style = probbox, name = Problem, numbered = no]{problem*}
-  \declaretheorem[style = probbox, name = Question, sibling = theorem]{question}
-  \declaretheorem[style = probbox, name = Question, numbered = no]{question*}
+  \newcommand{\thmboxStyle}{thmbox}
+  \newcommand{\defboxStyle}{defbox}
+  \newcommand{\exboxStyle}{exbox}
+  \newcommand{\noteboxStyle}{notebox}
+  \newcommand{\probboxStyle}{probbox}
 \fi
+
+\declaretheorem[style = \thmboxStyle, name = Theorem, numberwithin = section]{theorem}
+\declaretheorem[style = \thmboxStyle, name = Theorem, numbered = no]{theorem*}
+\declaretheorem[style = \thmboxStyle, name = Lemma, sibling = theorem]{lemma}
+\declaretheorem[style = \thmboxStyle, name = Lemma, numbered = no]{lemma*}
+\declaretheorem[style = \thmboxStyle, name = Proposition, sibling = theorem]{proposition}
+\declaretheorem[style = \thmboxStyle, name = Proposition, numbered = no]{proposition*}
+\declaretheorem[style = \thmboxStyle, name = Corollary, sibling = theorem]{corollary}
+\declaretheorem[style = \thmboxStyle, name = Corollary, numbered = no]{corollary*}
+
+\declaretheorem[style = \defboxStyle, name = Definition, sibling = theorem]{definition}
+\declaretheorem[style = \defboxStyle, name = Definition, numbered = no]{definition*}
+
+\declaretheorem[style = \exboxStyle, name = Example, sibling = theorem]{example}
+\declaretheorem[style = \exboxStyle, name = Example, numbered = no]{example*}
+
+\declaretheorem[style = \noteboxStyle, name = Remark, sibling=theorem]{remark}
+\declaretheorem[style = \noteboxStyle, name = Remark, numbered=no]{remark*}
+\declaretheorem[style = \noteboxStyle, name = Note, sibling=theorem]{note}
+\declaretheorem[style = \noteboxStyle, name = Note, numbered=no]{note*}
+\declaretheorem[style = \noteboxStyle, name = Fact, sibling = theorem]{fact}
+\declaretheorem[style = \noteboxStyle, name = Fact, numbered = no]{fact*}
+\declaretheorem[style = \noteboxStyle, name = Claim, sibling = theorem]{claim}
+\declaretheorem[style = \noteboxStyle, name = Claim, numbered = no]{claim*}
+\declaretheorem[style = \noteboxStyle, name = Notation, sibling = theorem]{notation}
+\declaretheorem[style = \noteboxStyle, name = Notation, numbered = no]{notation*}
+\declaretheorem[style = \noteboxStyle, name = Conjecture, sibling = theorem]{conjecture}
+\declaretheorem[style = \noteboxStyle, name = Conjecture, numbered = no]{conjecture*}
+
+\declaretheorem[style = \probboxStyle, name = Problem, sibling = theorem]{problem}
+\declaretheorem[style = \probboxStyle, name = Problem, numbered = no]{problem*}
+\declaretheorem[style = \probboxStyle, name = Question, sibling = theorem]{question}
+\declaretheorem[style = \probboxStyle, name = Question, numbered = no]{question*}
 
 
 % proof environment style:
@@ -182,11 +169,8 @@
 
 
 
-
-
 % ==================== REFERENCES ====================
 \usepackage{cleveref}
-\usepackage{framed}
 
 
 % ==================== GRAPHICS ====================
@@ -341,10 +325,6 @@
 
 
 
-
-
-
-
 % ========= Font/Style misc. =========
 % \usepackage{eulervm}
 % \usepackage{libertine}
@@ -354,6 +334,7 @@
 % \usepackage{newtxtext}
 % \usepackage{newtxmath}
 \usepackage[cal=cm]{mathalpha}
+\usepackage{framed}
 
 % \usepackage[small]{titlesec}
 % conflicts with the use of \section when using amsart
