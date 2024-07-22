@@ -20,7 +20,7 @@ Files I use for taking math notes using LaTeX.
 
 - `Makefile`
     
-    - I use this make file when I'm not using vimtex. 
+    - I use this makefile when I'm not using vimtex. 
 
     - Supports `make`, `make clean`, and `make view`. 
 

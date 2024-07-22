@@ -42,18 +42,19 @@
 
 
 \mdfsetup{
-  skipabove = 12pt, 
+  skipabove = 10pt, 
   skipbelow = 0pt, 
   linewidth = 1pt,
-  innertopmargin = 2mm,
-  innerbottommargin = 3.5mm,
-  innerleftmargin = 3mm,
-  innerrightmargin = 3mm, 
+  innertopmargin = 5pt,
+  innerbottommargin = 10pt,
+  innerleftmargin = 10pt,
+  innerrightmargin = 10pt, 
   roundcorner = 3pt
 } % adjusts boundaries of boxes
 
 
 % \thmboxstyle{mdfdefinestyle name}{declaretheoremstyle name}{foreground color}{background color}
+% normal box: line skip after label
 \newcommand{\thmboxstyle}[4]{
   \mdfdefinestyle{#2}{
     linecolor = #3,
@@ -68,6 +69,23 @@
   ]{#1}
 }
 
+% compact box: no line skip after label
+\newcommand{\compactthmboxstyle}[4]{
+  \mdfdefinestyle{#2}{
+    linecolor = #3,
+    backgroundcolor = #4,
+    nobreak = true, 
+    innertopmargin = 3pt,
+    innerbottommargin = 5pt, 
+    innerleftmargin = 7pt,
+    innerrightmargin = 7pt
+  }
+  \declaretheoremstyle[
+    headfont = \bfseries\color{#3},
+    mdframed = {style = #2},
+    postheadspace = {0pt},
+  ]{#1}
+}
 
 % colors for theorem environments
 \definecolor{color1}{HTML}{052E66} % blue, thmbox
@@ -80,15 +98,15 @@
 \ifadenccolor
   \thmboxstyle{thmbox}{mdthmbox}{color1}{color1!5}
   \thmboxstyle{defbox}{mddefbox}{color2}{color2!5}
-  \thmboxstyle{exbox}{mdexbox}{color3}{color3!5}
-  \thmboxstyle{notebox}{mdnotebox}{color4}{color4!5}
-  \thmboxstyle{probbox}{mdprobbox}{color5}{color5!5}
+  \compactthmboxstyle{exbox}{mdexbox}{color3}{color3!5}
+  \compactthmboxstyle{notebox}{mdnotebox}{color4}{color4!5}
+  \compactthmboxstyle{probbox}{mdprobbox}{color5}{color5!5}
 \else
   \thmboxstyle{thmbox}{mdthmbox}{black}{white}
   \thmboxstyle{defbox}{mddefbox}{black}{white}
-  \thmboxstyle{exbox}{mdexbox}{black}{white}
-  \thmboxstyle{notebox}{mdnotebox}{black}{white}
-  \thmboxstyle{probbox}{mdprobbox}{black}{white}
+  \compactthmboxstyle{exbox}{mdexbox}{black}{white}
+  \compactthmboxstyle{notebox}{mdnotebox}{black}{white}
+  \compactthmboxstyle{probbox}{mdprobbox}{black}{white}
 \fi
 
 
