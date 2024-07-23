@@ -1,4 +1,4 @@
-\ProvidesPackage{adenc}[2024/07/22]
+\ProvidesPackage{adenc}[2024/07/23]
 
 
 % ========== PACKAGE OPTIONS ==========
@@ -18,7 +18,7 @@
 \usepackage{mathrsfs}
 
 \usepackage[letterpaper, margin=1in]{geometry}
-\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[dvipsnames]{xcolor}
 
 
 
@@ -32,14 +32,14 @@
 \fi
 
 \hypersetup{
-  bookmarksnumbered=true, 
-  colorlinks=true, 
-  linkcolor=\citecolor, 
-  citecolor=\citecolor, 
-  filecolor=\citecolor, 
-  menucolor=\citecolor, 
-  urlcolor=\citecolor, 
-  pdfnewwindow=true, 
+  bookmarksnumbered=true,
+  colorlinks=true,
+  linkcolor=\citecolor,
+  citecolor=\citecolor,
+  filecolor=\citecolor,
+  menucolor=\citecolor,
+  urlcolor=\citecolor,
+  pdfnewwindow=true,
 }
 
 % ========== THEOREM STYLES ==========
@@ -47,13 +47,13 @@
 \usepackage[framemethod=TikZ]{mdframed}
 
 \mdfsetup{
-  skipabove = 10pt, 
-  skipbelow = 0pt, 
+  skipabove = 10pt,
+  skipbelow = 0pt,
   linewidth = 1pt,
   innertopmargin = 5pt,
   innerbottommargin = 10pt,
   innerleftmargin = 10pt,
-  innerrightmargin = 10pt, 
+  innerrightmargin = 10pt,
   roundcorner = 3pt
 }
 
@@ -78,15 +78,15 @@
   \mdfdefinestyle{#2}{
     linecolor = #3,
     backgroundcolor = #4,
-    nobreak = true, 
-    skipabove = 5pt, 
+    nobreak = true,
+    skipabove = 5pt,
     innertopmargin = 3pt,
-    innerbottommargin = 7pt, 
+    innerbottommargin = 7pt,
   }
   \declaretheoremstyle[
     headfont = \bfseries\color{#3},
     mdframed = {style = #2},
-    headpunct = {. }, 
+    headpunct = {. },
     postheadspace = {0pt},
   ]{#1}
 }
@@ -98,7 +98,7 @@
 \definecolor{color4}{HTML}{440793} % purple, notebox
 \definecolor{color5}{HTML}{764506} % orange, probbox
 
-% if option `nocolor` passed, use black and white
+% if no color passed, use black and white
 \ifadenccolor
   \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
   \getThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
@@ -128,7 +128,6 @@
   \newcommand{\probboxStyle}{probbox}
 \fi
 
-% declare theorem environments
 \declaretheorem[style = \thmboxStyle, name = Theorem, numberwithin = section]{theorem}
 \declaretheorem[style = \thmboxStyle, name = Theorem, numbered = no]{theorem*}
 \declaretheorem[style = \thmboxStyle, name = Lemma, sibling = theorem]{lemma}
@@ -193,7 +192,7 @@
 
 
 % ==================== GENERAL MATH SYMBOLS ====================
-% \vocab:
+% vocab:
 \newcommand{\vocab}[1]{\textit{\textbf{\color{black!90}\boldmath #1}}}
 
 % inverse trigs: \arcsec, \arccot, \arccsc
@@ -224,7 +223,7 @@
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
 % Swap the definition of \abs* and \norm*, so that \abs
-% and \norm resizes the size of the brackets, and the 
+% and \norm resizes the size of the brackets, and the
 % starred version does not.
 \makeatletter
 \let\oldabs\abs
@@ -234,7 +233,7 @@
 \makeatother
 
 
-% === shotcuts for mathbb, mathcal, and mathscr === 
+% === shotcuts for mathbb, mathcal, and mathscr ===
 \newcommand{\NN}{\mathbb{N}}
 \newcommand{\ZZ}{\mathbb{Z}}
 \newcommand{\QQ}{\mathbb{Q}}
@@ -242,7 +241,7 @@
 \newcommand{\CC}{\mathbb{C}}
 \newcommand{\PP}{\mathbb{P}}
 \newcommand{\FF}{\mathbb{F}}
-% === expanding \cX to \mathcal{X} for any capital letter X === 
+% === expanding \cX to \mathcal{X} for any capital letter X ===
 \usepackage{xparse}
 \usepackage{expl3}
 \ExplSyntaxOn
@@ -252,7 +251,7 @@
 }
 \ExplSyntaxOff
 
-% === mathscr === 
+% === mathscr ===
 \newcommand{\sA}{\mathscr{A}}
 \newcommand{\sB}{\mathscr{B}}
 \newcommand{\sC}{\mathscr{C}}
@@ -284,7 +283,7 @@
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Cov}{Cov}
-\DeclareMathOperator{\Prob}{\mathbb{P}}
+\renewcommand{\Pr}{\mathbb{P}}
 \DeclareMathOperator{\E}{\mathbb{E}}
 
 % ========== Linear Algebra ==========
@@ -313,7 +312,7 @@
 \newcommand{\pmat}[1]{\begin{pmatrix} #1 \end{pmatrix}}
 
 % ========== Analysis ==========
-\DeclareMathOperator{\dd}{d}
+\renewcommand{\d}{\mathrm{d}}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\epi}{epi}
 \DeclareMathOperator{\dist}{dist}
@@ -341,6 +340,7 @@
 % conflicts with the use of \section when using amsart
 
 % \renewcommand{\arraystretch}{1.25}
+
 
 
 
