@@ -255,6 +255,7 @@
 \newcommand{\sA}{\mathscr{A}}
 \newcommand{\sB}{\mathscr{B}}
 \newcommand{\sC}{\mathscr{C}}
+\newcommand{\sE}{\mathscr{E}}
 \newcommand{\sS}{\mathscr{S}}
 
 \newcommand{\sK}{\mathscr{K}}
@@ -298,13 +299,16 @@
 \DeclareMathOperator{\Span}{span}
 
 \newcommand\spanset[1]{\ensuremath\Span\left(#1\right)}
-% bar: \overbar
-\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
-% nicer underbar: \narrowunderbar
-\newcommand{\narrowunderbar}[1]{\mkern 1.5mu\underline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
-% nicer vector: \vect
-% \newcommand{\vect}[1]{\boldsymbol{\narrowunderbar{#1}}}
-\newcommand{\vect}[1]{\narrowunderbar{#1}}
+% % nicer \overline
+% \let\oldoverline\overline
+% \renewcommand{\overline}[1]{\mkern 1.5mu\oldoverline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+% % nicer \underline
+% \let\oldunderline\underline
+% \renewcommand{\underline}[1]{\mkern 1.5mu\oldunderline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+% nicer vector
+\renewcommand{\vec}[1]{\underline{#1}}
 
 % matrices
 \newcommand{\bmat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
@@ -312,7 +316,7 @@
 \newcommand{\pmat}[1]{\begin{pmatrix} #1 \end{pmatrix}}
 
 % ========== Analysis ==========
-\renewcommand{\d}{\mathrm{d}}
+\renewcommand{\d}{\ \mathrm{d}}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\epi}{epi}
 \DeclareMathOperator{\dist}{dist}
