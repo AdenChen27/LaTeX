@@ -1,0 +1,128 @@
+\ProvidesPackage{adenc}[2024/08/14]
+
+
+% ========== PACKAGE OPTIONS ==========
+\newif\ifadenccolor \adenccolorfalse
+\newif\ifadencplain \adencplainfalse
+\newif\ifhideproofs \hideproofsfalse
+\newif\ifhidemarkings \hidemarkingsfalse
+
+
+% \usepackage[color]{adenc} to color theorem environments.
+\DeclareOption{color}{\adenccolortrue}
+
+% \usepackage[plain]{adenc} to use the default theorem environments: `definition`, `plain`, and `remark`.
+\DeclareOption{plain}{\adencplaintrue}
+
+% \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
+\DeclareOption{hideproofs}{\hideproofstrue}
+
+% \usepackage[hidemarkings]{adenc} to hide all markings (`\markabove` and `\markbelow`; see below).
+\DeclareOption{hidemarkings}{\hidemarkingstrue}
+
+
+\ProcessOptions*
+
+
+
+\RequirePackage{amsmath, amssymb, amsthm}
+\RequirePackage{mathrsfs}
+
+\RequirePackage[letterpaper, margin=1in]{geometry}
+\RequirePackage[dvipsnames]{xcolor}
+
+
+
+% ==================== HYPERREF STYLES ====================
+\RequirePackage{hyperref}
+% citecolor: NavyBlue by default; blue if option `plain` used
+\ifadencplain
+  \newcommand{\citecolor}{blue}
+\else
+  \newcommand{\citecolor}{NavyBlue}
+\fi
+
+\hypersetup{
+  bookmarksnumbered=true,
+  colorlinks=true,
+  linkcolor=\citecolor,
+  citecolor=\citecolor,
+  filecolor=\citecolor,
+  menucolor=\citecolor,
+  urlcolor=\citecolor,
+  pdfnewwindow=true,
+}
+
+% ==================== THEOREM STYLES ====================
+\RequirePackage{thmtools}
+\RequirePackage[framemethod=TikZ]{mdframed}
+
+\input{thm-styles.tex}
+
+
+
+
+% ==================== REFERENCES ====================
+\RequirePackage{cleveref}
+
+
+% ==================== GRAPHICS ====================
+\RequirePackage{graphicx}
+\RequirePackage{wrapfig}
+\RequirePackage{subcaption}
+% \graphicspath{{./images/}}
+
+
+% ==================== MATH ====================
+\RequirePackage{amsfonts}
+\RequirePackage{mathtools}
+\RequirePackage{enumitem}
+\RequirePackage{bbm}
+\RequirePackage{nth}
+\newcommand{\ds}{\displaystyle}
+
+\input{math-commands.tex}
+
+
+
+% ========= TODO command =========
+\input{todo-commands.tex}
+
+% ========= Hiding Environments (markings and proofs) =========
+\RequirePackage{environ}
+\NewEnviron{hide}{}
+% hide proofs if the `hideproofs` option is passed:
+\ifhideproofs
+  \let\proof\hide
+  \let\endproof\endhide
+\fi
+% hide markings if the `hidemarkings` option is passed:
+\ifhidemarkings
+  \renewcommand{\markabove}[2]{}
+  \renewcommand{\markbelow}[2]{}
+\fi
+
+
+% ========= Font/Style misc. =========
+% \usepackage{eulervm}
+% \usepackage{libertine}
+% \usepackage{helvet} % PSNFSS Font, in every TeX distribution
+% \renewcommand{\familydefault}{\sfdefault}
+
+% \usepackage{newtxtext}
+% \usepackage{newtxmath}
+
+% \RequirePackage[cal=cm]{mathalpha}
+\RequirePackage{framed}
+
+
+% \usepackage[small]{titlesec}
+% conflicts with the use of \section when using amsart
+
+% \renewcommand{\arraystretch}{1.25}
+
+
+
+
+
+

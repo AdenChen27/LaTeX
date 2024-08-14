@@ -1,0 +1,125 @@
+% base style
+\mdfdefinestyle{ThmBoxBaseStyle}{
+  skipabove = 10pt,
+  skipbelow = 0pt,
+  linewidth = 1pt,
+  innertopmargin = 5pt,
+  innerbottommargin = 10pt,
+  innerleftmargin = 10pt,
+  innerrightmargin = 10pt,
+  roundcorner = 3pt
+}
+
+% normal box: line skip after label
+% (usage: `\getThmboxStyle{md style name}{theorem style name}{foreground color}{background color}`)
+\newcommand{\getThmboxStyle}[4]{
+  \mdfdefinestyle{#2}{
+    style = ThmBoxBaseStyle, 
+    linecolor = #3,
+    backgroundcolor = #4,
+    nobreak = true
+  }
+  \declaretheoremstyle[
+    headfont = \bfseries\color{#3},
+    notefont = \bfseries\color{#3},
+    mdframed = {style = #2},
+    headpunct = {.\\[0.5pt]},
+    postheadspace = {0pt},
+  ]{#1}
+}
+
+% compact box: no line skip after label
+\newcommand{\getCompactThmboxStyle}[4]{
+  \mdfdefinestyle{#2}{
+    style = ThmBoxBaseStyle, 
+    linecolor = #3,
+    backgroundcolor = #4,
+    nobreak = true,
+    skipabove = 5pt,
+    innertopmargin = 3pt,
+    innerbottommargin = 5pt,
+  }
+  \declaretheoremstyle[
+    headfont = \bfseries\color{#3},
+    notefont = \bfseries\color{#3},
+    mdframed = {style = #2},
+    headpunct = {. },
+    postheadspace = {0pt},
+  ]{#1}
+}
+
+% colors for theorem environments
+\definecolor{color1}{HTML}{052E66} % blue, thmbox
+\definecolor{color2}{HTML}{8F0A00} % red, defbox
+\definecolor{color3}{HTML}{2B4E2C} % green, exbox
+\definecolor{color4}{HTML}{440793} % purple, notebox
+\definecolor{color5}{HTML}{764506} % orange, probbox
+
+% if no color passed, use black and white
+\ifadenccolor
+  \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
+  \getThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
+  \getCompactThmboxStyle{exbox}{mdexbox}{color3}{color3!5}
+  \getCompactThmboxStyle{notebox}{mdnotebox}{color4}{color4!5}
+  \getCompactThmboxStyle{probbox}{mdprobbox}{color5}{color5!5}
+\else
+  \getThmboxStyle{thmbox}{mdthmbox}{black}{white}
+  \getThmboxStyle{defbox}{mddefbox}{black}{white}
+  \getCompactThmboxStyle{exbox}{mdexbox}{black}{white}
+  \getCompactThmboxStyle{notebox}{mdnotebox}{black}{white}
+  \getCompactThmboxStyle{probbox}{mdprobbox}{black}{white}
+\fi
+
+% if option `plain` passed, use default styles: `plain`, `definition`, and `remark`
+\ifadencplain
+  \newcommand{\thmboxStyle}{plain}
+  \newcommand{\defboxStyle}{definition}
+  \newcommand{\exboxStyle}{remark}
+  \newcommand{\noteboxStyle}{remark}
+  \newcommand{\probboxStyle}{remark}
+\else
+  \newcommand{\thmboxStyle}{thmbox}
+  \newcommand{\defboxStyle}{defbox}
+  \newcommand{\exboxStyle}{exbox}
+  \newcommand{\noteboxStyle}{notebox}
+  \newcommand{\probboxStyle}{probbox}
+\fi
+
+\declaretheorem[style = \thmboxStyle, name = Theorem, numberwithin = section]{theorem}
+\declaretheorem[style = \thmboxStyle, name = Theorem, numbered = no]{theorem*}
+\declaretheorem[style = \thmboxStyle, name = Lemma, sibling = theorem]{lemma}
+\declaretheorem[style = \thmboxStyle, name = Lemma, numbered = no]{lemma*}
+\declaretheorem[style = \thmboxStyle, name = Proposition, sibling = theorem]{proposition}
+\declaretheorem[style = \thmboxStyle, name = Proposition, numbered = no]{proposition*}
+\declaretheorem[style = \thmboxStyle, name = Corollary, sibling = theorem]{corollary}
+\declaretheorem[style = \thmboxStyle, name = Corollary, numbered = no]{corollary*}
+
+\declaretheorem[style = \defboxStyle, name = Definition, sibling = theorem]{definition}
+\declaretheorem[style = \defboxStyle, name = Definition, numbered = no]{definition*}
+
+\declaretheorem[style = \exboxStyle, name = Example, sibling = theorem]{example}
+\declaretheorem[style = \exboxStyle, name = Example, numbered = no]{example*}
+
+\declaretheorem[style = \noteboxStyle, name = Remark, sibling=theorem]{remark}
+\declaretheorem[style = \noteboxStyle, name = Remark, numbered=no]{remark*}
+\declaretheorem[style = \noteboxStyle, name = Note, sibling=theorem]{note}
+\declaretheorem[style = \noteboxStyle, name = Note, numbered=no]{note*}
+\declaretheorem[style = \noteboxStyle, name = Fact, sibling = theorem]{fact}
+\declaretheorem[style = \noteboxStyle, name = Fact, numbered = no]{fact*}
+\declaretheorem[style = \noteboxStyle, name = Claim, sibling = theorem]{claim}
+\declaretheorem[style = \noteboxStyle, name = Claim, numbered = no]{claim*}
+\declaretheorem[style = \noteboxStyle, name = Notation, sibling = theorem]{notation}
+\declaretheorem[style = \noteboxStyle, name = Notation, numbered = no]{notation*}
+\declaretheorem[style = \noteboxStyle, name = Conjecture, sibling = theorem]{conjecture}
+\declaretheorem[style = \noteboxStyle, name = Conjecture, numbered = no]{conjecture*}
+
+\declaretheorem[style = \probboxStyle, name = Problem, sibling = theorem]{problem}
+\declaretheorem[style = \probboxStyle, name = Problem, numbered = no]{problem*}
+\declaretheorem[style = \probboxStyle, name = Question, sibling = theorem]{question}
+\declaretheorem[style = \probboxStyle, name = Question, numbered = no]{question*}
+
+
+% proof environment style:
+\declaretheoremstyle[headfont=\bfseries, bodyfont=\normalfont, numbered=no, qed=\qedsymbol ]{thmproofbox}
+\declaretheorem[numbered=no, style=thmproofbox, name=Proof]{replacementproof}
+\renewenvironment{proof}[1][\proofname]{\begin{replacementproof}}{\end{replacementproof}}

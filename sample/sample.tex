@@ -1,11 +1,10 @@
 \documentclass[10pt,letterpaper]{amsart}
 \usepackage{../adenc}
 % \usepackage[plain]{../adenc}
-% \usepackage[nocolor]{../adenc}
+% \usepackage[color]{../adenc}
 
 \title{Sample Document using \texttt{adenc.sty}}
 \author{Aden Chen}
-% \date{July 2024}
 
 \begin{document}
 
@@ -52,7 +51,7 @@
 
 \begin{itemize}
   \item Numbering can be turned off by using the corresponding \verb|*| versions of the environments (e.g. \verb|theorem*| instead of \verb|theorem|). 
-  \item Use \verb|\usepackage[nocolor]{adenc}| to produce only black and white theorem environments; use \verb|\usepackage[plain]{adenc}|  to use the default theorem environments: \texttt{definition}, \texttt{plain}, and \texttt{remark}.
+  \item Use \verb|\usepackage[color]{adenc}| to color theorem environments; use \verb|\usepackage[plain]{adenc}|  to use the default theorem environments: \texttt{definition}, \texttt{plain}, and \texttt{remark}.
 \end{itemize}
 
 
@@ -86,7 +85,7 @@
 \begin{itemize} 
   \item Operators: \(\Id \Ker \tr \rank \RREF \almu \gemu \sign \Span\) \\
     (\verb|\Id \Ker \tr \rank \RREF \almu \gemu \sign \Span|). 
-  \item Command for vectors: \(\vect{v}\) (\verb|\vect{v}|).
+  \item Command for vectors: \(\vec{v}\) (\verb|\vec{v}|).
   \item Matrices: \[
     \bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}
   \]
@@ -105,6 +104,29 @@
 \begin{itemize}
   \item Use \verb|\ds| as a shorthand for \verb|\displaystyle|. 
 \end{itemize}
+
+
+\section{Marking texts}
+Use commands \verb|\markabove| and \verb|\markbelow| to mark tests. Both commands take two arguments: (1) align method (\verb|l|, \verb|c|, or \verb|r|); and (2) text to display. E.g. 
+
+\begin{framed}
+Test test test\markabove{l}{test1} test\markbelow{c}{I'm marking below here}.
+
+Test test test test.
+
+Test test test\markabove{c}{I'm marking above here} test\markbelow{r}{math! \(\alpha\)}.
+\end{framed}
+
+\noindent
+is produced by the code:
+
+\begin{verbatim}
+Test test test\markabove{l}{test1} test\markbelow{c}{I'm marking below here}.
+
+Test test test test.
+
+Test test test\markabove{c}{I'm marking above here} test\markbelow{r}{math! \(\alpha\)}.
+\end{verbatim}
 
 
 \section{Credits}

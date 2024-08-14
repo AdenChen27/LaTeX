@@ -1,0 +1,23 @@
+\RequirePackage{todonotes}
+
+% \definecolor{todocolor}{rgb}{0.57, 0.36, 0.51}
+\newcommand{\todocolor}{violet!75!red}
+\newcommand\itodo[1]{
+  \begin{mdframed}[backgroundcolor=green!5, linewidth=1pt, linecolor=red]
+    \color{\todocolor}#1
+  \end{mdframed}
+}
+
+% from: https://tex.stackexchange.com/questions/142242/robust-way-to-mark-draft-text
+\RequirePackage{stackengine}
+\setstackgap{L}{.5\baselineskip}
+\newcommand\markabove[2]{{%
+  \sffamily\bfseries\color{\todocolor}%
+  \hsmash{\(\uparrow\)}% 
+  \smash{\toplap{#1}{\scriptsize#2}}%
+}}
+\newcommand\markbelow[2]{{%
+  \sffamily\bfseries\color{\todocolor}% 
+  \hsmash{\(\downarrow\)}%
+  \smash{\bottomlap{#1}{\scriptsize#2}}%
+}}

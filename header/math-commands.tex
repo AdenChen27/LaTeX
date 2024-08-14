@@ -1,0 +1,135 @@
+% ========== GENERAL MATH COMMANDS ==========
+% vocab:
+\newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
+
+% inverse trigs: \arcsec, \arccot, \arccsc
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+
+% contradiction
+% \newcommand{\contradiction}{
+%   \ensuremath{{\Rightarrow\mspace{-2mu}\Leftarrow}}
+% }
+\newcommand{\contradiction}{
+  {\hbox{
+    \setbox0=\hbox{\(\mkern-3mu{\times}\mkern-3mu\)}
+    \setbox1=\hbox to0pt{\hss\copy0\hss}
+    \copy0\raisebox{0.5\wd0}{\copy1}\raisebox{-0.5\wd0}{\box1}\box0}
+  }
+}
+
+% better looking mod:
+\renewcommand{\mod}[1]{\ \text{mod}\ #1}
+
+% \abs and \norm
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+% floor and ceil
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Swap the definition of \abs* and \norm*, so that \abs 
+% and \norm resizes the size of the brackets, and the
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+
+% === shotcuts for mathbb, mathcal, and mathscr ===
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\bS}{\mathbb{S}}
+% === expanding \cX to \mathcal{X} for any capital letter X ===
+\RequirePackage{xparse}
+\RequirePackage{expl3}
+\ExplSyntaxOn
+\clist_map_inline:nn {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+{
+  \cs_new:cpn { c#1 } { \mathcal{#1} }
+}
+\ExplSyntaxOff
+
+% === mathscr ===
+\newcommand{\sA}{\mathscr{A}}
+\newcommand{\sB}{\mathscr{B}}
+\newcommand{\sC}{\mathscr{C}}
+\newcommand{\sE}{\mathscr{E}}
+\newcommand{\sS}{\mathscr{S}}
+
+\newcommand{\sK}{\mathscr{K}}
+\newcommand{\sL}{\mathscr{L}}
+\newcommand{\sT}{\mathscr{T}}
+\newcommand{\sU}{\mathscr{U}}
+\newcommand{\sV}{\mathscr{V}}
+
+
+
+% ==================== MATH, BY AREA ====================
+% ========== Set Theory ==========
+% complement: \complement
+\let\Oldcomplement\complement
+\renewcommand{\complement}[0]{\mathsf{c}}
+% nicer emptyset
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+% cardinality: \card
+\newcommand{\card}[1]{\left|#1\right|}
+
+% ========== Point Set Topology ==========
+\DeclareMathOperator{\Int}{Int}
+
+% ========== Probability ==========
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\renewcommand{\Pr}{\mathbb{P}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+
+% ========== Linear Algebra ==========
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\RREF}{RREF}
+\DeclareMathOperator{\almu}{almu}
+\DeclareMathOperator{\gemu}{gemu}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Span}{span}
+
+\newcommand\spanset[1]{\ensuremath\Span\left(#1\right)}
+% % nicer \overline
+% \let\oldoverline\overline
+% \renewcommand{\overline}[1]{\mkern 1.5mu\oldoverline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+% % nicer \underline
+% \let\oldunderline\underline
+% \renewcommand{\underline}[1]{\mkern 1.5mu\oldunderline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+% nicer vector
+\renewcommand{\vec}[1]{\underline{#1}}
+
+% matrices
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\vmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
+\newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+% ========== Analysis ==========
+\renewcommand{\d}{\ \mathrm{d}}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\dist}{dist}
+
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand*{\I}{\mathrm{i}}
