@@ -1,7 +1,9 @@
 \ProvidesPackage{adenc}[2024/08/14]
 
 
-% ========== PACKAGE OPTIONS ==========
+% ================================================
+% ================ PACKAGE OPTIONS ===============
+% ================================================
 \newif\ifadenccolor \adenccolorfalse
 \newif\ifadencplain \adencplainfalse
 \newif\ifhideproofs \hideproofsfalse
@@ -25,15 +27,22 @@
 
 
 
+% ================================================
+% =============== STANDARD PACKAGES ==============
+% ================================================
 \RequirePackage{amsmath, amssymb, amsthm}
 \RequirePackage{mathrsfs}
 
 \RequirePackage[letterpaper, margin=1in]{geometry}
 \RequirePackage[dvipsnames]{xcolor}
+\RequirePackage{siunitx}
+\RequirePackage{enumitem}
 
 
 
-% ==================== HYPERREF STYLES ====================
+% ================================================
+% ================ HYPERREF STYLES ===============
+% ================================================
 \RequirePackage{hyperref}
 % citecolor: NavyBlue by default; blue if option `plain` used
 \ifadencplain
@@ -53,7 +62,11 @@
   pdfnewwindow=true,
 }
 
-% ==================== THEOREM STYLES ====================
+
+
+% ================================================
+% ================ THEOREM STYLES ================
+% ================================================
 \RequirePackage{thmtools}
 \RequirePackage[framemethod=TikZ]{mdframed}
 
@@ -61,34 +74,47 @@
 
 
 
-
-% ==================== REFERENCES ====================
+% ================================================
+% ================== REFERENCES ==================
+% ================================================
+\RequirePackage[natbib=true, style=apa, backend=biber]{biblatex}
 \RequirePackage{cleveref}
+% \addbibresource{references.bib}
 
 
-% ==================== GRAPHICS ====================
+
+% ================================================
+% =================== GRAPHICS ===================
+% ================================================
 \RequirePackage{graphicx}
 \RequirePackage{wrapfig}
 \RequirePackage{subcaption}
-% \graphicspath{{./images/}}
+\graphicspath{{./images/}}
 
 
-% ==================== MATH ====================
+
+% ================================================
+% ===================== MATH =====================
+% ================================================
 \RequirePackage{amsfonts}
 \RequirePackage{mathtools}
-\RequirePackage{enumitem}
 \RequirePackage{bbm}
 \RequirePackage{nth}
 \newcommand{\ds}{\displaystyle}
-
 \input{math-commands.tex}
 
 
 
-% ========= TODO command =========
+% ================================================
+% ================ TODO COMMANDS =================
+% ================================================
 \input{todo-commands.tex}
 
-% ========= Hiding Environments (markings and proofs) =========
+
+% ================================================
+% ============== HIDING ENVIRONMENTS =============
+% ========= (Hiding markings and proofs) =========
+% ================================================
 \RequirePackage{environ}
 \NewEnviron{hide}{}
 % hide proofs if the `hideproofs` option is passed:
@@ -103,7 +129,9 @@
 \fi
 
 
-% ========= Font/Style misc. =========
+% ================================================
+% ================= FONTS/STYLES =================
+% ================================================
 % \usepackage{eulervm}
 % \usepackage{libertine}
 % \usepackage{helvet} % PSNFSS Font, in every TeX distribution
@@ -115,11 +143,6 @@
 % \RequirePackage[cal=cm]{mathalpha}
 \RequirePackage{framed}
 
-
-% \usepackage[small]{titlesec}
-% conflicts with the use of \section when using amsart
-
-% \renewcommand{\arraystretch}{1.25}
 
 
 

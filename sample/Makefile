@@ -1,5 +1,5 @@
 .PHONY: clean, view
-filename = sample
+filename = beamer-sample
 
 
 $(filename): $(filename).tex
