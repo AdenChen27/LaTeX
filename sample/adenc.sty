@@ -33,7 +33,7 @@
 \RequirePackage{amsmath, amssymb, amsthm}
 \RequirePackage{mathrsfs}
 
-\RequirePackage[letterpaper, margin=1in]{geometry}
+\RequirePackage[margin=1in]{geometry}
 \RequirePackage[dvipsnames]{xcolor}
 \RequirePackage{siunitx}
 \RequirePackage{enumitem}
@@ -72,13 +72,13 @@
 
 % base style
 \mdfdefinestyle{ThmBoxBaseStyle}{
-  skipabove = 10pt,
-  skipbelow = 0pt,
+  skipabove = .5em,
+  skipbelow = .5em,
   linewidth = 1pt,
-  innertopmargin = 5pt,
-  innerbottommargin = 10pt,
-  innerleftmargin = 10pt,
-  innerrightmargin = 10pt,
+  innertopmargin = .25em,
+  innerbottommargin = .5em,
+  innerleftmargin = .75em,
+  innerrightmargin = .75em,
   roundcorner = 3pt
 }
 
@@ -130,13 +130,13 @@
 % if no color passed, use black and white
 \ifadenccolor
   \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
-  \getThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
+  \getCompactThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
   \getCompactThmboxStyle{exbox}{mdexbox}{color3}{color3!5}
   \getCompactThmboxStyle{notebox}{mdnotebox}{color4}{color4!5}
   \getCompactThmboxStyle{probbox}{mdprobbox}{color5}{color5!5}
 \else
   \getThmboxStyle{thmbox}{mdthmbox}{black}{white}
-  \getThmboxStyle{defbox}{mddefbox}{black}{white}
+  \getCompactThmboxStyle{defbox}{mddefbox}{black}{white}
   \getCompactThmboxStyle{exbox}{mdexbox}{black}{white}
   \getCompactThmboxStyle{notebox}{mdnotebox}{black}{white}
   \getCompactThmboxStyle{probbox}{mdprobbox}{black}{white}
@@ -201,7 +201,7 @@
 % ================================================
 % ================== REFERENCES ==================
 % ================================================
-\RequirePackage[natbib=true, style=apa, backend=biber]{biblatex}
+\RequirePackage[natbib=true, backend=biber]{biblatex}
 \RequirePackage{cleveref}
 % \addbibresource{references.bib}
 
@@ -311,6 +311,7 @@
 \let\emptyset\varnothing
 % cardinality: \card
 \newcommand{\card}[1]{\left|#1\right|}
+\newcommand{\dom}{\mathcal{D}}
 
 % ========== Point Set Topology ==========
 \DeclareMathOperator{\Int}{Int}
@@ -376,19 +377,34 @@
   \end{mdframed}
 }
 
+
+\newcommand{\uppertip}{
+  \tikz[anchor=base, baseline]{
+    \draw[->, very thick] (0,1ex) -- (0,1.1ex);
+  }
+}
+
+\newcommand{\lowertip}{
+  \tikz[anchor=base, baseline]{
+    \draw[->, very thick] (0,-0.5ex) -- (0,-0.6ex);
+  }
+}
+
 % from: https://tex.stackexchange.com/questions/142242/robust-way-to-mark-draft-text
 \RequirePackage{stackengine}
 \setstackgap{L}{.5\baselineskip}
 \newcommand\markabove[2]{{%
-  \sffamily\bfseries\color{\todocolor}%
-  \hsmash{\(\uparrow\)}% 
+  \sffamily\bfseries\boldmath\color{\todocolor}%
+  \hsmash{\uppertip}% 
   \smash{\toplap{#1}{\scriptsize#2}}%
 }}
 \newcommand\markbelow[2]{{%
-  \sffamily\bfseries\color{\todocolor}% 
-  \hsmash{\(\downarrow\)}%
+  \sffamily\bfseries\boldmath\color{\todocolor}% 
+  \hsmash{\lowertip}%
   \smash{\bottomlap{#1}{\scriptsize#2}}%
-}} 
+}}
+
+ 
 
 % ================================================
 % ============== HIDING ENVIRONMENTS =============
@@ -419,7 +435,7 @@
 % \usepackage{newtxtext}
 % \usepackage{newtxmath}
 
-% \RequirePackage[cal=cm]{mathalpha}
+\RequirePackage[cal=cm]{mathalpha}
 \RequirePackage{framed}
 
 

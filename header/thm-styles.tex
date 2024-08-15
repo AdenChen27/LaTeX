@@ -1,12 +1,12 @@
 % base style
 \mdfdefinestyle{ThmBoxBaseStyle}{
-  skipabove = 10pt,
-  skipbelow = 0pt,
+  skipabove = .5em,
+  skipbelow = .5em,
   linewidth = 1pt,
-  innertopmargin = 5pt,
-  innerbottommargin = 10pt,
-  innerleftmargin = 10pt,
-  innerrightmargin = 10pt,
+  innertopmargin = .25em,
+  innerbottommargin = .5em,
+  innerleftmargin = .75em,
+  innerrightmargin = .75em,
   roundcorner = 3pt
 }
 
@@ -58,13 +58,13 @@
 % if no color passed, use black and white
 \ifadenccolor
   \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
-  \getThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
+  \getCompactThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
   \getCompactThmboxStyle{exbox}{mdexbox}{color3}{color3!5}
   \getCompactThmboxStyle{notebox}{mdnotebox}{color4}{color4!5}
   \getCompactThmboxStyle{probbox}{mdprobbox}{color5}{color5!5}
 \else
   \getThmboxStyle{thmbox}{mdthmbox}{black}{white}
-  \getThmboxStyle{defbox}{mddefbox}{black}{white}
+  \getCompactThmboxStyle{defbox}{mddefbox}{black}{white}
   \getCompactThmboxStyle{exbox}{mdexbox}{black}{white}
   \getCompactThmboxStyle{notebox}{mdnotebox}{black}{white}
   \getCompactThmboxStyle{probbox}{mdprobbox}{black}{white}

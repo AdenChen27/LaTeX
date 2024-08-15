@@ -8,16 +8,30 @@
   \end{mdframed}
 }
 
+
+\newcommand{\uppertip}{
+  \tikz[anchor=base, baseline]{
+    \draw[->, very thick] (0,1ex) -- (0,1.1ex);
+  }
+}
+
+\newcommand{\lowertip}{
+  \tikz[anchor=base, baseline]{
+    \draw[->, very thick] (0,-0.5ex) -- (0,-0.6ex);
+  }
+}
+
 % from: https://tex.stackexchange.com/questions/142242/robust-way-to-mark-draft-text
 \RequirePackage{stackengine}
 \setstackgap{L}{.5\baselineskip}
 \newcommand\markabove[2]{{%
-  \sffamily\bfseries\color{\todocolor}%
-  \hsmash{\(\uparrow\)}% 
+  \sffamily\bfseries\boldmath\color{\todocolor}%
+  \hsmash{\uppertip}% 
   \smash{\toplap{#1}{\scriptsize#2}}%
 }}
 \newcommand\markbelow[2]{{%
-  \sffamily\bfseries\color{\todocolor}% 
-  \hsmash{\(\downarrow\)}%
+  \sffamily\bfseries\boldmath\color{\todocolor}% 
+  \hsmash{\lowertip}%
   \smash{\bottomlap{#1}{\scriptsize#2}}%
 }}
+
