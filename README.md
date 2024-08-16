@@ -39,7 +39,7 @@ Files I use for taking math notes using LaTeX.
 ```tex
 \documentclass[10pt,letterpaper]{amsart}
 \usepackage{adenc}
-% \usepackage[nocolor]{adenc}
+% \usepackage[color]{adenc}
 
 \title{Sample Document}
 \author{Aden Chen}
