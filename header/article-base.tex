@@ -8,6 +8,7 @@
 \newif\ifadencplain \adencplainfalse
 \newif\ifhideproofs \hideproofsfalse
 \newif\ifhidemarkings \hidemarkingsfalse
+\newif\ifworkingpaper \workingpaperfalse
 
 
 % \usepackage[color]{adenc} to color theorem environments.
@@ -22,6 +23,8 @@
 % \usepackage[hidemarkings]{adenc} to hide all markings (`\markabove` and `\markbelow`; see below).
 \DeclareOption{hidemarkings}{\hidemarkingstrue}
 
+% \usepackage[workingpaper]{adenc} to get a larger page for the package todonotes
+\DeclareOption{workingpaper}{\workingpapertrue}
 
 \ProcessOptions*
 
@@ -34,6 +37,22 @@
 \RequirePackage{mathrsfs}
 
 \RequirePackage[margin=1in]{geometry}
+
+% increase pad 3cm to both left and right sides of the page for todonotes
+\ifworkingpaper
+  % \RequirePackage[margin=1in, showframe]{geometry}
+  \paperwidth=\dimexpr \paperwidth + 6cm\relax
+  \oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
+  \evensidemargin=\dimexpr\evensidemargin + 3cm\relax
+  \marginparwidth=\dimexpr \marginparwidth + 2cm\relax
+
+  \RequirePackage[firstpageonly=true]{draftwatermark}
+  % \SetWatermarkText{DRAFT}
+  % \SetWatermarkScale{1}
+  % \usepackage[light,first,bottomafter]{draftcopy}
+\fi
+
+
 \RequirePackage[dvipsnames]{xcolor}
 \RequirePackage{siunitx}
 \RequirePackage{enumitem}
@@ -91,6 +110,8 @@
 \RequirePackage{subcaption}
 \graphicspath{{./images/}}
 
+\RequirePackage{tikz}
+\RequirePackage{xy}
 
 
 % ================================================
@@ -98,7 +119,8 @@
 % ================================================
 \RequirePackage{amsfonts}
 \RequirePackage{mathtools}
-\RequirePackage{bbm}
+% \RequirePackage{bbm}
+\RequirePackage{dsfont}
 \RequirePackage{nth}
 \newcommand{\ds}{\displaystyle}
 \input{math-commands.tex}

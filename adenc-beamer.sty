@@ -231,6 +231,8 @@
 % cardinality: \card
 \newcommand{\card}[1]{\left|#1\right|}
 \newcommand{\dom}{\mathcal{D}}
+% indicator function
+\providecommand{\ind}{\ensuremath{\mathds{1}}}
 
 % ========== Point Set Topology ==========
 \DeclareMathOperator{\Int}{Int}
@@ -244,8 +246,6 @@
 
 % ========== Linear Algebra ==========
 \DeclareMathOperator{\Id}{Id}
-\DeclareMathOperator{\ran}{ran}
-\DeclareMathOperator{\Ker}{Ker}
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\RREF}{RREF}
@@ -272,14 +272,33 @@
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 
 % ========== Analysis ==========
-\renewcommand{\d}{\ \mathrm{d}}
-\DeclareMathOperator{\supp}{supp}
-\DeclareMathOperator{\epi}{epi}
-\DeclareMathOperator{\dist}{dist}
-
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \newcommand*{\I}{\mathrm{i}}
+
+\renewcommand{\d}{\ \mathrm{d}}
+
+\newcommand{\ran}{\mathcal{R}}
+\renewcommand{\ker}{\mathcal{N}}
+
+\DeclareMathOperator{\dist}{dist}
+
+\DeclareMathOperator{\gr}{gr}
+\DeclareMathOperator{\epi}{epi}
+
+\DeclareMathOperator{\supp}{supp}
+
+
+% ========== Spectral Theory ==========
+\DeclareMathOperator{\res}{res}
+\DeclareMathOperator{\spec}{spec}
+
+% ========== Measure Theory ==========
+\newcommand{\essran}{\mathrm{ess\ ran}}
+
+
+
+
  
 
 
@@ -287,6 +306,7 @@
 % ================ TODO COMMANDS =================
 % ================================================
 \RequirePackage{todonotes}
+\RequirePackage{comment}
 
 % \definecolor{todocolor}{rgb}{0.57, 0.36, 0.51}
 \newcommand{\todocolor}{violet!75!red}
@@ -297,15 +317,16 @@
 }
 
 
+\usetikzlibrary{arrows.meta}
 \newcommand{\uppertip}{
   \tikz[anchor=base, baseline]{
-    \draw[->, very thick] (0,1ex) -- (0,1.1ex);
+    \draw[-{Triangle}, thick] (0,1ex) -- (0,1.1ex);
   }
 }
 
 \newcommand{\lowertip}{
   \tikz[anchor=base, baseline]{
-    \draw[->, very thick] (0,-0.5ex) -- (0,-0.6ex);
+    \draw[-{Triangle}, thick] (0,-0.5ex) -- (0,-0.6ex);
   }
 }
 

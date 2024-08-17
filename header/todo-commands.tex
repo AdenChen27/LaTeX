@@ -1,4 +1,5 @@
 \RequirePackage{todonotes}
+\RequirePackage{comment}
 
 % \definecolor{todocolor}{rgb}{0.57, 0.36, 0.51}
 \newcommand{\todocolor}{violet!75!red}
@@ -9,15 +10,16 @@
 }
 
 
+\usetikzlibrary{arrows.meta}
 \newcommand{\uppertip}{
   \tikz[anchor=base, baseline]{
-    \draw[->, very thick] (0,1ex) -- (0,1.1ex);
+    \draw[-{Triangle}, thick] (0,1ex) -- (0,1.1ex);
   }
 }
 
 \newcommand{\lowertip}{
   \tikz[anchor=base, baseline]{
-    \draw[->, very thick] (0,-0.5ex) -- (0,-0.6ex);
+    \draw[-{Triangle}, thick] (0,-0.5ex) -- (0,-0.6ex);
   }
 }
 

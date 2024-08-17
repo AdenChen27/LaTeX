@@ -8,6 +8,7 @@
 \newif\ifadencplain \adencplainfalse
 \newif\ifhideproofs \hideproofsfalse
 \newif\ifhidemarkings \hidemarkingsfalse
+\newif\ifworkingpaper \workingpaperfalse
 
 
 % \usepackage[color]{adenc} to color theorem environments.
@@ -22,6 +23,8 @@
 % \usepackage[hidemarkings]{adenc} to hide all markings (`\markabove` and `\markbelow`; see below).
 \DeclareOption{hidemarkings}{\hidemarkingstrue}
 
+% \usepackage[workingpaper]{adenc} to get a larger page for the package todonotes
+\DeclareOption{workingpaper}{\workingpapertrue}
 
 \ProcessOptions*
 
@@ -34,6 +37,22 @@
 \RequirePackage{mathrsfs}
 
 \RequirePackage[margin=1in]{geometry}
+
+% increase pad 3cm to both left and right sides of the page for todonotes
+\ifworkingpaper
+  % \RequirePackage[margin=1in, showframe]{geometry}
+  \paperwidth=\dimexpr \paperwidth + 6cm\relax
+  \oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
+  \evensidemargin=\dimexpr\evensidemargin + 3cm\relax
+  \marginparwidth=\dimexpr \marginparwidth + 2cm\relax
+
+  \RequirePackage[firstpageonly=true]{draftwatermark}
+  % \SetWatermarkText{DRAFT}
+  % \SetWatermarkScale{1}
+  % \usepackage[light,first,bottomafter]{draftcopy}
+\fi
+
+
 \RequirePackage[dvipsnames]{xcolor}
 \RequirePackage{siunitx}
 \RequirePackage{enumitem}
@@ -129,13 +148,17 @@
 
 % if no color passed, use black and white
 \ifadenccolor
-  \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
+  % \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
+  % \getThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
+  \getCompactThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
   \getCompactThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
   \getCompactThmboxStyle{exbox}{mdexbox}{color3}{color3!5}
   \getCompactThmboxStyle{notebox}{mdnotebox}{color4}{color4!5}
   \getCompactThmboxStyle{probbox}{mdprobbox}{color5}{color5!5}
 \else
-  \getThmboxStyle{thmbox}{mdthmbox}{black}{white}
+  % \getThmboxStyle{thmbox}{mdthmbox}{black}{white}
+  % \getThmboxStyle{defbox}{mddefbox}{black}{white}
+  \getCompactThmboxStyle{thmbox}{mdthmbox}{black}{white}
   \getCompactThmboxStyle{defbox}{mddefbox}{black}{white}
   \getCompactThmboxStyle{exbox}{mdexbox}{black}{white}
   \getCompactThmboxStyle{notebox}{mdnotebox}{black}{white}
@@ -215,6 +238,8 @@
 \RequirePackage{subcaption}
 \graphicspath{{./images/}}
 
+\RequirePackage{tikz}
+\RequirePackage{xy}
 
 
 % ================================================
@@ -222,7 +247,8 @@
 % ================================================
 \RequirePackage{amsfonts}
 \RequirePackage{mathtools}
-\RequirePackage{bbm}
+% \RequirePackage{bbm}
+\RequirePackage{dsfont}
 \RequirePackage{nth}
 \newcommand{\ds}{\displaystyle}
 % ========== GENERAL MATH COMMANDS ==========
@@ -312,6 +338,8 @@
 % cardinality: \card
 \newcommand{\card}[1]{\left|#1\right|}
 \newcommand{\dom}{\mathcal{D}}
+% indicator function
+\providecommand{\ind}{\ensuremath{\mathds{1}}}
 
 % ========== Point Set Topology ==========
 \DeclareMathOperator{\Int}{Int}
@@ -325,8 +353,6 @@
 
 % ========== Linear Algebra ==========
 \DeclareMathOperator{\Id}{Id}
-\DeclareMathOperator{\ran}{ran}
-\DeclareMathOperator{\Ker}{Ker}
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\RREF}{RREF}
@@ -353,14 +379,33 @@
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 
 % ========== Analysis ==========
-\renewcommand{\d}{\ \mathrm{d}}
-\DeclareMathOperator{\supp}{supp}
-\DeclareMathOperator{\epi}{epi}
-\DeclareMathOperator{\dist}{dist}
-
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \newcommand*{\I}{\mathrm{i}}
+
+\renewcommand{\d}{\ \mathrm{d}}
+
+\newcommand{\ran}{\mathcal{R}}
+\renewcommand{\ker}{\mathcal{N}}
+
+\DeclareMathOperator{\dist}{dist}
+
+\DeclareMathOperator{\gr}{gr}
+\DeclareMathOperator{\epi}{epi}
+
+\DeclareMathOperator{\supp}{supp}
+
+
+% ========== Spectral Theory ==========
+\DeclareMathOperator{\res}{res}
+\DeclareMathOperator{\spec}{spec}
+
+% ========== Measure Theory ==========
+\newcommand{\essran}{\mathrm{ess\ ran}}
+
+
+
+
  
 
 
@@ -368,6 +413,7 @@
 % ================ TODO COMMANDS =================
 % ================================================
 \RequirePackage{todonotes}
+\RequirePackage{comment}
 
 % \definecolor{todocolor}{rgb}{0.57, 0.36, 0.51}
 \newcommand{\todocolor}{violet!75!red}
@@ -378,15 +424,16 @@
 }
 
 
+\usetikzlibrary{arrows.meta}
 \newcommand{\uppertip}{
   \tikz[anchor=base, baseline]{
-    \draw[->, very thick] (0,1ex) -- (0,1.1ex);
+    \draw[-{Triangle}, thick] (0,1ex) -- (0,1.1ex);
   }
 }
 
 \newcommand{\lowertip}{
   \tikz[anchor=base, baseline]{
-    \draw[->, very thick] (0,-0.5ex) -- (0,-0.6ex);
+    \draw[-{Triangle}, thick] (0,-0.5ex) -- (0,-0.6ex);
   }
 }
 
