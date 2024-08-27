@@ -36,6 +36,8 @@
 \RequirePackage{amsmath, amssymb, amsthm}
 \RequirePackage{mathrsfs}
 
+\RequirePackage{datetime}
+
 \RequirePackage{tablefootnote}
 
 % \RequirePackage[margin=1in]{geometry}
@@ -49,6 +51,15 @@
   \marginparwidth=\dimexpr \marginparwidth + 2cm\relax
 
   \RequirePackage[firstpageonly=true]{draftwatermark}
+  \SetWatermarkText{\sffamily%
+    DRAFT \the\year/\twodigit\month/\twodigit\day%
+  }
+  % \today}
+  \SetWatermarkColor{red!50}
+  \SetWatermarkFontSize{20pt}
+  \SetWatermarkAngle{0}
+  \SetWatermarkVerCenter{0.1\paperheight}
+  \SetWatermarkHorCenter{0.5\paperwidth}
   % \SetWatermarkText{DRAFT}
   % \SetWatermarkScale{1}
   % \usepackage[light,first,bottomafter]{draftcopy}
@@ -385,7 +396,8 @@
 \renewcommand{\Im}{\operatorname{Im}}
 \newcommand*{\I}{\mathrm{i}}
 
-\renewcommand{\d}{\ \mathrm{d}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\dd}{\ \mathrm{d}}
 
 \newcommand{\ran}{\mathcal{R}}
 \renewcommand{\ker}{\mathcal{N}}
@@ -404,7 +416,7 @@
 \DeclareMathOperator{\spec}{spec}
 
 % ========== Measure Theory ==========
-\newcommand{\essran}{\mathrm{ess\ ran}}
+\newcommand{\essran}{\mathrm{ess\ ran}\ }
 
 
 
