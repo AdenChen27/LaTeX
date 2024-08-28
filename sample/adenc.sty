@@ -44,15 +44,15 @@
 
 % increase pad 3cm to both left and right sides of the page for todonotes
 \ifworkingpaper
-  % \RequirePackage[margin=1in, showframe]{geometry}
-  \paperwidth=\dimexpr \paperwidth + 6cm\relax
-  \oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
+  % \paperwidth=\dimexpr \paperwidth + 6cm\relax
+  \paperwidth=\dimexpr \paperwidth + 3cm\relax
+  % \oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
   \evensidemargin=\dimexpr\evensidemargin + 3cm\relax
-  \marginparwidth=\dimexpr \marginparwidth + 2cm\relax
+  \marginparwidth=\dimexpr \marginparwidth + 3cm\relax
 
   \RequirePackage[firstpageonly=true]{draftwatermark}
   \SetWatermarkText{\sffamily%
-    DRAFT \the\year/\twodigit\month/\twodigit\day%
+    Draft \the\year/\twodigit\month/\twodigit\day%
   }
   % \today}
   \SetWatermarkColor{red!50}
