@@ -16,7 +16,7 @@ Files I use for taking math notes using LaTeX.
  
     - See end of this document for a `.tex` template using `adenc.sty`. 
 
-    - Two options are available: `color` and `plain`. Pass `color` (`\usepackage[color]{adenc}`) to produce colored theorem environments; pass `plain` (`\usepackage[plain]{adenc}`)  to use the default theorem environments: `definition`, `plain`, and `remark`.
+    <!-- - Two options are available: `color` and `plain`. Pass `color` (`\usepackage[color]{adenc}`) to produce colored theorem environments; pass `plain` (`\usepackage[plain]{adenc}`)  to use the default theorem environments: `definition`, `plain`, and `remark`. -->
 
 - `Makefile`
     
@@ -38,10 +38,10 @@ Files I use for taking math notes using LaTeX.
 
 ```tex
 \documentclass[10pt,letterpaper]{amsart}
-\usepackage{adenc}
-% \usepackage[color]{adenc}
+\usepackage[workingpaper]{adenc}
+% options: color, plain, hideproofs, hidemarkings, workingpaper
 
-\title{Sample Document}
+\title{Sample Document using \texttt{adenc.sty}}
 \author{Aden Chen}
 
 \begin{document}
