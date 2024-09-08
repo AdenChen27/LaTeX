@@ -1,10 +1,12 @@
 \documentclass[10pt,letterpaper]{amsart}
-\usepackage{adenc}
-% \usepackage[plain]{adenc}
-% \usepackage[color]{adenc}
+\usepackage[workingpaper]{adenc}
+% options: color, plain, hideproofs, hidemarkings, workingpaper
 
 \title{Sample Document using \texttt{adenc.sty}}
 \author{Aden Chen}
+\date{September 8th, 2024}
+
+
 
 \begin{document}
 
@@ -12,10 +14,27 @@
 
 \tableofcontents
 
-\noindent
-\textbf{Check out the \href{https://github.com/AdenChen27/latex}{github repo}. }
+\begin{mdframed}
+Check out the \href{https://github.com/AdenChen27/latex}{Github Repository} for \texttt{adenc.sty}. 
+\end{mdframed}
+
+
+\section{Package Options}
+The following package options are supported:
+\begin{itemize}
+  \item \verb|color|: add background colors for theorem environments (see \Cref{sec:thm-env}). 
+  \item \verb|plain|: use the default theorem environments (\texttt{definition}, \texttt{plain}, and \texttt{remark}).
+  \item \verb|hideproofs| and \verb|hidemarkings|: hide, respectively, proof environments and markings generated using the \verb|\markabove| and \verb|\markbelow| commands (see \Cref{sec:marking}). 
+  \item \verb|workingpaper|: add a watermark with date on the first page to indicate that the current document is a draft; adds more space to the margin so that notes written with the \verb|\todo| command (using the \verb|todonotes| package) can fully display. 
+\end{itemize}
+
+To pass an option, use: \verb|\usepackage[Option]{adenc}| . 
+
+To pass multiple options, use: \verb|\usepackage[Option1, Option2, ...]{adenc}|. 
+
 
 \section{Theorem Environments}
+\label{sec:thm-env}
 
 \begin{definition}
   A definitive \vocab{definition} is a definition, by definition. 
@@ -49,84 +68,77 @@
   A precise proof.
 \end{proof}
 
-\begin{itemize}
-  \item Numbering can be turned off by using the corresponding \verb|*| versions of the environments (e.g. \verb|theorem*| instead of \verb|theorem|). 
-  \item Use \verb|\usepackage[color]{adenc}| to color theorem environments; use \verb|\usepackage[plain]{adenc}|  to use the default theorem environments: \texttt{definition}, \texttt{plain}, and \texttt{remark}.
-\end{itemize}
+Numbering can be turned off by using the corresponding \verb|*| versions of the environments (e.g. \verb|theorem*| instead of \verb|theorem|). 
 
+\section{Marking the Document}
+\label{sec:marking}
+The \verb|\todo| command in the \verb|todonotes| package is a great way to add notes to a document, but among other things, it does not support display style math and, when used frequently, the places to which they point can\todo{For example, this points to the word ``can''. } be hard\todo{And this points to ``hard''. } to decipher. 
 
-\section{Features}
+It is for these reasons that the following commands are introduced:
+\begin{enumerate}[label=(\alph*)]
+  \item \verb|\itodo| (inline todo) produces an inline block of notes. 
+    This can be used as placeholders for contents to be added later. 
+    \itodo{
+      This is an example of what notes produced by the \texttt{\textbackslash itodo} command looks like. 
+        Unlike the \texttt{\textbackslash todo} command, \texttt{\textbackslash itodo} supports display math:
+      \[
+        \sum_{n=1}^{\infty} a_n z^n . 
+      \] 
+    }
+  \item \verb|\markabove| and \verb|\markbelow| provide a way to mark texts without altering the spacing. 
+  Both commands take two arguments: (1) align method (\verb|l|, \verb|c|, or \verb|r|); and (2) text to display. 
+  For example, 
 
-\subsection{General math symbols}
-\begin{itemize}
-  \item A vocab command for styling new vocabulary (in, for example, definitions): \vocab{the vocab command} (\verb|\vocab{the vocab command}|). 
-  \item A contradiction symbol: \(\contradiction\) (\verb|\contradiction|). 
-  \item Short cuts for \verb|\mathbb| (\verb|\XX| for \verb|\mathbb{X}|), \verb|\mathcal| (\verb|\cX| for \verb|\mathcal{X}|), and \verb|\mathscr| (\verb|\sX| for \verb|\mathscr{X}|). E.g. \(\RR\) (\verb|\RR|), \(\cT\) (\verb|\cT|), \(\sK\) (\verb|\sK|). (Note that these shortcuts are not available for all letters.)
-  
-  \item A better looking mod: \(x \equiv y \mod 3\) (\verb|x \equiv y \mod 3|). 
-\end{itemize}
+  \begin{mdframed}
+    \noindent
+    Test test test\markabove{l}{test1} test\markbelow{c}{I'm marking below here}.
 
+    \noindent
+    Test test test test.
 
-\subsection{Math symbols by field}
-\subsubsection*{Set Theory}
-\begin{itemize}
-  \item A better looking complement symbol: \(A^\complement\) (\verb|A^\complement|).
-  \item A better empty set symbol: \(\emptyset\) (\verb|\emptyset|). 
-  \item A cardinality command: \(\card{A}\) (\verb|\card{A}|). 
-  \item A interior operator: \(\Int A\) (\verb|\Int A|). 
-\end{itemize}
-
-\subsubsection*{Probability}
-\begin{itemize} 
-  \item Operators: \(\Pr \E \var \Var \Cov\) (\verb|\Pr \E \var \Var \Cov|). 
-\end{itemize}
-
-\subsubsection*{Linear Algebra}
-\begin{itemize} 
-  \item Operators: \(\Id \Ker \tr \rank \RREF \almu \gemu \sign \Span\) \\
-    (\verb|\Id \Ker \tr \rank \RREF \almu \gemu \sign \Span|). 
-  \item Command for vectors: \(\vec{v}\) (\verb|\vec{v}|).
-  \item Matrices: \[
-    \bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}
-  \]
-  (\verb|\bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}|). 
-\end{itemize}
-
-\subsubsection*{Analysis}
-\begin{itemize} 
-  \item Differentiation operator: \(\d x\) (\verb|\d x|).
-  \item Imaginary number: \(\I\) (\verb|\I|).
-  \item Operators: \(\supp \epi \dist \Re \Im\) (\verb|\supp \epi \dist \Re \Im|).
-\end{itemize}
-
-
-\subsection{Miscellaneous}
-\begin{itemize}
-  \item Use \verb|\ds| as a shorthand for \verb|\displaystyle|. 
-\end{itemize}
-
-
-\section{Marking texts}
-Use commands \verb|\markabove| and \verb|\markbelow| to mark tests. Both commands take two arguments: (1) align method (\verb|l|, \verb|c|, or \verb|r|); and (2) text to display. E.g. 
-
-\begin{framed}
-Test test test\markabove{l}{test1} test\markbelow{c}{I'm marking below here}.
-
-Test test test test.
-
-Test test test\markabove{c}{I'm marking above here} test\markbelow{r}{math! \(\alpha\)}.
-\end{framed}
-
-\noindent
-is produced by the code:
-
+    \noindent
+    Test test test\markabove{c}{above!} test\markbelow{r}{math! \(\alpha\)}.
+  \end{mdframed}
+  is produced by the following code:
+\end{enumerate}
 \begin{verbatim}
 Test test test\markabove{l}{test1} test\markbelow{c}{I'm marking below here}.
 
 Test test test test.
 
-Test test test\markabove{c}{I'm marking above here} test\markbelow{r}{math! \(\alpha\)}.
+Test test test\markabove{c}{above!} test\markbelow{r}{math! \(\alpha\)}.
 \end{verbatim}
+
+
+
+
+\section{New Commands}
+Some new commands (mainly for math symbols) are added or modified for aesthetics and/or convenience.
+A few notable ones are mentioned below:
+
+\begin{itemize}
+  \item A vocab command for styling new vocabulary (in, for example, definitions): \vocab{the vocab command} (\verb|\vocab{the vocab command}|). 
+  \item A contradiction symbol: \(\contradiction\) (\verb|\contradiction|). 
+  \item Short cuts for \verb|\mathbb|, \verb|\mathcal|, and \verb|\mathscr|:
+    \begin{itemize}
+      \item \verb|\cX| produces \verb|\mathbb{X}|, 
+      \item \verb|\cX| produces \verb|\mathcal{X}|, 
+      \item \verb|\sX| produces \verb|\mathscr{X}|. 
+    \end{itemize}
+    E.g. \(\RR\) (\verb|\RR|), \(\cT\) (\verb|\cT|), \(\sK\) (\verb|\sK|). 
+    Note that these shortcuts are not available for all letters. 
+  % \item A better looking mod: \(x \equiv y \mod 3\) (\verb|x \equiv y \mod 3|). 
+  \item A better looking complement symbol: \(A^\complement\) (\verb|A^\complement|).
+  \item A better empty set symbol: \(\emptyset\) (\verb|\emptyset|). 
+  \item A command for vectors: \(\vec{v}\) (\verb|\vec{v}|).
+  \item Short cuts for matrices: \[
+    \bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}
+  \]
+  (\verb|\bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}|). 
+  \item Differentiation operator: \(\d x\) (\verb|\d x|).
+  \item Imaginary number: \(\I\) (\verb|\I|).
+\end{itemize}
+
 
 
 \section{Credits}
