@@ -39,6 +39,9 @@
 \RequirePackage{datetime}
 
 \RequirePackage{tablefootnote}
+\usepackage{pdfsync}
+\synctex=1
+
 
 % \RequirePackage[margin=1in]{geometry}
 
@@ -255,6 +258,86 @@
 \RequirePackage{xy}
 
 
+
+% ================================================
+% ================ TODO COMMANDS =================
+% ================================================
+\RequirePackage{todonotes}
+\RequirePackage{comment}
+
+% \definecolor{todocolor}{rgb}{0.57, 0.36, 0.51}
+\newcommand{\todocolor}{violet!75!red}
+\newcommand\itodo[1]{
+  \begin{mdframed}[backgroundcolor=green!5, linewidth=1pt, linecolor=red]
+    \color{\todocolor}#1
+  \end{mdframed}
+}
+
+
+\usetikzlibrary{arrows.meta}
+\newcommand{\uppertip}{
+  \tikz[anchor=base, baseline]{
+    \draw[-{Triangle}, thick] (0,1ex) -- (0,1.1ex);
+  }
+}
+
+\newcommand{\lowertip}{
+  \tikz[anchor=base, baseline]{
+    \draw[-{Triangle}, thick] (0,-0.5ex) -- (0,-0.6ex);
+  }
+}
+
+% from: https://tex.stackexchange.com/questions/142242/robust-way-to-mark-draft-text
+\RequirePackage{stackengine}
+\setstackgap{L}{.5\baselineskip}
+\newcommand\markabove[2]{{%
+  \sffamily\bfseries\boldmath\color{\todocolor}%
+  \hsmash{\uppertip}% 
+  \smash{\toplap{#1}{\scriptsize#2}}%
+}}
+\newcommand\markbelow[2]{{%
+  \sffamily\bfseries\boldmath\color{\todocolor}% 
+  \hsmash{\lowertip}%
+  \smash{\bottomlap{#1}{\scriptsize#2}}%
+}}
+
+ 
+
+% ================================================
+% ============== HIDING ENVIRONMENTS =============
+% ========= (Hiding markings and proofs) =========
+% ================================================
+\RequirePackage{environ}
+\NewEnviron{hide}{}
+% hide proofs if the `hideproofs` option is passed:
+\ifhideproofs
+  \let\proof\hide
+  \let\endproof\endhide
+\fi
+% hide markings if the `hidemarkings` option is passed:
+\ifhidemarkings
+  \renewcommand{\markabove}[2]{}
+  \renewcommand{\markbelow}[2]{}
+\fi
+
+
+% ================================================
+% ================= FONTS/STYLES =================
+% ================================================
+% \usepackage{eulervm}
+% \usepackage{libertine}
+% \usepackage{helvet} % PSNFSS Font, in every TeX distribution
+% \renewcommand{\familydefault}{\sfdefault}
+
+% \usepackage{newtxtext}
+% \usepackage{newtxmath}
+\usepackage{newtxtext}
+\usepackage[varvw]{newtxmath}
+
+\RequirePackage[cal=cm]{mathalpha}
+\RequirePackage{framed}
+
+
 % ================================================
 % ===================== MATH =====================
 % ================================================
@@ -424,83 +507,6 @@
  
 
 
-% ================================================
-% ================ TODO COMMANDS =================
-% ================================================
-\RequirePackage{todonotes}
-\RequirePackage{comment}
-
-% \definecolor{todocolor}{rgb}{0.57, 0.36, 0.51}
-\newcommand{\todocolor}{violet!75!red}
-\newcommand\itodo[1]{
-  \begin{mdframed}[backgroundcolor=green!5, linewidth=1pt, linecolor=red]
-    \color{\todocolor}#1
-  \end{mdframed}
-}
-
-
-\usetikzlibrary{arrows.meta}
-\newcommand{\uppertip}{
-  \tikz[anchor=base, baseline]{
-    \draw[-{Triangle}, thick] (0,1ex) -- (0,1.1ex);
-  }
-}
-
-\newcommand{\lowertip}{
-  \tikz[anchor=base, baseline]{
-    \draw[-{Triangle}, thick] (0,-0.5ex) -- (0,-0.6ex);
-  }
-}
-
-% from: https://tex.stackexchange.com/questions/142242/robust-way-to-mark-draft-text
-\RequirePackage{stackengine}
-\setstackgap{L}{.5\baselineskip}
-\newcommand\markabove[2]{{%
-  \sffamily\bfseries\boldmath\color{\todocolor}%
-  \hsmash{\uppertip}% 
-  \smash{\toplap{#1}{\scriptsize#2}}%
-}}
-\newcommand\markbelow[2]{{%
-  \sffamily\bfseries\boldmath\color{\todocolor}% 
-  \hsmash{\lowertip}%
-  \smash{\bottomlap{#1}{\scriptsize#2}}%
-}}
-
- 
-
-% ================================================
-% ============== HIDING ENVIRONMENTS =============
-% ========= (Hiding markings and proofs) =========
-% ================================================
-\RequirePackage{environ}
-\NewEnviron{hide}{}
-% hide proofs if the `hideproofs` option is passed:
-\ifhideproofs
-  \let\proof\hide
-  \let\endproof\endhide
-\fi
-% hide markings if the `hidemarkings` option is passed:
-\ifhidemarkings
-  \renewcommand{\markabove}[2]{}
-  \renewcommand{\markbelow}[2]{}
-\fi
-
-
-% ================================================
-% ================= FONTS/STYLES =================
-% ================================================
-% \usepackage{eulervm}
-% \usepackage{libertine}
-% \usepackage{helvet} % PSNFSS Font, in every TeX distribution
-% \renewcommand{\familydefault}{\sfdefault}
-
-% \usepackage{newtxtext}
-% \usepackage{newtxmath}
-\usepackage{newtxtext}
-\usepackage[varvw]{newtxmath}
-
-\RequirePackage[cal=cm]{mathalpha}
-\RequirePackage{framed}
 
 
 
