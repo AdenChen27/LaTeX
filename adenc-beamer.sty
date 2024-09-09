@@ -10,12 +10,24 @@
 
 
 
+\usepackage{calc}
 \newenvironment{transitionframe}{
   % \definecolor{BeigeOffWhite}{RGB}{255,253,218}
   % \setbeamercolor{background canvas}{bg=BeigeOffWhite}
   \begin{frame}
 }{
   \end{frame}
+}
+
+\newcommand{\twocolumns}[4]{
+  \begin{columns}[T]
+    \begin{column}{#1\textwidth}
+      #3
+    \end{column}
+    \begin{column}{#2\textwidth}
+      #4
+    \end{column}
+  \end{columns}
 }
 
 
