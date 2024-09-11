@@ -30,7 +30,7 @@ Files I use for taking math notes using LaTeX.
 
     - Change relevant commands for `make view` if you're not on mac or do not have [skim](https://skim-app.sourceforge.io/) installed. 
 
-- See also my vim Ultisnips [snippets](https://github.com/AdenChen27/dotfiles/blob/main/vim/UltiSnips/tex.snippets). 
+- See also my vim Ultisnips [snippets](https://github.com/AdenChen27/dotfiles/tree/main/vim/UltiSnips). 
 
 
 
