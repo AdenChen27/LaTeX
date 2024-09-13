@@ -39,7 +39,7 @@ Files I use for taking math notes using LaTeX.
 ```tex
 \documentclass[10pt,letterpaper]{amsart}
 \usepackage[workingpaper]{adenc}
-% options: color, plain, hideproofs, hidemarkings, workingpaper
+% Options: color, plain, hideproofs, hidemarkings, workingpaper
 
 \title{Sample Document using \texttt{adenc.sty}}
 \author{Aden Chen}
