@@ -1,11 +1,16 @@
-\documentclass[10pt,letterpaper]{amsart}
+\documentclass[10pt,oneside,letterpaper]{amsart}
 \usepackage[workingpaper]{adenc}
 % options: color, plain, hideproofs, hidemarkings, workingpaper
 
 \title{Sample Document using \texttt{adenc.sty}}
 \author{Aden Chen}
-\date{September 8th, 2024}
 
+\usepackage{float}
+\renewcommand{\arraystretch}{1.5}
+\usepackage[table]{xcolor}
+
+
+% \renewcommand{\familydefault}{\sfdefault}
 
 
 \begin{document}
@@ -14,9 +19,7 @@
 
 \tableofcontents
 
-\begin{mdframed}
 Check out the \href{https://github.com/AdenChen27/latex}{Github Repository} for \texttt{adenc.sty}. 
-\end{mdframed}
 
 
 \section{Package Options}
@@ -25,7 +28,7 @@ The following package options are supported:
   \item \verb|color| adds background colors for theorem environments (see \Cref{sec:thm-env}). 
   \item \verb|plain| uses the default theorem environments (\texttt{definition}, \texttt{plain}, and \texttt{remark}).
   \item \verb|hideproofs| and \verb|hidemarkings| hide, respectively, proof environments and markings generated using the \verb|\markabove| and \verb|\markbelow| commands (see \Cref{sec:marking}). 
-  \item \verb|workingpaper| adds a watermark with date on the first page to indicate that the current document is a draft; adds more space to the margin so that notes written with the \verb|\todo| command (using the \verb|todonotes| package) can fully display. 
+  \item \verb|workingpaper| adds (1) a watermark with date on the first page to indicate that the current document is a draft and (2) more space to the margin so that notes written with the \verb|\todo| command (using the \verb|todonotes| package) can fully display. 
 \end{itemize}
 
 To pass an option, use: \verb|\usepackage[Option]{adenc}| . 
@@ -72,10 +75,10 @@ Numbering can be turned off by using the corresponding \verb|*| versions of the 
 
 \section{Marking the Document}
 \label{sec:marking}
-The \verb|\todo| command in the \verb|todonotes| package is a great way to add notes to a document, but among other things, it does not support display style math and, when used frequently, the places to which they point can\todo{For example, this points to the word ``can''. } be hard\todo{And this points to ``hard''. } to decipher. 
+The \verb|\todo| command in the \verb|todonotes| package is a great way to add notes to a document, but among other things, it does not support display style math and, when used frequently, the places to which they point can\todo{E.g., this points to the word ``can.'' } be hard\todo{And this to ``hard.'' } to decipher. 
 It is for these reasons that the following commands are introduced:
 \begin{enumerate}[label=(\alph*)]
-  \item \verb|\itodo| (inline todo) produces an inline block of notes. 
+  \item \verb|\itodo| (\underline{i}nline \underline{todo}) produces an inline block of notes. 
     This can be used as placeholders for contents to be added later. 
     \itodo{
       This is an example of what notes produced by the \texttt{\textbackslash itodo} command looks like. 
@@ -112,36 +115,92 @@ Test test test\markabove{c}{above!} test\markbelow{r}{math! \(\alpha\)}.
 
 
 \section{New Commands}
-Some new commands (mainly for math symbols) are added or modified for aesthetics and/or convenience.
+Some commands (mainly for math symbols) are added or modified for aesthetics and/or convenience.
 A few notable ones are mentioned below:
 
-\begin{itemize}
-  \item A vocab command for styling new vocabulary (in, for example, definitions): \vocab{the vocab command} (\verb|\vocab{the vocab command}|). 
-  \item A contradiction symbol: \(\contradiction\) (\verb|\contradiction|). 
-  \item Short cuts for \verb|\mathbb|, \verb|\mathcal|, and \verb|\mathscr|:
-    \begin{itemize}
-      \item \verb|\cX| produces \verb|\mathbb{X}|, 
-      \item \verb|\cX| produces \verb|\mathcal{X}|, 
-      \item \verb|\sX| produces \verb|\mathscr{X}|. 
-    \end{itemize}
-    E.g. \(\RR\) (\verb|\RR|), \(\cT\) (\verb|\cT|), \(\sK\) (\verb|\sK|). 
-    Note that these shortcuts are not available for all letters. 
-  % \item A better looking mod: \(x \equiv y \mod 3\) (\verb|x \equiv y \mod 3|). 
-  \item A better looking complement symbol: \(A^\complement\) (\verb|A^\complement|).
-  \item A better empty set symbol: \(\emptyset\) (\verb|\emptyset|). 
-  \item A command for vectors: \(\vec{v}\) (\verb|\vec{v}|).
-  \item Short cuts for matrices: \[
-    \bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}
-  \]
-  (\verb|\bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}|). 
-  \item Differentiation operator: \(\d x\) (\verb|\d x|).
-  \item Imaginary number: \(\I\) (\verb|\I|).
-\end{itemize}
+\begin{table}[H]
+\centering
+\begin{tabular}{ p{.5\linewidth} l l } 
+  \textbf{Description}  & \textbf{Example} & \textbf{LaTeX Commands} \\ 
+  \hline
+  Command for styling new vocabulary\footnote{in, for example, definitions}
+    & \vocab{vocab}
+    & \verb|\vocab{vocab}| \\ 
+  Contradiction symbol
+    & \contradiction
+    & \verb|\contradiction| \\ 
+  Shortcuts for \verb|\mathbb|
+    & \(\RR, \QQ, \FF, \PP\)
+    & \verb|\RR, \QQ, \FF, \PP| \\
+  Shortcuts for \verb|\mathcal|
+    & \(\cA, \cB, \cC, \cD\)
+    & \verb|\cA, \cB, \cC, \cD| \\
+  Shortcuts for \verb|\mathsf|
+    & \(\sL, \sT, \sU, \sV\)
+    & \verb|\sL, \sT, \sU, \sV| \\
+  Better looking complement symbol
+    & \(A^\complement\)
+    & \verb|A^\complement| \\ 
+  Better looking empty set symbol
+    & \(\emptyset\)
+    & \verb|\emptyset| \\ 
+  Command for vectors
+    & \(\vec{v}\)
+    & \verb|\vec{v}| \\ 
+  Shortcuts for matrices
+    & \(\bmat{1 & 2 \\ 3 & 4}\)
+    & \verb|\bmat{1 & 2 \\ 3 & 4}| \\ 
+    & \(\pmat{1 & 2 \\ 3 & 4}\)
+    & \verb|\pmat{1 & 2 \\ 3 & 4}| \\ 
+    &\(\vmat{1 & 2 \\ 3 & 4}\)
+    & \verb|\vmat{1 & 2 \\ 3 & 4}| \\ 
+  Differentiation operators
+    & \(\d x, \D f\)
+    & \verb|\d x, \D f|\\
+  (Use \verb|\dd| in integrals for extra spacing. )
+    & \(\ds \int f \dd x\)
+    & \verb|\int f \dd x| \\ 
+  Imaginary number
+    & \(\I\) 
+    & \verb|\I| \\ 
+\end{tabular}
+\end{table}
+
+% \begin{itemize}
+%   \item A vocab command for styling new vocabulary (in, for example, definitions): \vocab{the vocab command} (\verb|\vocab{the vocab command}|). 
+%   \item A contradiction symbol: \(\contradiction\) (\verb|\contradiction|). 
+%   \item Short cuts for \verb|\mathbb|, \verb|\mathcal|, and \verb|\mathscr|:
+%     \begin{itemize}
+%       \item \verb|\cX| produces \verb|\mathbb{X}|, 
+%       \item \verb|\cX| produces \verb|\mathcal{X}|, 
+%       \item \verb|\sX| produces \verb|\mathscr{X}|. 
+%     \end{itemize}
+%     E.g. \(\RR\) (\verb|\RR|), \(\cT\) (\verb|\cT|), \(\sK\) (\verb|\sK|). 
+%     Note that these shortcuts are not available for all letters. 
+%   % \item A better looking mod: \(x \equiv y \mod 3\) (\verb|x \equiv y \mod 3|). 
+%   \item A better looking complement symbol: \(A^\complement\) (\verb|A^\complement|).
+%   \item A better empty set symbol: \(\emptyset\) (\verb|\emptyset|). 
+%   \item A command for vectors: \(\vec{v}\) (\verb|\vec{v}|).
+%   \item Short cuts for matrices: \[
+%     \bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}
+%   \]
+%   (\verb|\bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}|). 
+%   \item Differentiation operator: \(\d x\) (\verb|\d x|).
+%   \item Imaginary number: \(\I\) (\verb|\I|).
+% \end{itemize}
 
 
 
 \section{Credits}
-I have stolen a lot of stuff from \href{https://web.stanford.edu/~lindrew/}{Andrew Lin}'s package, \href{https://web.stanford.edu/~lindrew/lindrew.sty}{lindrew}, and \href{https://github.com/gillescastel}{Gilles Castel}'s \href{https://github.com/gillescastel/lecture-notes/blob/master/algebraic-topology/preamble.tex}{preamble file} for his \href{https://github.com/gillescastel/lecture-notes}{lecture notes}. 
+I have stolen a lot of stuff from below:
+\begin{itemize}
+  % \item \href{https://web.stanford.edu/~lindrew/}{Andrew Lin}'s package, \href{https://web.stanford.edu/~lindrew/lindrew.sty}{lindrew}.
+  \item \url{https://web.stanford.edu/~lindrew/lindrew.sty} 
+  % \item \href{https://github.com/gillescastel}{Gilles Castel}'s \href{https://github.com/gillescastel/lecture-notes/blob/master/algebraic-topology/preamble.tex}{preamble file} for his \href{https://github.com/gillescastel/lecture-notes}{lecture notes}. 
+  \item \url{https://github.com/gillescastel/lecture-notes} 
+  \item \url{https://tex.stackexchange.com/questions/142242/robust-way-to-mark-draft-text} 
+  \item \url{https://math.stackexchange.com/questions/160039/are-there-any-symbols-for-contradictions} 
+\end{itemize}
 
 
 
@@ -152,7 +211,6 @@ I have stolen a lot of stuff from \href{https://web.stanford.edu/~lindrew/}{Andr
 
 
 \end{document}
-
 
 
 
