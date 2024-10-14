@@ -245,7 +245,7 @@
 % ================================================
 % ================== REFERENCES ==================
 % ================================================
-\RequirePackage[natbib=true, backend=biber]{biblatex}
+% \RequirePackage[natbib=true, backend=biber]{biblatex}
 \RequirePackage{cleveref}
 % \addbibresource{references.bib}
 
@@ -275,6 +275,12 @@
 \newcommand\itodo[1]{
   \begin{mdframed}[backgroundcolor=green!5, linewidth=1pt, linecolor=red]
     \color{\todocolor}#1
+  \end{mdframed}
+}
+
+\newcommand\correction[1]{
+  \begin{mdframed}[backgroundcolor=green!2, linewidth=1pt, linecolor=red]
+    \color{red}#1
   \end{mdframed}
 }
 
