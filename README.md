@@ -44,13 +44,12 @@ Files I use for taking math notes using LaTeX.
 \usepackage{silence} % for suppressing warnings
 \WarningFilter{mdframed}{You have requested package}
 
-\usepackage{/Users/aden/Library/CloudStorage/Box-Box/latex/adenc}
-
+\usepackage{adenc}
+% Options: color, plain, hideproofs, hidemarkings, workingpaper
 
 
 \title[]{}
-\author{Aden Chen}
-
+\author{}
 
 
 \begin{document}
@@ -63,14 +62,5 @@ Files I use for taking math notes using LaTeX.
 
 
 
-
-
-
-
-
-
-
 \end{document}
-
-
 ```

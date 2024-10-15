@@ -21,6 +21,6 @@ beamer-base: beamer-base.tex
 	@$(call compile,"beamer-base.tex","adenc-beamer.sty")
 
 
-readme: README-base.md
+readme: README-base.md public-template.tex
 	 (cat README-base.md ; echo '```tex' ; cat public-template.tex ; echo '```') > ../README.md
 
