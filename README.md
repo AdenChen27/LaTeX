@@ -36,21 +36,41 @@ Files I use for taking math notes using LaTeX.
 
 ### `.tex` template using `adenc.sty`:
 
-```tex
-\documentclass[10pt,letterpaper]{amsart}
-\usepackage[workingpaper]{adenc}
-% Options: color, plain, hideproofs, hidemarkings, workingpaper
 
-\title{Sample Document using \texttt{adenc.sty}}
+
+```tex
+\documentclass[oneside,reqno,letterpaper]{amsart}
+
+\usepackage{silence} % for suppressing warnings
+\WarningFilter{mdframed}{You have requested package}
+
+\usepackage{/Users/aden/Library/CloudStorage/Box-Box/latex/adenc}
+
+
+
+\title[]{}
 \author{Aden Chen}
 
-\begin{document}
 
+
+\begin{document}
 \maketitle
 
 \tableofcontents
 
+\section{}
+
+
+
+
+
+
+
+
+
+
+
 \end{document}
+
+
 ```
-
-

@@ -19,3 +19,8 @@ article-base: article-base.tex
 
 beamer-base: beamer-base.tex
 	@$(call compile,"beamer-base.tex","adenc-beamer.sty")
+
+
+readme: README-base.md
+	 (cat README-base.md ; echo '```tex' ; cat public-template.tex ; echo '```') > ../README.md
+
