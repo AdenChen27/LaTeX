@@ -13,6 +13,8 @@ Files I use for taking math notes using LaTeX.
         package, [lindrew](https://web.stanford.edu/~lindrew/lindrew.sty). 
 
     - Check out [a sample document](https://www.overleaf.com/read/psgmvhwzppnr#adf899) using `adenc.sty` on Overleaf.
+
+    - [Here](https://github.com/AdenChen27/Notes) are some of the notes I've taken. 
  
     - See end of this document for a `.tex` template using `adenc.sty`. 
 
