@@ -9,11 +9,20 @@
   \end{mdframed}
 }
 
-\newcommand\correction[1]{
-  \begin{mdframed}[backgroundcolor=green!2, linewidth=1pt, linecolor=red]
-    \color{red}#1
+% \newcommand\precorrection[1]{
+%   \begin{mdframed}[backgroundcolor=green!2, linewidth=1pt, linecolor=red]
+%     \color{red}#1
+%   \end{mdframed}
+% }
+
+\newenvironment{correction}
+{
+  \begin{mdframed}[backgroundcolor=red!1, linewidth=1pt, linecolor=red!80!black]
+  \color{red!80!black}
+}{
   \end{mdframed}
 }
+
 
 
 \usetikzlibrary{arrows.meta}
