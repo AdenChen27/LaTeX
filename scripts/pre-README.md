@@ -39,7 +39,7 @@ Files I use for taking math notes using LaTeX.
 
 - See also my vim Ultisnips [snippets](https://github.com/AdenChen27/dotfiles/tree/main/vim/UltiSnips). 
 
-- The scripts I used to create these packages can be found in [`scripts`])(https://github.com/AdenChen27/LaTeX/tree/main/scripts).
+- The scripts I used to create these packages can be found in [`scripts`](https://github.com/AdenChen27/LaTeX/tree/main/scripts).
 
 
 ### `.tex` template using `adenc.sty`:
