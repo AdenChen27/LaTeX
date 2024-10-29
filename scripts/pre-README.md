@@ -18,7 +18,12 @@ Files I use for taking math notes using LaTeX.
  
     - See end of this document for a `.tex` template using `adenc.sty`. 
 
-    <!-- - Two options are available: `color` and `plain`. Pass `color` (`\usepackage[color]{adenc}`) to produce colored theorem environments; pass `plain` (`\usepackage[plain]{adenc}`)  to use the default theorem environments: `definition`, `plain`, and `remark`. -->
+- `pdf2img/pdf2img.py`
+
+    - I use this script to convert and trim images I draw using Goodnotes to png.
+
+    - Check out a more detailed description [here](https://github.com/AdenChen27/LaTeX/tree/main/pdf2img).
+
 
 - `Makefile`
     
@@ -34,9 +39,10 @@ Files I use for taking math notes using LaTeX.
 
 - See also my vim Ultisnips [snippets](https://github.com/AdenChen27/dotfiles/tree/main/vim/UltiSnips). 
 
+- The scripts I used to create these packages can be found in [`scripts`])(https://github.com/AdenChen27/LaTeX/tree/main/scripts).
 
 
 ### `.tex` template using `adenc.sty`:
 
-
+This document can also be found at [template.tex](https://github.com/AdenChen27/LaTeX/blob/main/sample/public-template.tex)
 
