@@ -10,11 +10,11 @@ endef
 .PHONY: all
 
 
-all: article beamer readme
+all: adenc beamer readme
 
 
-article: pre-article.tex
-	@$(call compile,"pre-article.tex","adenc.sty")
+adenc: pre-adenc.tex
+	@$(call compile,"pre-adenc.tex","adenc.sty")
 
 
 beamer: pre-beamer.tex
