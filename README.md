@@ -48,10 +48,6 @@ This document can also be found at [template.tex](https://github.com/AdenChen27/
 
 ```tex
 \documentclass[oneside,reqno,letterpaper]{amsart}
-
-\usepackage{silence} % for suppressing warnings
-\WarningFilter{mdframed}{You have requested package}
-
 \usepackage{adenc}
 % Options: color, plain, hideproofs, hidemarkings, workingpaper
 
