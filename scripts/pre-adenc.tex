@@ -1,0 +1,217 @@
+\ProvidesPackage{adenc}[2024/10/31]
+
+
+% ================================================
+% ================ PACKAGE OPTIONS ===============
+% ================================================
+\newif\ifadenccolor \adenccolorfalse
+\newif\ifadencplain \adencplainfalse
+\newif\ifhideproofs \hideproofsfalse
+\newif\ifhidemarkings \hidemarkingsfalse
+\newif\ifworkingpaper \workingpaperfalse
+
+
+% \usepackage[color]{adenc} to color theorem environments.
+\DeclareOption{color}{\adenccolortrue}
+
+% \usepackage[plain]{adenc} to use the default theorem environments: `definition`, `plain`, and `remark`.
+\DeclareOption{plain}{\adencplaintrue}
+
+% \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
+\DeclareOption{hideproofs}{\hideproofstrue}
+
+% \usepackage[hidemarkings]{adenc} to hide all markings (`\markabove` and `\markbelow`; see below).
+\DeclareOption{hidemarkings}{\hidemarkingstrue}
+
+% \usepackage[workingpaper]{adenc} to get a larger page for the package todonotes
+\DeclareOption{workingpaper}{\workingpapertrue}
+
+\ProcessOptions*
+
+
+
+% ================================================
+% =============== STANDARD PACKAGES ==============
+% ================================================
+\RequirePackage{amsmath, amssymb, amsthm}
+\RequirePackage{mathrsfs}
+
+\RequirePackage{datetime}
+
+\RequirePackage{float}
+\RequirePackage{pdfpages}
+
+
+\RequirePackage{tablefootnote}
+\usepackage{pdfsync}
+\synctex=1
+
+
+% \RequirePackage[margin=1in]{geometry}
+
+% increase pad 3cm to both left and right sides of the page for todonotes
+\ifworkingpaper
+  % \paperwidth=\dimexpr \paperwidth + 6cm\relax
+  \paperwidth=\dimexpr \paperwidth + 3cm\relax
+  % \oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
+  \evensidemargin=\dimexpr\evensidemargin + 3cm\relax
+  \marginparwidth=\dimexpr \marginparwidth + 3cm\relax
+
+  \RequirePackage[firstpageonly=true]{draftwatermark}
+  \SetWatermarkText{\sffamily%
+    Draft \the\year/\twodigit\month/\twodigit\day%
+  }
+  % \today}
+  \SetWatermarkColor{red!50}
+  \SetWatermarkFontSize{20pt}
+  \SetWatermarkAngle{0}
+  \SetWatermarkVerCenter{0.1\paperheight}
+  \SetWatermarkHorCenter{0.5\paperwidth}
+  % \SetWatermarkText{DRAFT}
+  % \SetWatermarkScale{1}
+  % \usepackage[light,first,bottomafter]{draftcopy}
+\fi
+
+
+\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage{siunitx}
+\RequirePackage{enumitem}
+
+
+
+% ================================================
+% ================ HYPERREF STYLES ===============
+% ================================================
+\RequirePackage{hyperref}
+% citecolor: NavyBlue by default; blue if option `plain` used
+\ifadencplain
+  \newcommand{\citecolor}{blue}
+\else
+  \newcommand{\citecolor}{NavyBlue}
+\fi
+
+\hypersetup{
+  bookmarksnumbered=true,
+  colorlinks=true,
+  linkcolor=\citecolor,
+  citecolor=\citecolor,
+  filecolor=\citecolor,
+  menucolor=\citecolor,
+  urlcolor=\citecolor,
+  pdfnewwindow=true,
+}
+
+
+
+% ================================================
+% ================ THEOREM STYLES ================
+% ================================================
+\RequirePackage{thmtools}
+\RequirePackage[framemethod=TikZ]{mdframed}
+
+\input{thm-styles.tex}
+
+
+
+% ================================================
+% ================== REFERENCES ==================
+% ================================================
+% \RequirePackage[natbib=true, backend=biber]{biblatex}
+\RequirePackage{cleveref}
+% \addbibresource{references.bib}
+
+
+
+% ================================================
+% =================== GRAPHICS ===================
+% ================================================
+\RequirePackage{graphicx}
+\RequirePackage{wrapfig}
+\RequirePackage{subcaption}
+\graphicspath{{./images/}}
+
+\RequirePackage{tikz}
+\RequirePackage{xy}
+
+
+
+% ================================================
+% ================ TODO COMMANDS =================
+% ================================================
+\input{marking-commands.tex}
+
+
+% ================================================
+% ============== HIDING ENVIRONMENTS =============
+% ========= (Hiding markings and proofs) =========
+% ================================================
+\RequirePackage{environ}
+\NewEnviron{hide}{}
+% hide proofs if the `hideproofs` option is passed:
+\ifhideproofs
+  \let\proof\hide
+  \let\endproof\endhide
+\fi
+% hide markings if the `hidemarkings` option is passed:
+\ifhidemarkings
+  \renewcommand{\markabove}[2]{}
+  \renewcommand{\markbelow}[2]{}
+\fi
+
+
+% ================================================
+% ================= FONTS/STYLES =================
+% ================================================
+% \usepackage{eulervm}
+% \usepackage{libertine}
+% \usepackage{helvet} % PSNFSS Font, in every TeX distribution
+% \renewcommand{\familydefault}{\sfdefault}
+
+% \usepackage{newtxtext}
+% \usepackage{newtxmath}
+\usepackage{newtxtext}
+\usepackage[varvw]{newtxmath}
+\usepackage{courier}
+
+\RequirePackage[cal=cm]{mathalpha}
+\RequirePackage{framed}
+
+
+% ================================================
+% ================= MISCELLANEOUS ================
+% ================================================
+% blfootnote:
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+
+
+% ================================================
+% ===================== MATH =====================
+% ================================================
+\RequirePackage{amsfonts}
+\RequirePackage{mathtools}
+\RequirePackage{dsfont}
+\RequirePackage{nth}
+\newcommand{\ds}{\displaystyle}
+\input{math-commands.tex}
+
+
+
+% ================================================
+% ===================== CODE =====================
+% ================================================
+\input{code.tex}
+
+
+
+
+
+
+
+
+
