@@ -129,6 +129,22 @@
 
 
 % proof environment style:
-\declaretheoremstyle[headfont=\bfseries, bodyfont=\normalfont, numbered=no, qed=\qedsymbol ]{thmproofbox}
+\declaretheoremstyle[
+  headfont=\bfseries, 
+  notefont = \normalfont\itshape,
+  bodyfont=\normalfont, 
+  numbered=no, 
+  qed=\qedsymbol
+]{thmproofbox}
 \declaretheorem[numbered=no, style=thmproofbox, name=Proof]{replacementproof}
-\renewenvironment{proof}[1][\proofname]{\begin{replacementproof}}{\end{replacementproof}}
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{%
+    \ifx#1\proofname
+        \begin{replacementproof}%
+    \else
+        \begin{replacementproof}[#1]%
+    \fi
+}{\end{replacementproof}}
+\makeatother
+
