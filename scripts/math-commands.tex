@@ -115,7 +115,6 @@
 \newcommand{\iidsim}{\overset{\mathrm{iid}}{\sim}}
 
 \DeclareMathOperator{\Bernoulli}{Bernoulli}
-\DeclareMathOperator{\Bin}{Binomial}
 \DeclareMathOperator{\Binomial}{Binomial}
 \DeclareMathOperator{\Geometric}{Geometric}
 \DeclareMathOperator{\Poisson}{Poisson}
@@ -148,7 +147,9 @@
 % \renewcommand{\underline}[1]{\mkern 1.5mu\oldunderline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
 
 % nicer vector
-\renewcommand{\vec}[1]{\mathbf{#1}}
+\usepackage{bm}
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+% \renewcommand{\vec}[1]{\mathbf{#1}}
 
 
 % matrices
