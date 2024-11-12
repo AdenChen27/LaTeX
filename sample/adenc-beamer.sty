@@ -358,15 +358,32 @@
 
 % \definecolor{todocolor}{rgb}{0.57, 0.36, 0.51}
 \newcommand{\todocolor}{violet!75!red}
-\newcommand\itodo[1]{
+% \newcommand\itodo[1]{
+%   \begin{mdframed}[
+%     innerleftmargin=0pt, 
+%     innerrightmargin=0pt, 
+%     % innerbottommargin=0pt, 
+%     % innertopmargin=0pt, 
+%     backgroundcolor=green!3, linewidth=1pt, linecolor=red
+%   ]
+%     #1
+%   \end{mdframed}
+% }
+\newenvironment{itodo}
+{
   \begin{mdframed}[
     innerleftmargin=0pt, 
     innerrightmargin=0pt, 
-    % innerbottommargin=0pt, 
-    % innertopmargin=0pt, 
-    backgroundcolor=green!3, linewidth=1pt, linecolor=red
+    backgroundcolor=green!3, 
+    linewidth=1pt, 
+    linecolor=red
   ]
-    #1
+  % \begin{mdframed}[
+  %   backgroundcolor=red!1, 
+  %   linewidth=1pt, 
+  %   linecolor=red!80!black
+  % ]
+}{
   \end{mdframed}
 }
 
