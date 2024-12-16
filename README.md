@@ -51,10 +51,8 @@ This document can also be found at [template.tex](https://github.com/AdenChen27/
 \usepackage{adenc}
 % Options: color, plain, hideproofs, hidemarkings, workingpaper
 
-
 \title[]{}
 \author{}
-
 
 \begin{document}
 \maketitle
@@ -62,8 +60,6 @@ This document can also be found at [template.tex](https://github.com/AdenChen27/
 \tableofcontents
 
 \section{}
-
-
 
 
 \end{document}
