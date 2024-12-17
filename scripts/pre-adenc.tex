@@ -1,11 +1,11 @@
-\ProvidesPackage{adenc}[2024/10/31]
+\ProvidesPackage{adenc}[2024/12/17]
 
 
 % ================================================
 % ================ PACKAGE OPTIONS ===============
 % ================================================
 \newif\ifadenccolor \adenccolorfalse
-\newif\ifadencplain \adencplainfalse
+\newif\ifadencplain \adencplaintrue
 \newif\ifhideproofs \hideproofsfalse
 \newif\ifhidemarkings \hidemarkingsfalse
 \newif\ifworkingpaper \workingpaperfalse
@@ -16,6 +16,9 @@
 
 % \usepackage[plain]{adenc} to use the default theorem environments: `definition`, `plain`, and `remark`.
 \DeclareOption{plain}{\adencplaintrue}
+
+% \usepackage[boxed]{adenc} to use the colored theorem environments
+\DeclareOption{boxed}{\adencplainfalse}
 
 % \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
 \DeclareOption{hideproofs}{\hideproofstrue}
