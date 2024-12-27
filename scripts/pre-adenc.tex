@@ -32,7 +32,6 @@
 \ProcessOptions*
 
 
-
 % ================================================
 % =============== STANDARD PACKAGES ==============
 % ================================================
@@ -81,7 +80,6 @@
 \RequirePackage{enumitem}
 
 
-
 % ================================================
 % ================ HYPERREF STYLES ===============
 % ================================================
@@ -105,7 +103,6 @@
 }
 
 
-
 % ================================================
 % ================ THEOREM STYLES ================
 % ================================================
@@ -115,14 +112,12 @@
 \input{thm-styles.tex}
 
 
-
 % ================================================
 % ================== REFERENCES ==================
 % ================================================
 % \RequirePackage[natbib=true, backend=biber]{biblatex}
 \RequirePackage{cleveref}
 % \addbibresource{references.bib}
-
 
 
 % ================================================
@@ -135,7 +130,6 @@
 
 \RequirePackage{tikz}
 \RequirePackage{xy}
-
 
 
 % ================================================
@@ -165,16 +159,18 @@
 % ================================================
 % ================= FONTS/STYLES =================
 % ================================================
-% \usepackage{eulervm}
 % \usepackage{libertine}
 % \usepackage{helvet} % PSNFSS Font, in every TeX distribution
 % \renewcommand{\familydefault}{\sfdefault}
 
 % \usepackage{newtxtext}
 % \usepackage{newtxmath}
-\usepackage{newtxtext}
-\usepackage[varvw]{newtxmath}
-\usepackage{courier}
+
+\RequirePackage{newtxtext}
+\RequirePackage[varvw]{newtxmath}
+\RequirePackage{courier}
+% \usepackage{mathptmx}
+% \usepackage{mathpazo}
 
 \RequirePackage[cal=cm]{mathalpha}
 \RequirePackage{framed}
@@ -195,29 +191,21 @@
 \WarningFilter{mdframed}{You have requested package}
 
 
-
 % ================================================
 % ===================== MATH =====================
 % ================================================
 \RequirePackage{amsfonts}
 \RequirePackage{mathtools}
+
+\newcommand\hmmax{0}
+\newcommand\bmmax{0}
 \RequirePackage{dsfont}
 \RequirePackage{nth}
 \newcommand{\ds}{\displaystyle}
 \input{math-commands.tex}
 
 
-
 % ================================================
 % ===================== CODE =====================
 % ================================================
 \input{code.tex}
-
-
-
-
-
-
-
-
-
