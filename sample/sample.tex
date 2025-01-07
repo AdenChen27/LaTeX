@@ -1,5 +1,5 @@
-\documentclass[10pt,oneside,letterpaper]{amsart}
-\usepackage[workingpaper]{adenc}
+\documentclass[12pt,oneside,letterpaper]{amsart}
+\usepackage[color, boxed, workingpaper]{adenc}
 % options: color, plain, hideproofs, hidemarkings, workingpaper
 
 \title{Sample Document using \texttt{adenc.sty}}
@@ -9,24 +9,21 @@
 \renewcommand{\arraystretch}{1.5}
 \usepackage[table]{xcolor}
 
-
-% \renewcommand{\familydefault}{\sfdefault}
-
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{courier}
 
 \begin{document}
-
 \maketitle
-
 \tableofcontents
 
 Check out the \href{https://github.com/AdenChen27/latex}{Github Repository} for \texttt{adenc.sty}. 
-
 
 \section{Package Options}
 The following package options are supported:
 \begin{itemize}
   \item \verb|color| adds background colors for theorem environments (see \Cref{sec:thm-env}). 
-  \item \verb|plain| uses the default theorem environments (\texttt{definition}, \texttt{plain}, and \texttt{remark}).
+  \item \verb|plain| uses the default theorem environments (\texttt{definition}, \texttt{plain}, and \texttt{remark}); \verb|boxed| adds a box around the theorem environments.
+  You may choose between one of the two (default is \verb|plain|).
   \item \verb|hideproofs| and \verb|hidemarkings| hide, respectively, proof environments and markings generated using the \verb|\markabove| and \verb|\markbelow| commands (see \Cref{sec:marking}). 
   \item \verb|workingpaper| adds (1) a watermark with date on the first page to indicate that the current document is a draft and (2) more space to the margin so that notes written with the \verb|\todo| command (using the \verb|todonotes| package) can fully display. 
 \end{itemize}
@@ -42,51 +39,45 @@ To pass multiple options, use: \verb|\usepackage[Option1, Option2, ...]{adenc}|.
 \begin{definition}
   A definitive \vocab{definition} is a definition, by definition. 
 \end{definition}
-
 \begin{lemma}
   A lamentable lemma. 
 \end{lemma}
-
 \begin{theorem}
   A towering theorem. 
 \end{theorem}
-
 \begin{corollary}
   A cool corollary. 
 \end{corollary}
-
 \begin{remark}
   A remarkable remark. 
 \end{remark}
-
 \begin{example}
   An exemplary example. 
 \end{example}
-
 \begin{problem}
   A problematic problem. 
 \end{problem}
-
 \begin{proof}
   A precise proof.
 \end{proof}
 
 Numbering can be turned off by using the corresponding \verb|*| versions of the environments (e.g. \verb|theorem*| instead of \verb|theorem|). 
 
+
 \section{Marking the Document}
 \label{sec:marking}
 The \verb|\todo| command in the \verb|todonotes| package is a great way to add notes to a document, but among other things, it does not support display style math and, when used frequently, the places to which they point can\todo{E.g., this points to the word ``can.'' } be hard\todo{And this to ``hard.'' } to decipher. 
 It is for these reasons that the following commands are introduced:
 \begin{enumerate}[label=(\alph*)]
-  \item \verb|\itodo| (\underline{i}nline \underline{todo}) produces an inline block of notes. 
+  \item \verb|\begin{itodo} ... \end{itodo}| (\underline{i}nline \underline{todo}) produces an inline block of notes. 
     This can be used as placeholders for contents to be added later. 
-    \itodo{
-      This is an example of what notes produced by the \texttt{\textbackslash itodo} command looks like. 
-        Unlike the \texttt{\textbackslash todo} command, \texttt{\textbackslash itodo} supports display math:
+    \begin{itodo}
+      This is an example of what notes produced by the \texttt{itodo} environment looks like. 
+        Unlike the \texttt{\textbackslash todo} command, the \texttt{itodo} environment supports display math:
       \[
         \sum_{n=1}^{\infty} a_n z^n . 
       \] 
-    }
+    \end{itodo}
   \item \verb|\markabove| and \verb|\markbelow| provide a way to mark texts without altering the spacing. 
   Both commands take two arguments: (1) align method (\verb|l|, \verb|c|, or \verb|r|); and (2) text to display. 
   For example, 
@@ -112,8 +103,6 @@ Test test test\markabove{c}{above!} test\markbelow{r}{math! \(\alpha\)}.
 \end{verbatim}
 
 
-
-
 \section{New Commands}
 Some commands (mainly for math symbols) are added or modified for aesthetics and/or convenience.
 A few notable ones are mentioned below:
@@ -123,7 +112,7 @@ A few notable ones are mentioned below:
 \begin{tabular}{ p{.5\linewidth} l l } 
   \textbf{Description}  & \textbf{Example} & \textbf{LaTeX Commands} \\ 
   \hline
-  Command for styling new vocabulary\footnote{in, for example, definitions}
+  Command for styling new vocabulary\footnotemark
     & \vocab{vocab}
     & \verb|\vocab{vocab}| \\ 
   Contradiction symbol
@@ -157,38 +146,21 @@ A few notable ones are mentioned below:
   Differentiation operators
     & \(\d x, \D f\)
     & \verb|\d x, \D f|\\
-  (Use \verb|\dd| in integrals for extra spacing. )
+  (Use \verb|\dd| in integrals for correct spacing.)
     & \(\ds \int f \dd x\)
     & \verb|\int f \dd x| \\ 
   Imaginary number
     & \(\I\) 
     & \verb|\I| \\ 
+  The indicator function
+    & \(\ind\)
+    & \verb|\ind| \\
+  Independent
+    & \(\indep\)
+    & \verb|\indep|
 \end{tabular}
 \end{table}
-
-% \begin{itemize}
-%   \item A vocab command for styling new vocabulary (in, for example, definitions): \vocab{the vocab command} (\verb|\vocab{the vocab command}|). 
-%   \item A contradiction symbol: \(\contradiction\) (\verb|\contradiction|). 
-%   \item Short cuts for \verb|\mathbb|, \verb|\mathcal|, and \verb|\mathscr|:
-%     \begin{itemize}
-%       \item \verb|\cX| produces \verb|\mathbb{X}|, 
-%       \item \verb|\cX| produces \verb|\mathcal{X}|, 
-%       \item \verb|\sX| produces \verb|\mathscr{X}|. 
-%     \end{itemize}
-%     E.g. \(\RR\) (\verb|\RR|), \(\cT\) (\verb|\cT|), \(\sK\) (\verb|\sK|). 
-%     Note that these shortcuts are not available for all letters. 
-%   % \item A better looking mod: \(x \equiv y \mod 3\) (\verb|x \equiv y \mod 3|). 
-%   \item A better looking complement symbol: \(A^\complement\) (\verb|A^\complement|).
-%   \item A better empty set symbol: \(\emptyset\) (\verb|\emptyset|). 
-%   \item A command for vectors: \(\vec{v}\) (\verb|\vec{v}|).
-%   \item Short cuts for matrices: \[
-%     \bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}
-%   \]
-%   (\verb|\bmat{1 & 2 \\ 3 & 4}, \pmat{1 & 2 \\ 3 & 4}, \vmat{1 & 2 \\ 3 & 4}|). 
-%   \item Differentiation operator: \(\d x\) (\verb|\d x|).
-%   \item Imaginary number: \(\I\) (\verb|\I|).
-% \end{itemize}
-
+\footnotetext{In, for example, definitions.}
 
 
 \section{Credits}
@@ -202,18 +174,4 @@ I have stolen a lot of stuff from below:
   \item \url{https://math.stackexchange.com/questions/160039/are-there-any-symbols-for-contradictions} 
 \end{itemize}
 
-
-
-
-
-
-
-
-
 \end{document}
-
-
-
-
-
-
