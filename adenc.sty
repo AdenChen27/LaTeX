@@ -104,6 +104,14 @@
 
 
 % ================================================
+% ================== REFERENCES ==================
+% ================================================
+% \RequirePackage[natbib=true, backend=biber]{biblatex}
+\RequirePackage{cleveref}
+% \addbibresource{references.bib}
+
+
+% ================================================
 % ================ THEOREM STYLES ================
 % ================================================
 \RequirePackage{thmtools}
@@ -223,6 +231,8 @@
 \declaretheorem[style = remark, name = Remark, numbered=no]{remark*}
 \declaretheorem[style = remark, name = Note, sibling=theorem]{note}
 \declaretheorem[style = remark, name = Note, numbered=no]{note*}
+\declaretheorem[style = remark, name = Assumption, sibling=theorem]{assumption}
+\declaretheorem[style = remark, name = Assumption, numbered=no]{assumption*}
 \declaretheorem[style = remark, name = Intuition, sibling=theorem]{intuition}
 \declaretheorem[style = remark, name = Intuition, numbered=no]{intuition*}
 \declaretheorem[style = remark, name = Properties, sibling=theorem]{properties}
@@ -240,6 +250,10 @@
 \declaretheorem[style = \probboxStyle, name = Problem, numbered = no]{problem*}
 \declaretheorem[style = \probboxStyle, name = Question, sibling = theorem]{question}
 \declaretheorem[style = \probboxStyle, name = Question, numbered = no]{question*}
+
+% for cref:
+\crefname{assumption}{Assumption}{Assumptions}
+\Crefname{assumption}{Assumption}{Assumptions}
 
 
 % proof environment style:
@@ -263,14 +277,6 @@
 \makeatother
 
  
-
-% ================================================
-% ================== REFERENCES ==================
-% ================================================
-% \RequirePackage[natbib=true, backend=biber]{biblatex}
-\RequirePackage{cleveref}
-% \addbibresource{references.bib}
-
 
 % ================================================
 % =================== GRAPHICS ===================
@@ -535,10 +541,10 @@
 \DeclareMathOperator{\Bias}{Bias}
 
 \DeclareMathOperator{\disteq}{\stackrel{\mathscr{D}}{=}}
-% \DeclareMathOperator{\distto}{\xrightarrow{\mathscr{D}}}
-% \DeclareMathOperator{\longdistto}{\xrightarrow{\ \mathscr{D}\ }}
-\DeclareMathOperator{\distto}{\to_{\mathrm{d}}}
-\DeclareMathOperator{\longdistto}{\longrightarrow_{\mathrm{d}}}
+\DeclareMathOperator{\distto}{\xrightarrow{\mathscr{D}}}
+\DeclareMathOperator{\longdistto}{\xrightarrow{\ \mathscr{D}\ }}
+% \DeclareMathOperator{\distto}{\to_{\mathrm{d}}}
+% \DeclareMathOperator{\longdistto}{\longrightarrow_{\mathrm{d}}}
 \DeclareMathOperator{\probto}{\to_{\mathrm{p}}}
 \DeclareMathOperator{\longprobto}{\longrightarrow_{\mathrm{p}}}
 % \DeclareMathOperator{\longprobto}{\xrightarrow{\ p\ }}
