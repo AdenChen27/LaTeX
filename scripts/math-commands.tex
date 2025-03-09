@@ -133,10 +133,16 @@
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\RREF}{RREF}
-\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\Span}{span}
 
-\newcommand*{\tran}{\intercal}
+% \newcommand*{\tran}{\intercal}
+\newcommand\T{{\mathpalette\raiseT\intercal}}
+\newcommand\raiseT[2]{\raisebox{0.25ex}{$#1#2$}}
+% \newcommand*{\tran}{\text{T}}
+\newcommand*{\tran}{\T}
+
+
 
 \newcommand\spanset[1]{\ensuremath\Span\left(#1\right)}
 % % nicer \overline
@@ -184,6 +190,9 @@
 
 % ========== Measure Theory ==========
 \newcommand{\essran}{\mathrm{ess\ ran}\ }
+
+% ========== Algebra ==========
+\DeclareMathOperator{\GL}{GL}
 
 % ========== ECONOMICS ==========
 % ========== Econometrics ==========
