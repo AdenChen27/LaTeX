@@ -29,15 +29,15 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
-% Swap the definition of \abs* and \norm*, so that \abs 
-% and \norm resizes the size of the brackets, and the
-% starred version does not.
-\makeatletter
-\let\oldabs\abs
-\def\abs{\@ifstar{\oldabs}{\oldabs*}}
-\let\oldnorm\norm
-\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
-\makeatother
+% % Swap the definition of \abs* and \norm*, so that \abs 
+% % and \norm resizes the size of the brackets, and the
+% % starred version does not.
+% \makeatletter
+% \let\oldabs\abs
+% \def\abs{\@ifstar{\oldabs}{\oldabs*}}
+% \let\oldnorm\norm
+% \def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+% \makeatother
 
 % === shotcuts for mathbb, mathcal, and mathscr ===
 \newcommand{\NN}{\mathbb{N}}
@@ -87,6 +87,7 @@
 \newcommand{\dom}{\mathcal{D}}
 % indicator function
 \providecommand{\ind}{\ensuremath{\mathds{1}}}
+% \providecommand{\ind}{\mathbbm{1}}
 
 % ========== Point Set Topology ==========
 \DeclareMathOperator{\Int}{Int}
@@ -96,6 +97,7 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\sd}{sd}
 \DeclareMathOperator{\se}{se}
+\DeclareMathOperator{\plim}{plim}
 \DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\Corr}{Corr}
 \renewcommand{\Pr}{\mathbb{P}}
@@ -104,13 +106,13 @@
 \DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\Bias}{Bias}
 
-\DeclareMathOperator{\disteq}{\stackrel{\mathscr{D}}{=}}
-\DeclareMathOperator{\distto}{\xrightarrow{\mathscr{D}}}
-\DeclareMathOperator{\longdistto}{\xrightarrow{\ \mathscr{D}\ }}
+\DeclareMathOperator{\disteq}{\stackrel{\mathrm{d}}{=}}
+\DeclareMathOperator{\distto}{\xrightarrow{\mathrm{d}}}
+\DeclareMathOperator{\longdistto}{\xrightarrow{\ \mathrm{d}\ }}
 % \DeclareMathOperator{\distto}{\to_{\mathrm{d}}}
 % \DeclareMathOperator{\longdistto}{\longrightarrow_{\mathrm{d}}}
-\DeclareMathOperator{\probto}{\to_{\mathrm{p}}}
-\DeclareMathOperator{\longprobto}{\longrightarrow_{\mathrm{p}}}
+\DeclareMathOperator{\probto}{\xrightarrow{\mathrm{p}}}
+\DeclareMathOperator{\longprobto}{\xrightarrow{\ \mathrm{p}\ }}
 % \DeclareMathOperator{\longprobto}{\xrightarrow{\ p\ }}
 
 \newcommand{\iidsim}{\overset{\mathrm{iid}}{\sim}}
