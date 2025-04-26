@@ -226,6 +226,7 @@
 
 \newcommand{\sK}{\mathscr{K}}
 \newcommand{\sL}{\mathscr{L}}
+\newcommand{\sR}{\mathscr{R}}
 \newcommand{\sT}{\mathscr{T}}
 \newcommand{\sU}{\mathscr{U}}
 \newcommand{\sV}{\mathscr{V}}
@@ -251,16 +252,18 @@
 \DeclareMathOperator{\Int}{Int}
 
 % ========== Probability ==========
-\DeclareMathOperator{\var}{var}
-\DeclareMathOperator{\Var}{Var}
+% \DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\Var}{\mathds{V}}
 \DeclareMathOperator{\sd}{sd}
 \DeclareMathOperator{\se}{se}
-\DeclareMathOperator{\plim}{plim}
+\DeclareMathOperator*{\plim}{plim}
 \DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\Corr}{Corr}
-\renewcommand{\Pr}{\mathbb{P}}
-\renewcommand{\P}{\mathbb{P}}
-\DeclareMathOperator{\E}{E}
+\renewcommand{\Pr}{\mathds{P}}
+\renewcommand{\P}{\mathds{P}}
+% \DeclareMathOperator{\E}{E}
+% \usepackage{bbm}
+\newcommand{\E}{\mathds{E}}
 \DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\Bias}{Bias}
 
