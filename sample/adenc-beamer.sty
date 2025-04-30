@@ -257,7 +257,7 @@
 \DeclareMathOperator{\sd}{sd}
 \DeclareMathOperator{\se}{se}
 \DeclareMathOperator*{\plim}{plim}
-\DeclareMathOperator{\Cov}{Cov}
+\newcommand{\Cov}{\mathds{C}}
 \DeclareMathOperator{\Corr}{Corr}
 \renewcommand{\Pr}{\mathds{P}}
 \renewcommand{\P}{\mathds{P}}
@@ -372,55 +372,39 @@
 % ================================================
 \RequirePackage{todonotes}
 \RequirePackage{comment}
-
-% \definecolor{todocolor}{rgb}{0.57, 0.36, 0.51}
-\newcommand{\todocolor}{violet!75!red}
-% \newcommand\itodo[1]{
-%   \begin{mdframed}[
-%     innerleftmargin=0pt, 
-%     innerrightmargin=0pt, 
-%     % innerbottommargin=0pt, 
-%     % innertopmargin=0pt, 
-%     backgroundcolor=green!3, linewidth=1pt, linecolor=red
-%   ]
-%     #1
-%   \end{mdframed}
-% }
-\newenvironment{itodo}
-{
+\newenvironment{nomarginbox}[2]{%
   \begin{mdframed}[
-    innerleftmargin=0pt, 
-    innerrightmargin=0pt, 
-    backgroundcolor=green!3, 
-    linewidth=1pt, 
-    linecolor=red
+    innerleftmargin=0pt,
+    innerrightmargin=0pt,
+    innertopmargin=0pt,
+    innerbottommargin=0pt,
+    skipabove=0pt,
+    skipbelow=0pt,
+    backgroundcolor=#1,
+    linecolor=#2,
+    linewidth=1pt
   ]
-  % \begin{mdframed}[
-  %   backgroundcolor=red!1, 
-  %   linewidth=1pt, 
-  %   linecolor=red!80!black
-  % ]
-}{
+}{%
   \end{mdframed}
 }
+
+\newcommand{\todocolor}{violet!75!red}
+
+% \itodo and environments correction and lessimportant
+\newenvironment{itodo}
+  {\begin{nomarginbox}{green!3}{red}}
+  {\end{nomarginbox}}
 
 \newenvironment{correction}
-{
-  \begin{mdframed}[
-    backgroundcolor=red!1, 
-    linewidth=1pt, 
-    linecolor=red!80!black
-  ]
-  \color{red!80!black}
-}{
-  \end{mdframed}
-}
+  {\begin{nomarginbox}{red!1}{red!80!black}\color{red!80!black}}
+  {\end{nomarginbox}}
 
 \newenvironment{lessimportant}%
   {\begingroup\small\color{gray}}%
   {\endgroup}
 
 
+% \markabove and \markbelow
 \usetikzlibrary{arrows.meta}
 \newcommand{\uppertip}{
   \tikz[anchor=base, baseline]{
