@@ -223,8 +223,12 @@
 \declaretheorem[style = \defboxStyle, name = Definition, sibling = theorem]{definition}
 \declaretheorem[style = \defboxStyle, name = Definition, numbered = no]{definition*}
 
-\declaretheorem[style = \exboxStyle, name = Example, sibling = theorem]{example}
-\declaretheorem[style = \exboxStyle, name = Example, numbered = no]{example*}
+% \declaretheorem[style = \exboxStyle, name = Example, sibling = theorem]{example}
+% \declaretheorem[style = \exboxStyle, name = Example, numbered = no]{example*}
+\newcommand\exqed{\lower.2ex\hbox{\(\triangle\)}}
+\declaretheorem[style = \exboxStyle, name = Example, sibling = theorem, qed = \exqed]{example}
+\declaretheorem[style = \exboxStyle, name = Example, numbered = no, qed = \exqed]{example*}
+
 
 % or use \noteboxStyle
 \declaretheorem[style = remark, name = Remark, sibling=theorem]{remark}
@@ -464,14 +468,22 @@
 % \makeatother
 
 % === shotcuts for mathbb, mathcal, and mathscr ===
-\newcommand{\NN}{\mathbb{N}}
-\newcommand{\ZZ}{\mathbb{Z}}
-\newcommand{\QQ}{\mathbb{Q}}
-\newcommand{\RR}{\mathbb{R}}
-\newcommand{\CC}{\mathbb{C}}
-\newcommand{\PP}{\mathbb{P}}
-\newcommand{\FF}{\mathbb{F}}
-\newcommand{\bS}{\mathbb{S}}
+\newcommand{\NN}{\mathds{N}}
+\newcommand{\ZZ}{\mathds{Z}}
+\newcommand{\QQ}{\mathds{Q}}
+\newcommand{\RR}{\mathds{R}}
+\newcommand{\CC}{\mathds{C}}
+\newcommand{\PP}{\mathds{P}}
+\newcommand{\FF}{\mathds{F}}
+
+\newcommand{\bN}{\mathds{N}}
+\newcommand{\bZ}{\mathds{Z}}
+\newcommand{\bQ}{\mathds{Q}}
+\newcommand{\bR}{\mathds{R}}
+\newcommand{\bC}{\mathds{C}}
+\newcommand{\bP}{\mathds{P}}
+\newcommand{\bF}{\mathds{F}}
+\newcommand{\bS}{\mathds{S}}
 % === expanding \cX to \mathcal{X} for any capital letter X ===
 \RequirePackage{xparse}
 \RequirePackage{expl3}
@@ -496,6 +508,8 @@
 \newcommand{\sT}{\mathscr{T}}
 \newcommand{\sU}{\mathscr{U}}
 \newcommand{\sV}{\mathscr{V}}
+
+\newcommand{\fM}{\mathfrak{M}}
 
 % ==================== MATH, BY AREA ====================
 \DeclareMathOperator*{\argmax}{arg\,max}

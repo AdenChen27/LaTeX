@@ -104,8 +104,12 @@
 \declaretheorem[style = \defboxStyle, name = Definition, sibling = theorem]{definition}
 \declaretheorem[style = \defboxStyle, name = Definition, numbered = no]{definition*}
 
-\declaretheorem[style = \exboxStyle, name = Example, sibling = theorem]{example}
-\declaretheorem[style = \exboxStyle, name = Example, numbered = no]{example*}
+% \declaretheorem[style = \exboxStyle, name = Example, sibling = theorem]{example}
+% \declaretheorem[style = \exboxStyle, name = Example, numbered = no]{example*}
+\newcommand\exqed{\lower.2ex\hbox{\(\triangle\)}}
+\declaretheorem[style = \exboxStyle, name = Example, sibling = theorem, qed = \exqed]{example}
+\declaretheorem[style = \exboxStyle, name = Example, numbered = no, qed = \exqed]{example*}
+
 
 % or use \noteboxStyle
 \declaretheorem[style = remark, name = Remark, sibling=theorem]{remark}
