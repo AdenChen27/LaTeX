@@ -74,19 +74,27 @@
   \getCompactThmboxStyle{probbox}{mdprobbox}{black}{white}
 \fi
 
-% if option `plain` passed, use default styles: `plain`, `definition`, and `remark`
+% If option `plain` passed:
+% - use default styles: `plain`, `definition`, and `remark`
+% - add end-of-remark/example symbol
 \ifadencplain
   \newcommand{\thmboxStyle}{plain}
   \newcommand{\defboxStyle}{definition}
   \newcommand{\exboxStyle}{remark}
   \newcommand{\noteboxStyle}{remark}
   \newcommand{\probboxStyle}{remark}
+  % End symbols for example and remark
+  \newcommand\remqed{\(\diamond\)}
+  \newcommand\exqed{\(\triangleleft\)}
 \else
   \newcommand{\thmboxStyle}{thmbox}
   \newcommand{\defboxStyle}{defbox}
   \newcommand{\exboxStyle}{exbox}
   \newcommand{\noteboxStyle}{notebox}
   \newcommand{\probboxStyle}{probbox}
+  % No end symbols for example and remark
+  \newcommand\remqed{}
+  \newcommand\exqed{}
 \fi
 
 \declaretheorem[style = \thmboxStyle, name = Theorem, numberwithin = section]{theorem}
@@ -104,16 +112,13 @@
 \declaretheorem[style = \defboxStyle, name = Definition, sibling = theorem]{definition}
 \declaretheorem[style = \defboxStyle, name = Definition, numbered = no]{definition*}
 
-% \declaretheorem[style = \exboxStyle, name = Example, sibling = theorem]{example}
-% \declaretheorem[style = \exboxStyle, name = Example, numbered = no]{example*}
-\newcommand\exqed{\lower.2ex\hbox{\(\triangle\)}}
 \declaretheorem[style = \exboxStyle, name = Example, sibling = theorem, qed = \exqed]{example}
 \declaretheorem[style = \exboxStyle, name = Example, numbered = no, qed = \exqed]{example*}
 
 
 % or use \noteboxStyle
-\declaretheorem[style = remark, name = Remark, sibling=theorem]{remark}
-\declaretheorem[style = remark, name = Remark, numbered=no]{remark*}
+\declaretheorem[style = remark, name = Remark, sibling = theorem, qed = \remqed]{remark}
+\declaretheorem[style = remark, name = Remark, numbered = no, qed = \remqed]{remark*}
 \declaretheorem[style = remark, name = Note, sibling=theorem]{note}
 \declaretheorem[style = remark, name = Note, numbered=no]{note*}
 \declaretheorem[style = remark, name = Assumption, sibling=theorem]{assumption}
@@ -137,8 +142,8 @@
 \declaretheorem[style = \probboxStyle, name = Question, numbered = no]{question*}
 
 % for cref:
-\crefname{assumption}{Assumption}{Assumptions}
-\Crefname{assumption}{Assumption}{Assumptions}
+% \crefname{assumption}{Assumption}{Assumptions}
+% \Crefname{assumption}{Assumption}{Assumptions}
 
 
 % proof environment style:
