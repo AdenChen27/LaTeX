@@ -1,4 +1,4 @@
-\ProvidesPackage{adenc}[2025/01/06]
+\ProvidesPackage{adenc}[2025/05/06]
 
 
 % ================================================
@@ -9,6 +9,7 @@
 \newif\ifhideproofs \hideproofsfalse
 \newif\ifhidemarkings \hidemarkingsfalse
 \newif\ifworkingpaper \workingpaperfalse
+\newif\iffancyqed \fancyqedfalse
 
 
 % \usepackage[color]{adenc} to color theorem environments.
@@ -28,6 +29,9 @@
 
 % \usepackage[workingpaper]{adenc} to get a larger page for the package todonotes
 \DeclareOption{workingpaper}{\workingpapertrue}
+
+% \usepackage[fancyqed]{adenc} to use the fancy qed (and other end-of-environment) symbols
+\DeclareOption{fancyqed}{\fancyqedtrue}
 
 \ProcessOptions*
 
@@ -187,6 +191,8 @@
   \endgroup
 }
 
+\newcommand{\ds}{\displaystyle}
+
 \RequirePackage{silence} % for suppressing warnings
 \WarningFilter{mdframed}{You have requested package}
 
@@ -200,9 +206,9 @@
 \newcommand\hmmax{0}
 \newcommand\bmmax{0}
 \RequirePackage{dsfont}
+\usepackage{marvosym}
 % \RequirePackage{bbm}
 \RequirePackage{nth}
-\newcommand{\ds}{\displaystyle}
 \input{math-commands.tex}
 
 

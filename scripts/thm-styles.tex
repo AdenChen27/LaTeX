@@ -84,8 +84,13 @@
   \newcommand{\noteboxStyle}{remark}
   \newcommand{\probboxStyle}{remark}
   % End symbols for example and remark
-  \newcommand\remqed{\(\diamond\)}
-  \newcommand\exqed{\(\triangleleft\)}
+  \iffancyqed
+    \newcommand\remqed{\Telefon}
+    \newcommand\exqed{\Faxmachine}
+  \else
+    \newcommand\remqed{\(\diamond\)}
+    \newcommand\exqed{\(\triangleleft\)}
+  \fi
 \else
   \newcommand{\thmboxStyle}{thmbox}
   \newcommand{\defboxStyle}{defbox}
@@ -96,6 +101,14 @@
   \newcommand\remqed{}
   \newcommand\exqed{}
 \fi
+
+% If option `fancy` passed:
+\iffancyqed
+  \newcommand\proofqedsymbol{\Coffeecup}
+\else
+  \newcommand\proofqedsymbol{\qedsymbol}
+\fi
+
 
 \declaretheorem[style = \thmboxStyle, name = Theorem, numberwithin = section]{theorem}
 \declaretheorem[style = \thmboxStyle, name = Theorem, numbered = no]{theorem*}
@@ -152,7 +165,7 @@
   notefont = \normalfont\itshape,
   bodyfont=\normalfont, 
   numbered=no, 
-  qed=\qedsymbol
+  qed=\proofqedsymbol
 ]{thmproofbox}
 \declaretheorem[numbered=no, style=thmproofbox, name=Proof]{replacementproof}
 

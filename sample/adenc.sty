@@ -1,4 +1,4 @@
-\ProvidesPackage{adenc}[2025/01/06]
+\ProvidesPackage{adenc}[2025/05/06]
 
 
 % ================================================
@@ -9,6 +9,7 @@
 \newif\ifhideproofs \hideproofsfalse
 \newif\ifhidemarkings \hidemarkingsfalse
 \newif\ifworkingpaper \workingpaperfalse
+\newif\iffancyqed \fancyqedfalse
 
 
 % \usepackage[color]{adenc} to color theorem environments.
@@ -28,6 +29,9 @@
 
 % \usepackage[workingpaper]{adenc} to get a larger page for the package todonotes
 \DeclareOption{workingpaper}{\workingpapertrue}
+
+% \usepackage[fancyqed]{adenc} to use the fancy qed (and other end-of-environment) symbols
+\DeclareOption{fancyqed}{\fancyqedtrue}
 
 \ProcessOptions*
 
@@ -203,8 +207,13 @@
   \newcommand{\noteboxStyle}{remark}
   \newcommand{\probboxStyle}{remark}
   % End symbols for example and remark
-  \newcommand\remqed{\(\diamond\)}
-  \newcommand\exqed{\(\triangleleft\)}
+  \iffancyqed
+    \newcommand\remqed{\Telefon}
+    \newcommand\exqed{\Faxmachine}
+  \else
+    \newcommand\remqed{\(\diamond\)}
+    \newcommand\exqed{\(\triangleleft\)}
+  \fi
 \else
   \newcommand{\thmboxStyle}{thmbox}
   \newcommand{\defboxStyle}{defbox}
@@ -215,6 +224,14 @@
   \newcommand\remqed{}
   \newcommand\exqed{}
 \fi
+
+% If option `fancy` passed:
+\iffancyqed
+  \newcommand\proofqedsymbol{\Coffeecup}
+\else
+  \newcommand\proofqedsymbol{\qedsymbol}
+\fi
+
 
 \declaretheorem[style = \thmboxStyle, name = Theorem, numberwithin = section]{theorem}
 \declaretheorem[style = \thmboxStyle, name = Theorem, numbered = no]{theorem*}
@@ -271,7 +288,7 @@
   notefont = \normalfont\itshape,
   bodyfont=\normalfont, 
   numbered=no, 
-  qed=\qedsymbol
+  qed=\proofqedsymbol
 ]{thmproofbox}
 \declaretheorem[numbered=no, style=thmproofbox, name=Proof]{replacementproof}
 
@@ -415,6 +432,8 @@
   \endgroup
 }
 
+\newcommand{\ds}{\displaystyle}
+
 \RequirePackage{silence} % for suppressing warnings
 \WarningFilter{mdframed}{You have requested package}
 
@@ -428,9 +447,9 @@
 \newcommand\hmmax{0}
 \newcommand\bmmax{0}
 \RequirePackage{dsfont}
+\usepackage{marvosym}
 % \RequirePackage{bbm}
 \RequirePackage{nth}
-\newcommand{\ds}{\displaystyle}
 % ========== GENERAL MATH COMMANDS ==========
 % vocab:
 \newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
