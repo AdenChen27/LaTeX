@@ -85,8 +85,8 @@
   \newcommand{\probboxStyle}{remark}
   % End symbols for example and remark
   \iffancyqed
-    \newcommand\remqed{\Telefon}
-    \newcommand\exqed{\Faxmachine}
+    \newcommand\remqed{\Coffeecup}
+    \newcommand\exqed{\Faxmachine} % \Telefon
   \else
     \newcommand\remqed{\(\diamond\)}
     \newcommand\exqed{\(\triangleleft\)}
@@ -102,12 +102,13 @@
   \newcommand\exqed{}
 \fi
 
-% If option `fancy` passed:
-\iffancyqed
-  \newcommand\proofqedsymbol{\Coffeecup}
-\else
-  \newcommand\proofqedsymbol{\qedsymbol}
-\fi
+% % If option `fancy` passed:
+% \iffancyqed
+%   \newcommand\proofqedsymbol{\Coffeecup}
+% \else
+%   \newcommand\proofqedsymbol{\qedsymbol}
+% \fi
+\newcommand\proofqedsymbol{\qedsymbol}
 
 
 \declaretheorem[style = \thmboxStyle, name = Theorem, numberwithin = section]{theorem}
