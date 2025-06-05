@@ -17,23 +17,6 @@
     style = ThmBoxBaseStyle, 
     linecolor = #3,
     backgroundcolor = #4,
-    nobreak = true
-  }
-  \declaretheoremstyle[
-    headfont = \bfseries\color{#3},
-    notefont = \bfseries\color{#3},
-    mdframed = {style = #2},
-    headpunct = {.\\[0.5pt]},
-    postheadspace = {0pt},
-  ]{#1}
-}
-
-% compact box: no line skip after label
-\newcommand{\getCompactThmboxStyle}[4]{
-  \mdfdefinestyle{#2}{
-    style = ThmBoxBaseStyle, 
-    linecolor = #3,
-    backgroundcolor = #4,
     nobreak = true,
     skipabove = 5pt,
     innertopmargin = 3pt,
@@ -48,30 +31,26 @@
   ]{#1}
 }
 
-% colors for theorem environments
+% Colors for theorem environments
 \definecolor{color1}{HTML}{052E66} % blue, thmbox
 \definecolor{color2}{HTML}{8F0A00} % red, defbox
 \definecolor{color3}{HTML}{2B4E2C} % green, exbox
 \definecolor{color4}{HTML}{440793} % purple, notebox
 \definecolor{color5}{HTML}{764506} % orange, probbox
 
-% if no color passed, use black and white
+% If no color passed, use black and white
 \ifadenccolor
-  % \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
-  % \getThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
-  \getCompactThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
-  \getCompactThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
-  \getCompactThmboxStyle{exbox}{mdexbox}{color3}{color3!5}
-  \getCompactThmboxStyle{notebox}{mdnotebox}{color4}{color4!5}
-  \getCompactThmboxStyle{probbox}{mdprobbox}{color5}{color5!5}
+  \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
+  \getThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
+  \getThmboxStyle{exbox}{mdexbox}{color3}{color3!5}
+  \getThmboxStyle{notebox}{mdnotebox}{color4}{color4!5}
+  \getThmboxStyle{probbox}{mdprobbox}{color5}{color5!5}
 \else
-  % \getThmboxStyle{thmbox}{mdthmbox}{black}{white}
-  % \getThmboxStyle{defbox}{mddefbox}{black}{white}
-  \getCompactThmboxStyle{thmbox}{mdthmbox}{black}{white}
-  \getCompactThmboxStyle{defbox}{mddefbox}{black}{white}
-  \getCompactThmboxStyle{exbox}{mdexbox}{black}{white}
-  \getCompactThmboxStyle{notebox}{mdnotebox}{black}{white}
-  \getCompactThmboxStyle{probbox}{mdprobbox}{black}{white}
+  \getThmboxStyle{thmbox}{mdthmbox}{black}{white}
+  \getThmboxStyle{defbox}{mddefbox}{black}{white}
+  \getThmboxStyle{exbox}{mdexbox}{black}{white}
+  \getThmboxStyle{notebox}{mdnotebox}{black}{white}
+  \getThmboxStyle{probbox}{mdprobbox}{black}{white}
 \fi
 
 % If option `plain` passed:
