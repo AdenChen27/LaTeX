@@ -413,7 +413,10 @@
   {\begingroup\small\color{gray}}%
   {\endgroup}
 
-\DeclareRobustCommand{\draftnote}[1]{{\color{red!90!black}[#1]}}
+% \DeclareRobustCommand{\draftnote}[1]{{\color{red!90!black}[#1]}}
+\NewDocumentCommand{\draftnote}{ O{Note} O{red!90!black} m }{%
+  \noindent\textcolor{#2}{[#1: #3]}%
+}
 
 
 % \markabove and \markbelow
