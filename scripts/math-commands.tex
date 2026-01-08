@@ -56,6 +56,7 @@
 \newcommand{\bP}{\mathds{P}}
 \newcommand{\bF}{\mathds{F}}
 \newcommand{\bS}{\mathds{S}}
+\newcommand{\bT}{\mathds{T}}
 % === expanding \cX to \mathcal{X} for any capital letter X ===
 \RequirePackage{xparse}
 \RequirePackage{expl3}
@@ -72,10 +73,13 @@
 \newcommand{\sC}{\mathscr{C}}
 \newcommand{\sD}{\mathscr{D}}
 \newcommand{\sE}{\mathscr{E}}
+\newcommand{\sF}{\mathscr{F}}
 \newcommand{\sS}{\mathscr{S}}
 
 \newcommand{\sK}{\mathscr{K}}
 \newcommand{\sL}{\mathscr{L}}
+\newcommand{\sM}{\mathscr{M}}
+\newcommand{\sP}{\mathscr{P}}
 \newcommand{\sR}{\mathscr{R}}
 \newcommand{\sT}{\mathscr{T}}
 \newcommand{\sU}{\mathscr{U}}
@@ -181,7 +185,8 @@
 % ========== Analysis ==========
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
-\newcommand*{\I}{\mathrm{i}}
+\newcommand*{\I}{\mathrm{i}} % deprecated
+\newcommand*{\im}{\mathrm{i}}
 
 \renewcommand{\d}{\mathrm{d}}
 \newcommand{\dd}{\ \mathrm{d}}
@@ -199,12 +204,15 @@
 
 \DeclareMathOperator{\supp}{supp}
 
+\DeclareMathOperator{\Lip}{Lip}
+
 % ========== Spectral Theory ==========
 \DeclareMathOperator{\res}{res}
 \DeclareMathOperator{\spec}{spec}
 
 % ========== Measure Theory ==========
 \newcommand{\essran}{\mathrm{ess\ ran}\ }
+\newcommand{\weakto}{\rightharpoonup}
 
 % ========== Algebra ==========
 \DeclareMathOperator{\GL}{GL}
@@ -214,5 +222,7 @@
 \DeclareMathOperator{\SST}{SST}
 \DeclareMathOperator{\SSE}{SSE}
 \DeclareMathOperator{\SSR}{SSR}
+\DeclareMathOperator{\AR}{AR}
+\DeclareMathOperator{\MA}{MA}
 \newcommand{\indep}{\perp \!\!\! \perp}
 
