@@ -1,0 +1,95 @@
+\documentclass[10pt]{article}
+\usepackage[color, fancyqed, boxed]{/Users/aden/Library/CloudStorage/Box-Box/latex/adenc}
+
+\usepackage{lipsum}
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{theorems}
+
+% Base style
+\tcbset{
+  ThmBoxBaseStyle/.style={
+    breakable,
+    boxrule=1pt,
+    colframe=black,      % black border
+    % colback=white,       % white background (use colback=none for transparent)
+    % fontupper=\color{black},  % black text
+    top=0.25em,
+    bottom=0.5em,
+    left=0.75em,
+    right=0.75em,
+    arc=3pt,
+    before skip=0.5em,
+    after skip=0.5em,
+    borderline north={0.5pt}{0pt}{black},
+    borderline south={0.5pt}{0pt}{black}
+  }
+}
+
+
+% Theorem style macro
+\newcommand{\getThmboxStyleA}[4]{%
+  \tcbset{%
+    #2/.style={
+      ThmBoxBaseStyle,
+      colframe=#3,
+      colback=#4
+    }
+  }%
+  \declaretheoremstyle[
+    headfont=\bfseries\color{#3},
+    notefont=\bfseries\color{#3},
+    bodyfont=\normalfont,
+    spaceabove=5pt,
+    spacebelow=5pt,
+    headpunct={. },
+    postheadspace=0pt,
+    theoremstyle=tcb,
+    tcbstyle=#2
+  ]{#1}%
+}
+
+% \getThmboxStyleA{thmbox1}{mdthmbox1}{color1}{color1!5}
+% \newcommand{\thmboxStyleA}{thmbox1}
+% \declaretheorem[style = \thmboxStyleA, name = TheoremA, numberwithin = section]{theoremA}
+
+
+\newtcbtheorem[number within=section]{TheoremC}{Theorem}{ThmBoxBaseStyle}{thm}
+% Register with cleveref
+\crefname{thm}{TheoremC}{TheoremCs}
+\Crefname{thm}{TheoremC}{TheoremCs}
+
+
+
+\title{Playground}
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{}
+\lipsum[1]
+
+\begin{TheoremC}{A}{thm:test}
+  \lipsum[2]
+\end{TheoremC}
+\Cref{thm:test}
+
+\begin{example}
+  \lipsum[3]
+\end{example}
+
+\begin{remark}
+  \lipsum[4]
+\end{remark}
+
+\begin{theorem}
+  \lipsum[5-10]
+\end{theorem}
+
+\lipsum[10-20]
+
+
+\end{document}
