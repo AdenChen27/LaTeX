@@ -259,7 +259,16 @@
 \newcommand{\card}[1]{\left|#1\right|}
 \newcommand{\dom}{\mathcal{D}}
 % indicator function
-\providecommand{\ind}{\ensuremath{\mathds{1}}}
+% \providecommand{\ind}{\ensuremath{\mathds{1}}}
+\makeatletter
+\NewDocumentCommand{\ind}{}{%
+  \mathds{1}%
+  \@ifnextchar\bgroup{\ind@witharg}{}%
+}
+\NewDocumentCommand{\ind@witharg}{m}{%
+  \!\left\{\,#1\,\right\}%
+}
+\makeatother
 % \providecommand{\ind}{\mathbbm{1}}
 
 % ========== Point Set Topology ==========
@@ -363,6 +372,9 @@
 \DeclareMathOperator{\supp}{supp}
 
 \DeclareMathOperator{\Lip}{Lip}
+
+% convex hull
+\DeclareMathOperator{\conv}{conv}
 
 % ========== Spectral Theory ==========
 \DeclareMathOperator{\res}{res}
