@@ -1,0 +1,3732 @@
+\documentclass[letterpaper, 10pt]{article}
+\usepackage[fancyqed]{adenc}
+\AddToHook{cmd/section/before}{\clearpage}
+\usepackage{imakeidx}
+\makeindex
+
+\DeclareMathOperator{\TSS}{TSS}
+\DeclareMathOperator{\ESS}{ESS}
+\DeclareMathOperator{\ATE}{ATE}
+\DeclareMathOperator{\ATT}{ATT}
+\DeclareMathOperator{\ATU}{ATU}
+\DeclareMathOperator{\IV}{IV}
+\DeclareMathOperator{\OLS}{OLS}
+\DeclareMathOperator{\OGMM}{OGMM}
+\DeclareMathOperator{\TSLS}{2SLS}
+\DeclareMathOperator{\BLP}{BLP}
+
+\setcounter{tocdepth}{2}
+
+\renewcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath{#1}}\index{#1}}
+
+
+\title{ECON21030 (S25): Econometrics - Honors}
+\author{
+  {Lecturer: Joseph Hardwick} \\
+  {Notes by: Aden Chen}
+}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Probability}
+\begin{definition}
+  A random variable \(X\) is \vocab{absolutely continuous} if there exists a density function \(f_X\) such that
+  \[
+    F_X(x) = \int_{-\infty}^{x} f_X(t) \dd t.
+  \]
+\end{definition}
+\begin{remark}
+  Absolutely continuous distributions assign probability \(0\) to any finite set of points.
+\end{remark}
+
+\subsection{Expectation}
+\begin{proposition}~
+  \begin{itemize}
+    \item \(\E\) is linear.
+    \item If \(X \leq Y\) with probability \(1\), then \(\E X \leq \E Y\).
+  \end{itemize}
+\end{proposition}
+
+\begin{theorem}[Jensen's Inequality]
+  If \(X\) is such that \(\E X\) and \(\E g(X)\) exist and \(g\) is convex, then 
+  \[
+    g(\E X) \leq \E g(X)
+  \] 
+  where the inequality is strict if \(g\) is strictly convex and \(X\) is not constant.
+\end{theorem}
+\begin{proof}
+  From the convexity of \(g\) we know \(g(x) \geq g(y) + g'(y)(x - y)\) for any \(x\) and \(y\). 
+  Setting \(y = \mu \eqqcolon \E X\) gives 
+  \[
+    g(X) \geq g(\mu) + g'(\mu)(X - \mu), \quad \forall x, y . 
+  \] 
+  Taking expectation on both sides gives the desired result. 
+\end{proof}
+\begin{example}
+  Wages are often modeled using a log-normal distribution: \(\log w \sim \Normal(\mu, \sigma^2)\).
+  Then, \(\E \log w = \mu\), but \(\E w = \E(\exp \log w) \geq e^{\mu}\) (the inequality is strict when \(\sigma^2 > 0\)).
+  It turns out that \(\E w = \exp\left( \mu + \sigma^2 / 2 \right)\).
+\end{example}
+
+\begin{proposition}[Properties of Conditional Expectation]~
+  \begin{itemize}
+    \item Linearity.
+    \item (Law of iterated expectation) \(\E(Y) = \E(\E(Y|X))\).
+    \item (Taking out what is known) \(\E(f(X) + g(X) Y | X) = f(X) + g(X) \E(Y|X)\).
+  \end{itemize}
+\end{proposition}
+
+\begin{proposition}[Law of total variance]
+  \[
+    \Var(Y)
+    = \E(\Var(Y|X)) + \Var(\E(Y|X)),
+  \]
+  where
+  \[
+    \Var(Y|X) \coloneqq \E\left\{ [Y - \E(Y|X)]^2 | X \right\} = \E(Y^2|X) - \E(Y|X)^2.
+  \]
+\end{proposition}
+
+\subsection{Mean Independence}
+\begin{definition}
+  \(Y\) is \vocab{mean independent} of \(X\) if \(\E(Y|X) = \E(Y)\).
+\end{definition}
+
+\begin{proposition}
+  \begin{align*}
+    X \text{ is independent of } Y
+    &\implies
+    X \text{ is mean independent of } Y \\
+    &\implies \Cov(X, Y) = 0.
+  \end{align*}
+\end{proposition}
+The second implication follows from the law of iterated expectations:
+\[
+  \Cov(X, Y)
+  = \E(X \E(Y|X)) - \E(X) \E(Y)
+  = \E(X \E(Y)) - \E(X) \E(Y)
+  = 0.
+\]
+The converse of the last implication is not true in general, but true for jointly normal random variables.
+
+
+\subsection{Moments}
+\begin{definition}
+  If \(\E(X^k)\) exists, then
+  \begin{itemize}
+    \item \(\E(X^k)\) is the \vocab{\(k\)-th moment of \(X\)}.
+    \item \(\E[(X - \E X)^k]\) is the \vocab{\(k\)-th central moment of \(X\)}.
+      The case \(k = 2\) gives the variance of \(X\).
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}[Existence of Moments]
+  Suppose \(\E(\abs{X}^k) < \infty\) for some \(k > 0\).
+  Then for \(0 < r < k\), \(\E(\abs{X}^r) < \infty\).
+\end{proposition}
+\begin{proof}
+  First note
+  \[
+    \abs{X}^r \leq \ind_{\abs{X} < 1} + \abs{X}^k \ind_{X} \geq 1.  
+  \]
+  Taking expectation on both sides gives
+  \begin{align*}
+    \E \abs{X}^r
+    &\leq \P(\abs{X} < 1) + \E\left( \abs{X}^k \ind_{\abs{X} \geq 1} \right) \\
+    &\leq \P(\abs{X} < 1) + \E\left( \abs{X}^k \right) < \infty.
+  \end{align*}
+\end{proof}
+
+\begin{remark}
+  Using the binomial theorem, we can then show that the \(k\)-th moment exists if and only if the \(r\)-th central moment exists.
+\end{remark}
+
+
+
+\subsection{Probability Inequalities}
+\begin{theorem}[Chebychev's Inequality]
+  Suppose \(X^r\) is a non-negative integrable random variable for some \(r > 0\).
+  Then for any \(\delta > 0\), we have
+  \[
+    \P(X \geq \delta) \leq \frac{\E(X^r)}{\delta^r}.
+  \]
+\end{theorem}
+\begin{proof}
+  Note that \(X^r \geq \delta^r \ind_{X \geq \delta}\) and take expectations on both sides.
+\end{proof}
+\begin{remark}
+  We can bound the probability that \(X\) is large using its moments.
+  When \(r = 1\), this is called Markov's Inequality.
+\end{remark}
+
+
+\begin{lemma}
+  \(Y = 0\) almost surely if and only if \(\E Y^2 = 0\).
+\end{lemma}
+\begin{proof}
+  If \(\E Y^2 = 0\), then \(Y^2 = 0\) as.
+  Otherwise, suppose \(\P(Y^2 > 0) = \epsilon\) for some \(\epsilon > 0\).
+  Write \(\{Y^2 > 0\} = \bigcup_n \{Y^2 > n^{-1}\}\).
+  We have
+  \[
+    0
+    < \epsilon
+    = \P(Y^2 > 0)
+    \leq \sum_n \P\left( Y^2 > \frac{1}{n} \right),
+  \]
+  where we used Boole's inequality.\footnote{\(\P(\cup A_i) \leq \sum \P(A_i)\).}
+  There thus exists \(N\) such that \(\P(Y^2 > N^{-1}) > 0\).
+  We have
+  \[
+    Y^2 \geq \frac{1}{N} \ind\left( Y^2 > \frac{1}{N} \right)
+  \]
+  and so \(\E(Y^2) \geq N^{-1} \P(Y^2 > N^{-1}) > 0\).
+\end{proof}
+
+\begin{theorem}[Cauchy-Schwarz Inequality]
+  If \(\E(X^2)\) and  \(\E(Y^2)\) exist, then
+  \[
+    \abs{\E(XY)}^2 \leq \E(X^2) \E(Y^2)
+  \]
+  with equality if and only if \(X = aY\) almost surely for some constant \(a\).
+\end{theorem}
+\begin{proof}
+  If \(Y = 0\) as the inequality is trivial.
+  If not, \(\E(Y^2) > 0\) and we can write
+  \begin{align*}
+    0
+    &\leq \frac{\E\left\{ [X \E(Y^2) - Y \E(XY)]^2 \right\}}{\E(Y^2)} \\
+    &\leq \frac{\E(X^2) \E(Y^2) - 2 \E(XY)^2 \E(Y^2) + \E(Y^2) \E(XY)^2}{\E(Y^2)} \\
+    &= \E(X^2) \E(Y^2) - \E(XY).
+  \end{align*}
+  We have equality if and only if \(X \E(Y^2) - Y \E(XY) = 0\) as, which holds if and only if \(X = aY\) as for some constant \(a\).
+\end{proof}
+\begin{corollary}
+  The correlation is bounded between \(-1\) and \(1\), with equality if and only if \(X - \E X = b(Y - \E Y)\) for some constant \(b\), which holds if and only if \(X = a + bY\) for some constants \(a, b\).
+\end{corollary}
+
+\begin{theorem}[Holder's Inequality]
+  If \(X\) and \(Y\) are random variables, then
+  \[
+    \E(\abs{XY}) \leq \E(\abs{X}^p)^{1/p} \E(\abs{Y}^q)^{1/q}
+  \]
+  for any \(p, q > 0\) such that \(1/p + 1/q = 1\).
+\end{theorem}
+
+
+\subsection{Random Vectors}
+\begin{definition}
+  If \(X\) and \(Y\) are random vectors, then
+  \[
+    \Cov(X, Y)
+    \coloneqq \E[(X - \E X) (Y - \E Y)'].
+  \]
+\end{definition}
+
+\begin{proposition}
+  Let \(X\) be a random vector such that \(\Var(X)\) exists.
+  If \(A\) is a constant matrix and \(b\) a constant vector, then
+  \[
+    \Var(AX + b)
+    = A \Var(X) A'.
+  \]
+\end{proposition}
+
+
+\subsection{The Binning Estimator}
+Consider sample \(\{Y_i, X_i\}_{i = 1}^n\) with \(X\) discrete.
+The \vocab{binning estimator} of \(\E(Y|X \in B)\) is
+\[
+  \hat{\mu}(B)
+  = \frac{\sum Y_i \ind(X_i \in B)}{\sum \ind(X_i \in B)}.
+\]
+With continuous \(X\) we may use a moving bin of the form \(x \pm h\).
+For large sample we can use smaller \(h\).
+
+
+\subsection{Conditional Expectation}
+Suppose \(\E X^2 < \infty\) and \(\E Y_i < \infty\) for each \(i\).
+Consider the problem of minimizing
+\[
+  \E(Y - g(X))^2.
+\]
+The solution is the \vocab{best predictor of \(Y\) under square loss}.
+That is,
+\[
+  g^* \in \argmin_{g \in L^2(X)} \E(Y - g(X))^2.
+\]
+Then, \(g^*(X) = \E(Y|X)\).
+\begin{proof}
+  \begin{align*}
+    \E(Y - g(X))^2
+    &= \E[Y - \E(Y|X)]^2 + \E[\E(Y|X) - g(X)]^2 \\
+    &\quad+ 2\E[(Y - \E(Y|X))(\E(Y|X) - g(X))],
+  \end{align*}
+  where the last term is \(0\) by the law of iterated expectation.
+\end{proof}
+
+\section{Linear Regression}
+\begin{proposition}
+  Note that \(\E(XX')\) is always positive semidefinite.
+  Moreover, if it is invertible, then it is positive definite.
+\end{proposition}
+
+\begin{definition}
+  There is \vocab{perfect collinearity} in \(X\) if there exists a constant vector \(a \neq 0\) such that \(a'X = 0\) almost surely.
+\end{definition}
+\begin{example}[Perfect Collinearity]~
+  \begin{itemize}
+    \item Suppose \(X = (X_1, X_2)'\) and \(X_1 = 3X_2\).
+      If we take \(c = (3, -1)'\), then \(c'X = 3X_1 - X_2 = 0\).
+    \item \(X = (X_1, X_1^2)\) is perfect collinear if \(X_1\) is Bernoulli.
+  \end{itemize}
+\end{example}
+
+\begin{proposition}
+  Suppose \(X\) is a \((k \times 1)\) random vector and \(\E(XX')\) exists.
+  Then \(\E(XX')\) is invertible if and only if there is no perfect collinearity in \(X\).
+\end{proposition}
+\begin{proof}
+  If \(X'a = 0\) a.s., then
+  \[
+    \E(XX')a
+    = \E(X(X'a))
+    = \E(X \cdot 0)
+    = 0.
+  \]
+  So \(\E(XX')\) is not full rank and not invertible.
+  If for any \(c \in \RR^k \setminus \{0\}\) we have \(c' X \neq 0\) with positive probability, then
+  \[
+    c' \E(XX') c = \E[(X'c)^2] > 0.
+  \]
+  Thus \(\E(XX')\) is positive definite and in particular invertible.
+\end{proof}
+
+We may restrict \(L^2(X)\) to a smaller subset
+\[
+  H(X) = \{f: f(X) = X'a \text{ for some } a \in \RR^k\}.
+\]
+Then, the \vocab{best linear predictor} of \(Y\) given \(X\) is found by solving
+\[
+  \min_{b \in \RR^k} \E(Y - X' b)^2.
+\]
+Differentiation gives the FOC \(2\E(XX') b^* - 2\E(XY) = 0\).
+Provided \(X_j\) are not perfectly collinear random variables, \(\E(XX')\) is full rank, and so
+\[
+  b^* = \E(XX')^{-1} \E(XY).
+\]
+Define the \vocab{prediction error} or \vocab{residual} to be \(U = Y - X' b^*\).
+We have \(\E(XU) = 0\).
+\begin{proof}
+  \(\E(XU) = \E(XY) - \E(XX') b^* = 0\) by the FOC.
+\end{proof}
+
+Consider next the problem
+\[
+  \min_{b \in \RR^k} \E\left( \E(Y|X) - X'b \right)^2.
+\]
+The solution is the best linear approximation to \(\E(Y|X)\) under square loss.
+Write
+\begin{align*}
+  \E (\E(Y|X) - X'b)^2
+  &= \E(Y - \E(Y|X))^2 + \E(Y - X'b)^2 \\
+  &\quad- 2 \E\left[ (Y - \E(Y|X)) (Y - X'b) \right].
+\end{align*}
+By the law of iterated expectation, we have
+\[
+  \E\left[ (Y - \E(Y|X)) (Y - X'b) \right]
+  = \E(Y(Y - \E(Y|X))).
+\]
+Thus,
+\[
+  \E\left[ (\E(Y|X) - X'b)^2 \right]
+  = \E(Y - X'b)^2 + \text{constant}.
+\]
+
+\begin{remark}
+  Thus, regression can be interpreted as
+  \begin{itemize}
+    \item the best linear predictor of \(Y\) given \(X\), and
+    \item the best linear approximation to \(\E(Y|X)\) under square loss.
+  \end{itemize}
+  Intuition:
+  Write \(Y = \E[Y|X] + U\), where \(\E[U|X] = 0\).
+  Then the projection of \(U\) onto \(X\) is \(0\).
+\end{remark}
+
+
+
+\section{Estimation and Large Sample Theory}
+\subsection{Convergence}
+\begin{definition}
+  A sequence of random variables \(X_n\) \vocab{convergences in probability} to \(X\) (\(X_n \probto X\)) if for each \(\epsilon > 0\) we have
+  \[
+    \P(\abs{X_n - X} > \epsilon) \longrightarrow 0.
+  \]
+\end{definition}
+\begin{example}
+  Let \(X_n = 2^n\) with probability \(1 / n\) and \(0\) otherwise.
+  For arbitrary \(\epsilon > 0\), we have
+  \[
+    \P(\abs{X_n - 0} > \epsilon) \leq \P(X_n = 2^n) = \frac{1}{n} \longrightarrow 0.
+  \]
+\end{example}
+
+\begin{definition}
+  We say \(X_n\) \vocab{converges in \(r\)-th mean} to \(X\) for some \(r > 0\) if
+  \[
+    \E(\abs{X_n - X}^r) \longrightarrow 0.
+  \]
+\end{definition}
+Note that Chebyshev gives \(\P(\abs{X_n - X} > \epsilon) \leq \E(\abs{X_n - X}^r) / \epsilon^r \to 0\) and so:
+\begin{proposition}
+  If \(X_n\) converges in \(r\)-th mean to  \(X\), then \(X_n \probto X\).
+\end{proposition}
+\begin{example}
+  The converse is not true.
+  Consider \(X_n = 2^n\) with probability \(1 / n^2\) and \(0\) otherwise.
+  \(X_n \probto 0\) but any moments of \(X_n\) explodes.
+  The converse can be established under additional assumptions, e.g.:
+
+  Suppose \(\abs{X_n} \leq K\) wp \(1\) for some constant \(K\) and choose \(\epsilon > 0\).
+  We have
+  \[
+    \abs{X_n}^r \leq K^r \ind(\abs{X_n} > \epsilon)  + \epsilon^r \ind(\abs{X_n} \leq \epsilon).
+  \]
+  So \(\E(\abs{X_n}^r) \leq K^r \P(\abs{X_n} > \epsilon) + \epsilon^r\).
+  Thus if \(X_n \probto 0\), we have \(\E(\abs{X_n}^r) \to 0\) also.
+\end{example}
+
+
+\subsection{Weak Law of Large Numbers}
+\begin{theorem}[Weak Law of Laege Numbers]
+  Suppose \(\{X_i\}_{i \geq 1}\) is an iid sequence of random variables with \(\E(X_i) = \mu\).
+  Then, \(\overline{X}_n \probto \mu\).
+\end{theorem}
+We prove this statement with the additional assumption that the second moment exists.
+This is not required but makes the proof easier.
+\begin{proof}
+  We have
+  \[
+    \P(\abs{\overline{X}_n - \mu} > \epsilon)
+    \leq \frac{\E[ \abs{\overline{X}_n - \mu}^2 ]}{\epsilon^2}
+    = \frac{\Var(\overline{X}_n)}{\epsilon^2}
+    = \frac{\sigma^2}{n \epsilon^2} \longrightarrow 0.
+  \]
+\end{proof}
+
+
+
+\begin{theorem}[WLLN for Moments]
+  If \(\E(X_i^k) < \infty\), then
+  \[
+    \frac{1}{n} \sum_i X_i^k \longprobto \E(X^k).
+  \]
+\end{theorem}
+
+\begin{example}
+  Let \(\{X_i\}_{i \geq 1}\) be an iid sample drawn from \(F\).
+  Define the \vocab{empirical distribution} of \(F\) by
+  \[
+    \hat{F}(x) \coloneqq \frac{1}{n} \sum_i \ind(X_i < x).
+  \]
+  The weak law of large numbers gives \(\hat{F}_n(x) \probto \E[\ind(X < x)] = F(x)\).
+\end{example}
+\begin{proposition}
+  Let \(X_n\) be a sequence of \((k \times 1)\) random vectors.
+  Then,
+  \begin{itemize}
+    \item \(X_n \probto X\) if and only if \(X_{n, i} \probto X_i\) for \(i = 1, \dots, k\). 
+    \item \(X_n \to X\) in \(r\)-th mean if and only if \(X_{n, i} \to X_i\) in \(r\)-th mean for \(i = 1, \dots, k\).
+  \end{itemize}
+\end{proposition}
+\begin{proof}
+  We prove the first result.
+  Note that
+  \[
+    \abs{X_{n, i} - X_i} \leq \norm{X_n - X} \leq \sqrt{K} \max_{i \leq k} \abs{X_{n, i} - X_i}.
+  \]
+  Then, if \(X_{n, i} \probto X_i\) for all \(i\), then
+  \begin{align*}
+    \P\left( \norm{X_n - X} > \epsilon \right)
+    &\leq \P\left( \max_{i \leq k} \abs{X_{n, i} - X_i} > \epsilon / \sqrt{K} \right) \\
+    &= \P\left( \cup_{i = 1}^k \abs{X_{n, i} - X_i} > \epsilon / \sqrt{K} \right) \\
+    &\leq \sum_{i = 1}^k \P\left( \abs{X_{n, i} - X_i} > \epsilon / \sqrt{K} \right)
+    \longrightarrow 0.
+  \end{align*}
+  On the other hand, if \(X_n \probto X\), then \(\E(\abs{X_{n, i} - X_i} > \epsilon) \leq \P(\norm{X_n - X} > \epsilon) \to 0\).
+\end{proof}
+\begin{corollary}
+  The weak law of large numbers for random vectors.
+\end{corollary}
+
+
+\begin{definition}
+  A sequence of random variables \(X_n\) \vocab{converges in distribution} to \(X\) (\(X_n \distto X\)) if
+  \[
+    F_{X_n} (x) \longrightarrow F_X(x)
+  \]
+  for all \(x\) at which \(F_X\) is continuous.
+\end{definition}
+\begin{remark}~
+  \begin{itemize}
+    \item To see why we require convergence only at continuity points of \(F_X\), note that \(F_X\) is only right-continuous for discrete \(X\).
+      Then, consider \(X_n \coloneqq 1 / n\) and \(X \coloneqq 0\).
+      We have \(X_n \to X\) a.s., but \(F_{X_n}(0) = 0 \neq  1 = F_X(0)\).
+    \item This is the weakest notion of convergence.
+      Convergence in probability implies convergence in distribution, but the converse is not true:
+      Let \(Y_n \coloneqq (-1)^n X\), where \(X \sim \Normal(0, 1)\).
+      We have \(Y_n \distto \Normal(0, 1)\), but \(Y_n\) does not converge in probability.
+  \end{itemize}
+\end{remark}
+
+
+\subsection{Continuous Mapping Theorem and Slutsky's Theorem}
+\begin{theorem}[Continuous Mapping Theorem]~
+  Let \(g: \RR^k \to \RR^n\) be continuous on \(S \subset \RR^k\) with \(\P(X \in S) = 1\).
+  Then the following hold:
+  \begin{enumerate}[label=(\roman*)]
+    \item if \(X_n \probto X\), then \(g(X_n) \probto g(X)\). 
+    \item If \(X_n \distto X\), then \(g(X_n) \distto g(X)\). 
+  \end{enumerate}
+\end{theorem}
+\begin{remark}
+  The theorem does not hold for \(X_n \to X\) in \(r\)-th moment.
+  Consider \(X_n = n\) with probability \(n^{-2}\) and \(0\) otherwise.
+  We have \(\E \abs{X_n - 0} \to 0\) but
+  \[
+    \E(\abs{X_n^2 - 0^2}) = 1.
+  \]
+\end{remark}
+
+\begin{theorem}[Slutsky's Theorem]~
+  Suppose \(X_n \distto X\) and \(Y_n \probto c\) for some constant \(c\).
+  Then,
+  \[
+    X_n + Y_n \longdistto X + c, \quad
+    X_n Y_n \longdistto Xc, \quad
+    X_n / Y_n \longdistto X / c \text{ provided } c \neq 0.
+  \] 
+\end{theorem}
+\begin{remark}
+  It turns out that under our assumption,
+  \[
+    \pmat{X_n \\ Y_n} \longdistto \pmat{X \\ c}.
+  \]
+  We may then apply the continuous mapping theorem.
+\end{remark}
+\begin{example}
+  Let \(\{(X-i, Y_i)\}_{i \geq 1}\) be a sequence of \((2 \times 1)\) iid random vectors with \(\E(X_i^2) < \infty\), \(\E(Y_i^2) < \infty\).
+  Define
+  \begin{align*}
+    \hat{\rho}
+    &\coloneqq \frac{\sum (X_i - \overline{X}) (Y_i - \overline{Y})}{\sqrt{\sum (X_i - \overline{X})^2} \sqrt{\sum (Y_i - \overline{Y})^2}} \\
+    &= \frac{\frac{1}{n} \sum X_i Y_i - \overline{X}\, \overline{Y}}{\sqrt{\frac{1}{n} \sum X_i^2 - \overline{X}^2} \sqrt{\frac{1}{n} \sum Y_i^2 - \overline{Y}^2}}.
+  \end{align*}
+  The weak law of large numbers gives
+  \begin{align*}
+    \frac{1}{n} \sum X_i Y_i
+    &\longprobto \E(XY), \\
+    \frac{1}{n} \sum X_i^2
+    &\longprobto \E(X^2), \\
+    \frac{1}{n} \sum Y_i^2
+    &\longprobto \E(Y^2).
+  \end{align*}
+  Thus,
+  \[
+    \left( \overline{X}, \overline{Y}, \frac{1}{n} \sum X_i Y_i, \frac{1}{n} \sum X_i^2, \frac{1}{n} \sum Y_i^2 \right)
+    \longprobto
+    \left( \E(X), \E(Y), \E(XY), \E(X^2), \E(Y^2) \right).
+  \]
+  Now let
+  \[
+    g(x, y, s, t, w)
+    \coloneqq \frac{s - xy}{\sqrt{t - x^2} \sqrt{w - y^2}}.
+  \]
+  Note that \(g\) is continuous at all points except where \(t = x^2\) and \(w = y^2\).
+  Provided neither \(X\) nor \(Y\) are constant, we have
+  \[
+    \E(X^2) > \E(X)^2, \quad \E(Y^2) > \E(Y)^2.
+  \]
+  By the continuous mapping theorem we then have
+  \[
+    \hat{\rho}
+    \longprobto \frac{\E(XY) - \E(X) \E(Y)}{\sqrt{\E(X^2) - \E(X)^2} \sqrt{\E(Y^2) - \E(Y)^2}}
+    = \frac{\Cov(X, Y)}{\sqrt{\Var(X) \Var(Y)}}.
+  \]
+\end{example}
+
+
+\begin{proposition}
+  Let \(A_n \in \RR^{P \times K}\) be a sequence of matrices converging in probability to a constant matrix \(A\).
+  Let \(B_n\) be a sequence of \((K \times 1)\) random vectors such that \(B_n \distto \Normal(\mu, \Sigma)\).
+  Then,
+  \[
+    A_n B_n \longdistto A \Normal(\mu, \Sigma) \sim \Normal(A \mu, A \Sigma A').
+  \]
+\end{proposition}
+\begin{proof}
+  Since the columns of \(A_n\), denoted \(\text{vec}(A_n)\) converges in probability to  \(\text{vec}(A)\) (that is, we use the Frobenius norm for matrices), a constant vector, we have
+  \[
+    \pmat{
+      B_n \\
+      \text{vec}(A_n)
+    }
+    \longdistto
+    \pmat{
+      \Normal(\mu, \Sigma) \\
+      \text{vec}(A)
+    }.
+  \]
+  The continuous mapping theorem then gives
+  \[
+    A_n B_n \longdistto A \Normal(\mu, \Sigma).
+  \]
+  Since linear transformations of multivariate normal are also multivariate norm, we have
+  \[
+    A_n B_n \longdistto \Normal(A \mu, A \Sigma A').
+  \]
+\end{proof}
+
+\subsection{Central Limit Theorem}
+\begin{theorem}[Central Limit Theorem]
+  Let \(\{X_i\}_{i \geq 1}\) be an iid sequence of \((K \times 1)\) random vectors with mean \(\mu\) and finite variance matrix \(\Sigma\).
+  Then
+  \[
+    \sqrt{n} (\overline{X}_n - \mu) \longdistto \Normal(0, \Sigma).
+  \]
+\end{theorem}
+\begin{example}
+  Let \(X_i\) be iid with \(\E(X_i) = \mu\), \(\Var(X_i) = \sigma^2\), and skewness \(\kappa = \E\left( \left( \frac{X_i - \mu}{\sigma} \right)^3 \right)\).
+  It turns out that the skewness of the sample mean is
+  \[
+    \E\left( \left( \frac{\overline{X}_n - \mu}{\sigma / \sqrt{n}} \right)^3 \right)
+    = \frac{\kappa}{\sqrt{n}}.
+  \]
+
+  If \(X_i \sim \GammaDist(k, \theta)\), where \(k\) and \(\theta\) are shape and scale parameters.
+  Then, \(\sum X_i \sim \GammaDist(kn, \theta)\) and \(\overline{X}_n \sim \GammaDist(kn, \theta / n)\) and we have \(\E(X_i) = k \theta\) and \(\Var(X_i) = k \theta^2\). 
+  It turns out that the skewness of gamma is
+  \[
+    \kappa = \E\left( \left( \frac{X_i - k \theta}{\sqrt{k \theta^2}} \right)^3 \right)
+    = \frac{2}{\sqrt{k}}.
+  \]
+  For the sample mean, we have
+  \[
+    \E\left( \left( \frac{\overline{X}_n - k \theta}{\sqrt{(k \theta^2) / n}} \right)^3 \right)
+    = \frac{\kappa}{\sqrt{n}}
+    = \frac{2}{\sqrt{nk}}.
+  \]
+\end{example}
+\begin{example}
+  If \(X_i\) is iid Cauchy, then \(\overline{X}_n\) are Cauchy.
+  This occurs because the Cauchy distribution does not have mean or variance.
+\end{example}
+\begin{remark}
+  The Berry-Esseen theorem gives a finite sample bound on the inaccuracy of the normal approximation using the third moment.
+\end{remark}
+
+\begin{example}
+  Let \(\{X_i\}_{i \geq 1}\) be iid with mean \(\mu\) and variance  \(\sigma^2 > 0\).
+  We wish to test \(H_0: \mu = \mu_0\) at the significance level \(\alpha\).
+
+  We have
+  \[
+    S_n^2
+    \coloneqq \frac{1}{n - 1} \sum (X_i - \overline{X}_n)^2
+    = \frac{n}{n - 1} \left( \frac{1}{n} \sum X_i^2 - \overline{X}_n^2 \right).
+  \]
+  The weak law of large numbers gives
+  \[
+    \frac{1}{n} \sum X_i^2 \longprobto \E(X_i^2), \quad
+    \overline{X}_n \longprobto \E(X_i).
+  \]
+  It follows that
+  \[
+    \left( \frac{n}{n - 1}, \frac{1}{n} \sum X_i^2, \overline{X}_n \right)
+    \longprobto \left( 1, \E(X_i)^2, \E(X_i) \right).
+  \]
+  The continuous mapping theorem with
+  \[
+    g(x, y, z) = \frac{1}{\sqrt{x (y - z^2)}}
+  \]
+  gives (since \(\E(X_i^2) > \E(X_i)^2\) from \(\sigma^2 > 0\))
+  \[
+    \frac{1}{\sqrt{S_n^2}}
+    \longprobto \frac{1}{\sqrt{\sigma^2}} = \frac{1}{\sigma}.
+  \]
+  By Slutsky's theorem, we have then that
+  \[
+    \sqrt{n} \frac{\overline{X}_n - \mu}{S_n}
+    = \frac{\sqrt{n} (\overline{X}_n - \mu)}{\sqrt{S_n^2}}
+    \longdistto \frac{\Normal(0, \sigma^2)}{\sigma}
+    = \Normal(0, 1).
+  \]
+  Note on terminology:
+  \begin{itemize}
+    \item \(\sqrt{n} (\overline{X}_n - \mu) / \sigma\) is a \vocab{pivot} since its distribution does not depend on the unknown parameters.
+      It enables use to contract confidence intervals by ``inverting the pivot.''
+      This is called ``test inversion.'' (Note however that the pivot is not a test statistic.)
+    \item Under \(H_0\), \(\sqrt{n} (\overline{X}_n - \mu_0) / \sigma\) is a \vocab{test statistic}.
+    \item The first term in the display above is not a test statistic since we do not know \(\mu\).
+      It is though called a \vocab{asymptotic pivot} since its asymptotic distribution does not depend on the unknown parameters.
+  \end{itemize}
+  Under \(H_0\), then,
+  \[
+    \P\left( \abs*{\frac{\sqrt{n} (\overline{X}_n - \mu_0)}{S_n}} > z_{1 - \frac{\alpha}{2}} \right)
+    \longrightarrow \alpha,
+  \]
+  with which we can construct a \emph{asymptotically correct} confidence interval for \(\mu\).
+\end{example}
+
+
+\subsection{Delta Method}
+\begin{theorem}[Delta Method]
+  Let \(\{X_n\}_{n \geq 1}\) be a sequence of \((K \times 1)\) random vectors and suppose
+  \[
+    n^r (X_n - c) \longdistto X
+  \]
+  for some \(r > 0\) and constant vector \(c\).
+  Let \(g: \RR^k \to \RR^d\) be differentiable at the point \(c\).
+  Then,
+  \[
+    n^r (g(X_n) - g(c)) \longdistto \D g(c) X.
+  \]
+  In particular, if \(X \sim \Normal(0, \Sigma)\), then
+  \[
+    n^r (g(X_n) - g(c)) \longdistto \Normal(0, \D g(c) \Sigma \D g(c)').
+  \]
+\end{theorem}
+\begin{remark}
+  Intuition:
+  we use the approximation
+  \[
+    \sqrt{n} \left( g(X_n) - g(\mu) \right)
+    \approx g'(\mu) \sqrt{n} (X_n - \mu)
+  \]
+  and apply the WLLN.
+  More precisely, we can use
+  \[
+    \sqrt{n} \left(g(X_n) - g(\mu) \right)
+    = g'(\mu) \sqrt{n} (X_n - \mu) + h(X_n) \sqrt{n} (X_n - \mu),
+  \]
+  where \(h(\cdot)\) satisfies \(\lim_{X \to \mu} h(X) = h(\mu) = 0\).
+  Thus \(h(X_n) \probto h(\mu) = 0\) if \(X_n \probto \mu\).
+\end{remark}
+\begin{example}
+  Suppose we wish to estimate \(\theta \in \RR^d\) that solves the equation
+  \[
+    g(\theta) = \E(h(X)),
+  \]
+  where \(g: \RR^d \to \RR^k\) and \(h\) are known functions.
+  Given sample, we solve
+  \[
+    g(\hat{\theta}) = \frac{1}{n} \sum h(X_i).
+  \]
+  A solution to this equation is a \vocab{method of moments estimator}.
+\end{example}
+
+
+
+\subsection{Estimators}
+\begin{definition}
+  We say \(\hat{\theta}\) is biased downward if \(\E(\hat{\theta}) < \theta\).
+\end{definition}
+\begin{example}
+  Let \(\{X_i\}\) be iid from \(G\) with mean \(\mu\) and variance \(\sigma^2\).
+  Define \(S_n^2 = n^{-1} \sum (X_i - \overline{X}_n)^2\).
+  This is biased downward.
+  To see this, note that \(n^{-1} \sum (X_i - \mu)^2\) is unbiased (if we know \(\mu\)).
+  The estimator \(S_n^2\) is biased downward because
+  \[
+    S_n^2
+    = \min_{a \in \RR} \frac{1}{n} \sum (X_i - a)^2
+    \leq \frac{1}{n} \sum (X_i - \overline{X}_n)^2.
+  \]
+  However, \(S_n^2\) is consistent:
+  we have \(S_n^2 = n^{-1} \sum x_i^2 - (\overline{X}_n)^2\), where the first term converges to probability to \(\E(X^2)\) and the second to \(\E(X)^2\).
+\end{example}
+
+\begin{example}
+  Let \(\{X_i\}\) be iid from \(G\) with mean \(\mu\) and variance \(\sigma^2\).
+  Consider linear estimators of the form \(\hat{\mu} = \sum a_i X_i\).
+  If the estimator is unbiased, then \(\sum a_i = 1\).
+  To find the best linear estimator, we optimize subject to \(\sum a_i = 1\) to obtain \(a_i = n^{-1}\).
+\end{example}
+
+\begin{remark}
+  Trade off between bias and variance: ridge regression, shrinkage estimator.
+\end{remark}
+
+
+We think of the asymptotic distribution of an estimator as a non-degenerate distribution:
+\begin{definition}
+  Suppose \(\hat{\theta}_n\) is a consistent estimator of \(\theta\).
+  If for some sequence \(\tau_n \to \infty\) and non-degenerate random variable \(X\),
+  \[
+    \tau_n (\hat{\theta}_n - \theta) \longdistto X,
+  \]
+  we say that \(F_X\) is the \vocab{asymptotic distribution} of \(\hat{\theta}_n\), where \(F_X\) is the distribution function of \(X\).
+\end{definition}
+
+
+
+
+\section{Ordinary Least Squares Estimation}
+\begin{theorem}
+  Suppose \(\E(y^2) < \infty\) and \(\E(x_j^2) < \infty\) for each \(j = 1, \dots, k\).
+  The function \(g(x) \coloneqq \E(y|x)\) is the best predictor of \(y\) given \(x\) under square loss.
+  That is,
+  \[
+    \E(y|x) \in \argmin_{g} \E\left[ (y - g(x))^2 \right] .
+  \]
+\end{theorem}
+
+We may interpret the linear model as a best linear approximation to the conditional mean function.
+We choose \(b\) to solve
+\[
+  \min_{b \in \RR^k} \E\left( \E(y|x) - x' b \right)^2.
+\]
+If \(\E(xx')\) is invertible, we have
+\[
+  \beta = \E(xx')^{-1} \E(xy).
+\]
+
+\begin{example}
+  Consider the simple linear model \(y = \beta_0 + \beta_1 x_1 + u\).
+  % Write \(x = (1, x_1)'\).
+  We have
+  \[
+    \beta
+    % = (\beta_0, \beta_1)'
+    = \frac{1}{\Var(x_1)} \bmat{
+      \E[x_1^2] & -\E[x_1] \\
+      -\E[x_1] & 1
+    } \bmat{
+      \E(y) \\
+      \E(x_1 y)
+    }.
+  \]
+  Thus,
+  \[
+    \beta_1
+    = \frac{\Cov(y, x_1)}{\Var(x_1)}
+    = \sqrt{\frac{\Var(y)}{\Var(x_1)}} \cdot \Corr(y, x_1)
+  \]
+  and
+  \[
+    \beta_0 = \E(y) - \beta_1 \E(x_1).
+  \]
+\end{example}
+
+\begin{remark}
+  By writing
+  \[
+    \tilde{W} = \alpha_0 + \alpha_1 S + U; \quad
+     \E[SU] = \E[U] = 0
+  \]
+  in a prediction context, \(\E[SU] = \E[U] = 0\) is true \emph{by construction}.
+  In a causal content, they are \emph{assumptions}; we are saying that ``correlation is causation.''
+\end{remark}
+
+
+Given a sample \(\{y_i, x_i\}_{i = 1}^n\), we can solve the analogous sample problem
+\[
+  \min_{b \in \RR^k} \frac{1}{n} \sum_i (y_i - x_i' b)^2.
+\]
+The FOC is
+\[
+  \sum_{i} x_{ij} (y_i - x_i' \hat{\beta}) = 0, \quad 1 \leq j \leq k.
+\]
+Or, equivalently,
+\[
+  \sum_i x_i (y_i - x_i' \hat{\beta}) = 0.
+\]
+Thus we have:
+% \begin{proposition}
+\[
+  \left( \frac{1}{n} \sum x_i x_i' \right) \hat{\beta}
+  = \frac{1}{n} \sum x_i y_i,
+\]
+and if \(\sum x_i x_i'\) is invertible, then
+\[
+  \hat{\beta}
+  = \left( \frac{1}{n} \sum x_i x_i' \right)^{-1} \frac{1}{n} \sum x_i y_i, \quad
+  \sum x_i \hat{u}_i = 0.
+\]
+% \end{proposition}
+
+\subsection{Matrix Notation}
+The model \(y_i = x_i' \beta + u_i\) for each \(i\) can  equivalently be written as
+\[
+  Y = X \beta + U,
+\]
+where
+\[
+  X = \bmat{
+    - x_1' - \\
+    \vdots \\
+    - x_n' -
+  }
+  = \bmat{
+    1 & x_{11} & \cdots & x_{1k} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    1 & x_{n1} & \cdots & x_{nk}
+  }.
+\]
+is called the \vocab{design matrix}.
+The least squares minimization problem is
+\[
+  \min_{b \in \RR^k} \sum (y_i - x_i' b)^2
+  \equiv \min_{b \in \RR^k} (Y - Xb)' (Y - Xb).
+\]
+Note that by definition, \(\hat{Y}\) is the projection of \(Y\) onto the column space of \(X\).
+By the projection theorem below, \(\hat{Y}\) is unique.
+
+We may rewrite the FOC using matrix notation as:
+% \begin{proposition}
+%   The FOC gives
+  % \[
+  %   % -2 \sum y_i \cdot x_i + 2 \left[ \sum x_i x_i' \right] \hat{\beta} = 0,
+  %   \left( \frac{1}{n} \sum x_i x_i' \right) \hat{\beta}
+  %   = \frac{1}{n} \sum x_i y_i,
+  % \]
+  % or equivalently,
+\[
+  % -2 (Y'X)' + 2X'X \hat{\beta} = 0,
+  X'X \hat{\beta} = X' Y, \quad
+  X' \hat{U} = 0.
+\]
+% \end{proposition}
+% \begin{proof}
+%   Recall \( \sum x_i x_i' \hat{\beta} = \sum x_i y_i\).
+% %   Taking the FOC in
+% %   \[
+% %     \sum (y_i - x_i'b)^2
+% %     = \sum y_i^2 - 2\sum y_i \cdot x_i'b + \sum (x_i'b)^2
+% %   \]
+% %   with respect to \(b_j\) gives
+% %   \[
+% %     -2 \sum y_i \cdot x_{ij} + 2 \sum x_{ij} \cdot x_i' \hat{\beta} = 0.
+% %   \]
+% %   Stacking the \(k\) FOCs gives
+% %   \[
+% %     -2 \sum y_i \cdot x_i + 2 \left[ \sum x_i x_i' \right] \hat{\beta} = 0,
+% %   \]
+% %   which is the desired result.
+% \end{proof}
+\begin{remark}
+  Recall that
+  \[
+    X = \bmat{
+      - x_1' - \\
+      \vdots \\
+      - x_n' -
+    }.
+  \]
+  Thus
+  \begin{align*}
+    X'X
+    &= \pmat{
+      \sum x_{i1}^2 & \sum x_{i1} x_{i2} & \cdots & \sum x_{i1} x_{ik} \\
+      \vdots & \vdots & \ddots & \vdots \\
+      \sum x_{ik} x_{i1} & \sum x_{ik} x_{i2} & \cdots & \sum x_{ik}^2
+    } \\
+    &= \sum_i \pmat{
+      x_{i1}^2 & x_{i1} x_{i2} & \cdots & x_{i1} x_{ik} \\
+      \vdots & \vdots & \ddots & \vdots \\
+      x_{ik} x_{i1} & x_{ik} x_{i2} & \cdots & x_{ik}^2
+    }
+    = \sum_i x_i x_i'.
+  \end{align*}
+\end{remark}
+
+\begin{remark}
+  The FOC can be equivalently written as \(X'\hat{U} = 0\), since \(\hat{U} = Y - X \hat{\beta}\).
+  Thus \(\sum_i x_i \hat{u}_i = 0\); each column of \(X\) is orthogonal to \(\hat{U}\).
+  The FOC, in other words, states that the residual is orthogonal to the column space of \(X\).
+\end{remark}
+Thus:
+\begin{proposition}
+  If \(X\) is full column rank, then the OLS estimator is given by
+  \[
+    \hat{\beta} = (X'X)^{-1} X'Y.
+  \]
+\end{proposition}
+\begin{proof}
+  We show that \(X\) is full column rank if and only if it is invertible.
+  If \(X\) is not full column rank, there exists \(c \neq 0\) such that \(Xc = 0\).
+  Then \(X'Xc = 0\).
+  Conversely, if \(X'X\) is not invertible, there exists \(a \neq 0\) such that \(X'X a = 0\), and so \(a' X' X a = 0\).
+  This happens precisely when \(Xa = 0\).
+\end{proof}
+\begin{remark}
+  \(X' X\) is invertible with probability approaching \(1\) as \(n \to \infty\) if \(\E[X'X]\) is invertible in the population.
+\end{remark}
+
+
+
+\subsection{Projection}
+\begin{theorem}[Projection Theorem]
+  Let \(y \in \RR^n\) and let \(S\) be any nonempty subspace of \(\RR^n\).
+  There exists a unique point \(\hat{y}\) such that \(\norm{y - \hat{y}}\) is minimized over \(S\).
+  A necessary and sufficient condition for \(\hat{y}\) is that \(y - \hat{y}\) is orthogonal to every vector in \(S\).
+\end{theorem}
+
+In the case of ordinary least squares, we have the necessary and sufficient condition for \(\hat{Y}\) is 
+\[
+  X'(Y - \hat{Y}) = 0
+\]
+for all \(x \in S(X)\), the column space of \(X\).
+Equivalently, we have
+\[
+  X'(Y - \hat{Y}) = 0.
+\]
+Since \(\hat{Y} \in S(X)\), we may write \(\hat{Y} = Xb\) for some \(b \in \RR^k\).
+Then, from \(X'Y = X'Xb\) we have
+\[
+  b = (X'X)^{-1} X'Y
+\]
+and
+\[
+  \hat{Y} = X (X'X)^{-1} X' Y.
+\]
+\begin{definition}~
+  \begin{itemize}
+    \item \(P_X \coloneqq X (X'X)^{-1} X'\) is called the \vocab{projection matrix}.
+    \item \(M_X \coloneqq I_n - X(X'X)^{-1} X'\) is called  the \vocab{residual maker}.
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  \(M_X\) projects a vector on to the \(n - k\) dimensional vector space orthogonal to the column space of \(X\).
+\end{proposition}
+\begin{proof}
+  The residual \(P_X Y\) is orthogonal to the orthogonal complement of the column space of \(X\).
+  By the projection theorem we have the desired result.
+\end{proof}
+
+\begin{proposition}[Projection Matrices, Elementary Properties]~
+  \begin{itemize}
+    \item \(P_X\) is symmetric and idempotent.
+    \item \(P_X M_X = M_X P_X = 0\), since \((P_X Y)' M_X Y = Y' P_X M_X Y = 0\).
+    \item \(P_X X = X\), \(M_X X = 0\). 
+    \item For every \(Y\), \(Y = P_X Y + M_X Y = \hat{Y} + \hat{U}\).
+      Thus \(\norm{Y}^2 = \norm{P_X Y}^2 + \norm{M_X Y}^2\).
+  \end{itemize}
+\end{proposition}
+\begin{remark}
+  \((A^{-1})' = (A')^{-1}\).
+\end{remark}
+
+
+\subsection{R squared}
+\begin{definition}
+  The \vocab{coefficient of determination}, \(R^2\), is defined by
+  \begin{align*}
+    R^2
+    &\coloneqq \frac{\ESS}{\TSS}
+    = \frac{\SSR}{\TSS} \\
+    &= \frac{\sum (\hat{y}_i - \overline{y})^2}{\sum (y_i - \overline{y})^2}
+    = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \overline{y})^2}.
+  \end{align*}
+\end{definition}
+\begin{remark}~
+  \begin{itemize}
+    \item If we include a constant, then \(0 \leq R^2 \leq 1\) and the equalities above hold.
+      In the univariate case, \(R^2 = [\Corr(y_i, x_i)]^2\); in general, \(R^2 = [\Corr(y_i, \hat{y}_i)]^2\).
+    \item It turns out that \(\SSR = \norm{M_X M_C Y}^2\), \(\ESS = \norm{P_X M_C Y}^2\), and  \(\TSS = \norm{M_C Y}^2\).
+    \item \(R^2\) measures how well the model fits the data relative to a model with only a constant and no other regressors.
+      OLS maximizes \(R^2\) over the class of linear estimators.
+      Adding new regressors weakly increases \(R^2\).
+    \item \(R^2\) is an estimator of the \vocab{population \(R^2\)}
+      \[
+        R^2_{\text{pop}} \coloneqq 1 - \frac{\Var(u)}{\Var(y)},
+      \]
+      since \(\SSR / n\) is an estimator of \(\Var(u)\) and \(\TSS / n\) an estimator of \(\Var(y)\).
+    \item Intuitively, the model is soaking up the variance of \(y\):
+      \[
+        \Var(Y)
+        = \E(\Var(Y|X)) + \Var(\E(Y|X)).
+      \]
+    \item \(\SSR\) weakly decreases (and so \(R^2\) weakly increases) when a regressor is added to the model.
+      The \vocab{adjusted \(R^2\)} penalizes the additional regressors:
+      \[
+        \overline{R}^2
+        \coloneqq 1 - \frac{n - 1}{n - k - 1} \frac{\SSR}{\TSS}
+        = 1 - \frac{n - 1}{n - k - 1} (1 - R^2)
+        \leq R^2,
+      \]
+      where \(k\) is the total number of explanatory variables in the model (excluding the intercept).
+  \end{itemize}
+\end{remark}
+
+
+\section{Finite Sample Properties of OLS}
+\begin{assumption}[Gauss Markov]~
+  \begin{enumerate}
+    \item[MLR.1:] The model under consideration is
+      \[
+        y = \beta_0 + \beta_1 x_1 + \dots + \beta_k x_k + u
+        \equiv x' \beta + u.
+      \]
+    \item[MLR.2:] We observe an iid sample of \(\{y_i, x_i\}_{i = 1}^n\).
+    \item[MLR.3:] There is no perfect collinearity in the sample (so a unique \(\hat{\beta}\) exists).
+    \item[MLR.4:] \(\E(u|x) = 0\).
+    \item[MLR.5:] (\vocab{Homoskedasticity}) \(\Var(y|x) = \sigma^2\).
+  \end{enumerate}
+\end{assumption}
+\begin{remark}
+  If MLR.5 does not hold but we know the precise form of the heteroskedasticity, say \(\sigma(x_i)^2\), we can transform the model to restore homoskedasticity.
+  This is called \vocab{generalized least squares} (GLS).
+  The finite sample estimate, however, is quite noisy because we also need to estimate \(\sigma(x_i)^2\).
+  Thus, people now usually just use OLS and correct the standard errors.
+\end{remark}
+
+\begin{proposition}
+  Assuming MLR.1--4, we have:
+  \begin{enumerate}[label=(\roman*)]
+    \item The OLS estimator is unbiased.
+    \item Let \(\Omega \coloneqq \Var(U|X) = \E(U'U|X)\).
+      Then,
+      \[
+        \Var(\hat{\beta} | X) = (X'X)^{-1} X' \Omega X (X'X)^{-1}.
+      \]
+      Thus, assuming also MLR.5, we have \(\Omega = \sigma^2 I_n\) and so
+      \[
+        \Var(\hat{\beta} | X) = \sigma^2 (X'X)^{-1}.
+      \]
+  \end{enumerate}
+\end{proposition}
+\begin{proof}~
+\begin{enumerate}[label=(\roman*)]
+  \item From \(\E(U|X) = 0\), we have \(\E(Y|X) = X \beta\) and so
+    \[
+      \E[\hat{\beta}|X]
+      = \E\left( (X'X)^{-1} X'Y \middle| X \right)
+      = (X'X)^{-1} X'X \beta
+      = \beta.
+    \]
+    The law of iterated expectations gives \(\E(\hat{\beta}) = \beta\).
+  \item We have
+    \[
+      \Var(\hat{\beta}|X)
+      = \Var(\beta + (X'X)^{-1} X'U)
+      = (X'X)^{-1} \Var(U|X) (X'X)^{-1}.
+    \]
+    Since \(\E[U|X] = 0\) by MLR.4, we have  \(\Var(U|X) = \E(U'U|X)\).
+    Note that when \(i \neq j\),
+    \[
+      \E(u_i u_j | x_i, x_j)
+      = \E\left( u_i \E[u_j| u_i, x_i, x_j] | x_i, x_j \right)
+      = 0
+    \]
+    and on the diagonal, we have
+    \[
+      \E(u_i^2 | x_i)
+      = \Var(u_i | x_i)
+      = \sigma^2.
+    \]
+    % Now, we have
+    % \begin{align*}
+    %   \Var(\hat{\beta}|X)
+    %   &= \Var(\beta + (X'X)^{-1} X'U | X) \\
+    %   &= (X'X)^{-1} X' \sigma^2 I_n X (X'X)^{-1}
+    %   = \sigma^2 (X'X)^{-1}.
+    % \end{align*}
+\end{enumerate}
+\end{proof}
+\begin{remark}
+  The same argument shows that under heteroskedasticity, the variance of \(U\) is of the form
+  \[
+    \Var(U|X) = \pmat{
+      f(x_1) & 0 & \cdots & 0 \\
+      0 & f(x_2) & \cdots & 0 \\
+      \vdots & \vdots & \ddots & \vdots \\
+      0 & 0 & \cdots & f(x_n)
+    }.
+  \]
+\end{remark}
+
+
+\begin{theorem}[Gauss-Markov]
+  Under MLR.1--5, the OLS estimator is the \vocab{best linear unbiased estimator}.
+  That is, it achieves the smallest variance in the class of linear estimators\footnote{A linear estimator of \(\beta_j\) is a linear combinations of the \(\{y_i\}\), with coefficients depending on \(\{x_i\}\).} that are also unbiased conditional on \(X\).
+  More precisely, let \(\hat{\beta}\) be the OLS estimator and let \(\tilde{\beta} = A(X) Y\) satisfy \(\E(\tilde{\beta} | X) = \beta\).
+  We have then that \(\Var(\tilde{\beta} | X) - \Var(\hat{\beta} | X)\) is positive semidefinite.
+\end{theorem}
+\begin{proof}
+  Write \(\tilde{\beta} = AY\), where \(A\) is a \(k \times N\) matrix that depends only on \(X\).
+  Note that we have
+  \[
+    \E(\tilde{\beta}|X)
+    = \E(AY|X)
+    = AX \beta
+    = \beta.
+  \]
+  This implies that \((AX - I)\beta = 0\) for any \(\beta\).
+  Thus \(AX = I_k\).
+
+  Next, note that
+  \[
+    \Var(AY|X)
+    = A \Var(Y|X) A'
+    = A \Var(U|X) A'
+    = \sigma^2 A A'.
+  \]
+  The OLS estimator corresponds to the case \(A = (X' X)^{-1} X'\).
+  It remains to show that \(\sigma^2 A A' - \sigma^2 (X' X)^{-1}\) is positive semidefinite for any \(A\) such that \(AX = I_k\).
+  % To this end, define \(C = A - (X' X)^{-1} X'\) and note that
+  Now note that
+  \begin{align*}
+    &[A - (X' X)^{-1} X'] [A - (X' X)^{-1} X']' \\
+    &= A A' - (X' X)^{-1} X' A' - A X (X' X)^{-1} + (X' X)^{-1} X' X(X'X)^{-1} \\
+    &= A A' - (X' X)^{-1},
+  \end{align*}
+  where the last equality follows from recalling \(AX = I_k\).
+  % \begin{align*}
+  %   A'A - (X' X)^{-1}
+  %   &= \left( C + (X'X)^{-1} X' \right) \left( C + (X'X)^{-1} X' \right)' - (X'X)^{-1} \\
+  %   &= CC' + (X'X)^{-1} X' C + C X (X'X)^{-1}
+  %   = CC',
+  % \end{align*}
+  % where the final equality holds since
+  % \[
+  %   CX = AX - (X'X)^{-1} X'X
+  %   = I_k - I_k = 0.
+  % \]
+  It remains to recall that \(CC'\) is positive semidefinite for any matrix \(C\).
+\end{proof}
+% \begin{remark}
+%   In particular, for any \(r\), we have
+%   \[
+%     \Var(r' \tilde{\beta} | X) - \Var(r' \hat{\beta} | X)
+%     = r' \left[ \Var(\tilde{\beta} | X) - \Var(\hat{\beta} | X) \right] r
+%     = \sigma^2 r' CC' r \geq 0.
+%   \]
+%   That is, \(r' \hat{\beta}^{OLS}\) is at least as efficient as \(r' \tilde{\beta}\) for estimating \(r' \beta\). 
+%   In fact, it turns out that \(r' \hat{\beta}^{OLS}\) is also the best linear unbiased estimator of \(r' \beta\).
+% \end{remark}
+
+\begin{corollary}
+  % Let \(\hat{\beta}\) be the OLS estimator of \(\beta\).
+  % Let \(\tilde{\beta} x\) be any other linear estimator that are unbiased conditional on \(X\).
+  Let \(r\) be an arbitrary \(k \times 1\) vector.
+  The Gauss-Markov theorem implies that \(r' \hat{\beta}\) is the best linear unbiased estimator of \(r' \beta\), since
+  \[
+    \Var(r' \tilde{\beta} | X) - \Var(r' \hat{\beta} | X)
+    = r' \left[ \Var(\tilde{\beta} | X) - \Var(\hat{\beta} | X) \right] r
+    \geq 0.
+  \]
+  In particular, taking \(r = e_j\), we have \(\Var(\hat{\beta}_j | X) \leq \Var(\tilde{\beta}_j | X)\).
+\end{corollary}
+
+
+\section{Large Sample Properties of OLS}
+We drop MLR.5, and weaken MLR.3 and MLR.4 in the next proposition:
+\begin{proposition}\label{prop:OLS-asymptotic-normality}
+  Consider the model
+  \[
+    y = x' \beta + u.
+  \]
+  And assume \(\{y_i, x_i\}_{i = 1}^n\) is iid.
+  \begin{enumerate}[label=(\roman*)]
+    \item Suppose \(\E(ux) = 0\) and \(\E(xx')\) is invertible (so that \(n^{-1} \sum x_i x_i'\) is invertible with probability approaching \(1\)).
+      Then, the OLS estimator is consistent; \(\hat{\beta} \probto \beta\).
+
+      Note that if we are doing prediction, \(\E(ux) = 0\) is true by construction.
+      When dealing with causality, however, this is an assumption we need to argue.
+    \item If \(\Var(xu)\) also exists, then \(\hat{\beta}\) is asymptotically normal.
+      Specifically, we have \(\sqrt{n}(\hat{\beta} - \beta) \distto \Normal(0, \Sigma)\), where \(\Sigma \coloneqq \E(xx')^{-1} \Var(xu) \E(xx')^{-1}\).
+      % Note that we may also write \(\Var(xu) = \E(xu(xu)') = \E(u^2 xx')\).
+  \end{enumerate}
+\end{proposition}
+\begin{proof}~
+\begin{enumerate}[label=(\roman*)]
+  \item First note that
+    \[
+      \left( \frac{1}{n} \sum x_i x_i', \frac{1}{n} \sum x_i y_i \right)
+      \longprobto \left( \E(xx'), \E(xy) \right),
+    \]
+    since the components each convergences in probability by the law of large numbers.
+    
+    Let \(g(x, y) = x^{-1} y\) (where \(x\) and \(y\) are matrices).
+    The function \(g\) is continuous if \(x\) is invertible.
+    By the continuous mapping theorem, we have
+    \[
+      \left( \frac{1}{n} \sum x_i x_i' \right) \frac{1}{n} \sum x_i y_i
+      \longprobto \E(xx')^{-1} \E(xy).
+    \]
+    Plugging in \(y = x' \beta + u\) and using \(\E(xu) = 0\), the right hand side can be rewritten as
+    \[
+      \beta + \E(xx')^{-1} \E(xu) = \beta.
+    \]
+    This proves that \(\hat{\beta}\) is consistent.
+
+  \item Next, suppose that \(\Var(xu)\) exists.
+    Applying the central limit theorem to the iid sequence \(\{x_i (y_i - x_i' \beta)\}_{i \geq 1}\) gives
+    \[
+      \frac{1}{\sqrt{n}} \sum x_i u_i \longdistto \Normal(0, \Var(xu)) = \Normal(0, \E(u^2 x x')).
+    \]
+    Slutsky's theorem then gives
+    \[
+      \sqrt{n} (\hat{\beta}_n - \beta)
+      = \left( \frac{1}{n} \sum x_i x_i' \right)^{-1} \frac{1}{\sqrt{n}} \sum x_i u_i \longdistto \Normal(0, \Sigma).
+    \]
+\end{enumerate}
+\end{proof}
+
+\subsection{Estimation of \texorpdfstring{\(\Sigma\)}{the Asymptotic Covariance Matrix}: Homoskedasticity}
+Throughout this subsection, we maintain MLR.4 and MLR.5: \(\E(u|x) = 0\), \(\Var(u|x) = \sigma^2\).
+Note first that
+\[
+  \Var(xu)
+  = \E(u^2 x x')
+  = \E(\E(u^2|x) x x')
+  = \sigma^2 \E(x x')
+\]
+and thus
+\begin{proposition}[Asymptotic Covariance Under Homoskedasticity]
+  \[
+    \Sigma = \sigma^2 \E(x x')^{-1}.
+  \]
+\end{proposition}
+
+\begin{proposition}[Consistent Estimators]~
+  \begin{enumerate}[label=(\roman*)]
+    \item % (i)
+      The estimator
+      \[
+        \hat{\sigma}^2 \coloneqq \frac{1}{n - k} \sum \hat{u}_i^2 = \frac{\SSR}{n - k}.
+      \]
+      is consistent and unbiased.
+    \item % (ii)
+      The estimator
+      \[
+        \hat{\Sigma} \coloneqq \hat{\sigma}^2 \left( \frac{1}{n} \sum x_i x_i' \right)^{-1}
+      \]
+      is consistent.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}~
+\begin{enumerate}[label=(\roman*)]
+  \item % (i)
+    Note first that \(\hat{U} = M_X Y = M_X (X \beta + U) = M_X U\).
+    We have thus that
+    \[
+      \SSR
+      = \norm{M_X U}^2
+      % = U' M_X' M_X U
+      % = U' M_X U
+      = U'U - U' P_X U.
+    \]
+    Thus,
+    \begin{align*}
+      \hat{\sigma}^2
+      &= \frac{n}{n - k} \left[ U' U - U' X (X' X)^{-1} X' U \right] \\
+      &= \frac{n}{n - k} \left[ \frac{1}{n} \sum u_i^2 - \left( \frac{1}{n} \sum u_i x_i' \right) \left( \frac{1}{n} \sum x_i x_i' \right)^{-1} \left( \frac{1}{n} \sum x_i u_i \right) \right] \\
+      &\longprobto \sigma^2 - 0 \cdot \E(xx')^{-1} \cdot 0
+      = \sigma^2
+    \end{align*}
+    by the continuous mapping theorem.
+    The second equality can be derived using the law of large numbers; the constant can be dealt with using the continuous mapping theorem.
+
+    Next, we show that \(\hat{\sigma}^2\) is unbiased.
+    Note that
+    \begin{align*}
+      \E(\SSR | X)
+      &= \E(U'U|X) - \E(U'P_X U|X) \\
+      &= \sum \E(u_i^2 | X) - \E(U'P_XU|X) \\
+      &= n \sigma^2 - \E(U' P_X U | X).
+    \end{align*}
+    Now, since \(U' P_X U\) is a scalar,
+    \begin{align*}
+      \E(U' P_X U | X)
+      &= \E(\tr (U' P_X U) | X)
+      = \E(\tr (P_X U U') | X) \\
+      &= \tr(P_X \E (U U' | X))
+      = \tr(P_X \sigma^2 I_n) \\
+      &= \sigma^2 \tr(X (X' X)^{-1} X')
+      = \sigma^2 \tr((X' X)^{-1} X' X) \\
+      &= k \sigma^2.
+    \end{align*}
+    We used the properties that \(\tr\) can be exchanged with \(\E\) (since it is a finite summation), that \(\tr\) is linear, and that \(\tr\) is invariant under cyclic permutations.
+    Combining the above gives \(\E(\SSR|X) = (n - k) \sigma^2\).
+
+  \item % (ii)
+    The weak law of large numbers gives \(n^{-1} \sum x_i x_i' \probto \E(xx')\).
+    It remains to apply the continuous mapping theorem.
+\end{enumerate}
+\end{proof}
+
+% Note that along the way, we proved
+% \begin{proposition}
+%   \[
+%     \SSR = U' U - U' P_X U.
+%   \]
+% \end{proposition}
+
+
+\subsection{Estimation of \texorpdfstring{\(\Sigma\)}{the Asymptotic Covariance Matrix}: Heteroskedasticity}
+If we can observe \(u_i\), we may just use the estimator
+\[
+  \hat{\Sigma}^{\text{ideal}}
+  \coloneqq \left( \frac{1}{n} \sum x_i x_i' \right)^{-1} \left( \frac{1}{n} \sum u_i^2 x_i x_i' \right) \left( \frac{1}{n} \sum x_i x_i \right)^{-1}
+  \longprobto \Sigma.
+\]
+But we cannot observe \(u_i\) in practice.
+
+
+\begin{lemma}
+  Let \(\{Z_i\}_{i \geq 1}\) be a sequence of identically distributed random vectors such that \(\E(\norm{Z_i}^r) < \infty\).
+  Then,
+  \[
+    \frac{\max_{1 \leq i \leq n} \norm{Z_i}}{n^{1 / r}}
+    \longprobto 0.
+  \]
+\end{lemma}
+\begin{proof}
+  Fix \(\epsilon > 0\) and note that
+  \begin{align*}
+    \P\left( \max_{1 \leq i \leq n} \norm{Z_i} > \epsilon n^{1 / r} \right)
+    &= \P\left( \bigcup_{i = 1}^n \left\{ \norm{Z_i}^r > \epsilon^r n \right\} \right) \\
+    &\leq \sum_{i = 1}^n \P(\norm{Z_i}^r > \epsilon^r n) \\
+    &= \sum_{i = 1}^n \P(\norm{Z_i}^r \ind(\norm{Z_i}^r > \epsilon^r n) > \epsilon^r n).
+  \end{align*}
+  Using Markov's inequality, the right side of the preceding display is bounded above by
+  \[
+    \frac{1}{n \epsilon^r} \sum_{i = 1}^n \E\left[ \norm{Z_i}^r \ind(\norm{Z_i}^r > \epsilon^r n) \right]
+    = \frac{1}{\epsilon^r} \E\left[ \norm{Z_i}^r \ind(\norm{Z_i}^r > \epsilon^r n) \right]
+    \longrightarrow 0.
+  \]
+  Convergence comes from the dominated convergence theorem, since \(\E(\norm{Z_i}^r) < \infty\).
+\end{proof}
+
+\begin{proposition}
+  The estimator
+  \[
+    \hat{\Sigma}
+    \coloneqq \left( \frac{1}{n} \sum x_i x_i' \right)^{-1} \left( \frac{1}{n} \sum \hat{u}_i^2 x_i x_i' \right) \left( \frac{1}{n} \sum x_i x_i \right)^{-1}
+  \]
+  is consistent.
+  Note that the estimator can equivalently be written as
+  \[
+    \hat{\Sigma}
+    \equiv n (X' X)^{-1} X' \hat{\Omega} X (X' X)^{-1},
+  \]
+  where
+  \[
+    \hat{\Omega} \coloneqq \pmat{
+      \hat{u}_1^2 &  &  & 0 \\
+       & \hat{u}_2^2 &  &  \\
+       &  & \ddots &  \\
+      0 &  &  & \hat{u}_n^2
+    }.
+  \]
+\end{proposition}
+\begin{proof}
+  In light of the continuous mapping theorem, we need only show
+  \[
+    \frac{1}{n} \sum \hat{u}_i^2 x_i x_i' \longrightarrow \E(u^2 x x').
+  \]
+  Since \(n^{-1} \sum u_i^2 x_i x_i' \probto \E(u^2 x x')\), we need only show
+  \[
+    \frac{1}{n} \sum (\hat{u}_i^2 - u_i^2) x_i x_i' \longprobto 0.\footnote{We sometimes write \(X_n = o_p(1)\) to mean \(X_n \probto 0\).}
+  \]
+  We show this by proving each element of the matrix converges to \(0\) in probability.
+  Fix \(j, k\) and observe that the \((j, k)\) element of the matrix
+   \[
+     \abs*{\frac{1}{n} \sum (\hat{u}_i^2 - u_i^2) x_{ij} x_{ik}}
+     \leq \max_{1 \leq i \leq n} \abs{\hat{u}_i^2 - u_i^2} \cdot \frac{1}{n} \sum \abs{x_{ij} x_{ik}}.
+  \]
+  Since \(n^{-1} \sum \abs{x_{ij} x_{ik}} \probto \E(\abs{x_{ij} x_{ik}})\), it is sufficient to prove
+  \[
+    \max_{1 \leq i \leq n} \abs{\hat{u}_i^2 - u_i^2}
+    \longprobto 0.
+  \]
+  To that end, note that since
+  % \(\hat{u}_i - u_i = x_i' (\beta - \hat{\beta}_n)\), so since
+  \(
+    \hat{u}_i
+    = y_i - x_i' \hat{\beta}_n
+    = x_i' (\beta - \hat{\beta}_n) + u_i
+  \),
+  we have
+  \begin{align*}
+    \abs{\hat{u}_i^2 - u_i^2}
+    &= \abs*{x_i' (\beta - \hat{\beta}_n) (\hat{u_i} + u_i)} \\
+    &= \abs*{x_i' (\beta - \hat{\beta}_n) \left(x_i' (\beta - \hat{\beta}_n) + 2u_i\right)} \\
+    % &\leq \abs*{\left( x_i'(\beta - \hat{\beta}_n) \right)^2} + 2 \abs*{u_i x_i' (\beta - \hat{\beta}_n)} 
+    &\leq \left( x_i'(\beta - \hat{\beta}_n) \right)^2 + 2 \abs*{u_i x_i' (\beta - \hat{\beta}_n)} 
+  \end{align*}
+  Using the Cauchy-Schwarz inequality,
+  \begin{align*}
+    \max \abs{\hat{u}_i^2 - u_i^2}
+    &\leq \norm{\beta - \hat{\beta}_n}^2 \max \norm{x_i}^2 + 2 \norm{\beta - \hat{\beta}_n} \max \norm{x_i u_i} \\
+    &= \norm{\sqrt{n} (\beta - \hat{\beta}_n)}^2 \frac{\max \norm{x_i}^2}{n} + 2 \norm{\sqrt{n} (\beta - \hat{\beta}_n)} \frac{\max \norm{x_i u_i}}{\sqrt{n}}.
+  \end{align*}
+  Since \(\sqrt{n}(\beta - \hat{\beta}_n)\) converges in distribution, we need only show the other two terms converges in probability to \(0\).
+  This is given by the previous lemma.
+\end{proof}
+
+
+\section{Partitioned Regression}
+\begin{proposition}
+  Consider the model \(Y = X_1 \beta_1 + X_2 \beta_2 + U\).
+  Let \(\tilde{X}_2 \coloneqq M_{X_1} X_2\) be the vector of residuals from a regression of (each column of \(X_2\) on \(X_1\)).
+  Denote \(\tilde{Y} \coloneqq M_{X_1} Y = \hat{U}\) similarly.
+  Then, the OLS estimator \(\hat{\beta}_2\) equals:
+  \begin{itemize}
+    \item The OLS estimator of \(Y\) on \(\tilde{X}_2\).
+    \item The OLS estimator of \(\tilde{Y}\) on \(\tilde{X}_2\).
+  \end{itemize}
+  In particular, we have the formula
+  \[
+    \hat{\beta}_2
+    = (X_2' M_{X_1} X_2)^{-1} X_2' M_{X_1} Y.
+  \]
+%   With the model \(Y = X_1 \beta_1 + X_2 \beta_2 + U\), we have
+%   \[
+%     \hat{\beta}_2 = (\tilde{X}_2 ' \tilde{X}_2)^{-1} \tilde{X}_2' Y,
+%   \]
+%   where \(\tilde{X}_2 = M_{X_1} Y\) is the vector of residuals from a regression of (each column of) \(X_2\) on \(X_1\).
+\end{proposition}
+\begin{remark}
+  This is sometimes called ``controlling for'' or ``partialling out'' \(X_1\).
+\end{remark}
+\begin{proof}
+  Note that
+  \[
+    X_2' M_{X_1} Y
+    = X_2' M_{X_1} X_2 \beta_2 + X_2' M_{X_1} \hat{U}.
+  \]
+  The last term is \(0\) since
+  \[
+    X_2' M_{X_1} \hat{U}
+    = X_2' (\hat{U} - P_{X_1} \hat{U})
+    = X_2' \hat{U} = 0.
+    % = X_2' \hat{U} - X_2' X_1 (X_1' X_1)^{-1} X_1' \hat{U}
+    % = 0.
+  \]
+  (We pre-multiply by \(M_{X_1}\) to get rid of the \(X_1\) term, and pre-multiply by \(X_2'\) to get rid of the \(\hat{U}\) term.)
+  Thus,
+  \begin{align*}
+    \hat{\beta}_2
+    &= (X_2' M_{X_1} X_2)^{-1} X_2' M_{X_1} Y \\
+    &= (\tilde{X}_2' \tilde{X}_2)^{-1} \tilde{X}_2' Y
+    = (\tilde{X}_2' \tilde{X}_2)^{-1} \tilde{X}_2' M_{X_1} Y.
+    % &= (X_2' M_{X_1}' M_{X_1} X_2)^{-1} X_2' M_{X_1}' Y \\
+    % &= (X_2' M_{X_1}' M_{X_1} X_2)^{-1} X_2' M_{X_1}' M_{X_1} Y.
+  \end{align*}
+\end{proof}
+
+\subsection{Components of the Variance}
+Thus, if MLR.5 holds, then
+\[
+  \Var(\hat{\beta}_2 | X)
+  = \sigma^2 (\tilde{X}_2' \tilde{X}_2)^{-1}.
+\]
+In particular, if \(X_2\) contains a single regressor \(x_j\) with estimated coefficient \(\hat{\beta}_j\), then
+\[
+  \Var(\hat{\beta}_j | X)
+  = \frac{\sigma^2}{\SSR_j}
+  = \frac{\sigma^2}{\SST_j(1 - R^2_j)}
+\]
+where \(\SSR_j\) denotes the \(\SSR\) of a regression of \(x_j\) on all the other regressors.
+\begin{remark}~
+  We have smaller variance if sample size is large, if \(R_j^2\) is small, and if \(x_j\) is spread out.
+  \begin{itemize}
+    \item When \(\SST_j\) is large, \(\Var(\hat{\beta}_j | X)\) is small.
+      \(\SST_j\) increases when sample size increases or when \(x_j\) become more spread out.
+      When \(x_j\) is clustered, small variations in \(y\) can drastically change the slope.
+    \item When \(R_j^2\) is large, \(\Var(\hat{\beta}_j | X)\) is large.
+      The more variability in \(x_j\) can be accounted for by the other regressors, the harder it is to estimate \(\beta_j\).
+      When there is high correlation between \(X_1\) and \(X_2\)---when there is near perfect multi-collinearity---it is hard to partial out the effect of one from the other, since there is less variations in \(x_j\) left after partialling out the other covariates.
+    \item When adding more regressors, \(R_j^2\) increases, and \(\Var(\hat{\beta}_j | X)\) increases.
+  \end{itemize}
+\end{remark}
+
+
+\subsection{Omitted Variable Bias}
+\begin{proposition}[Long and Short Regression]
+  Suppose \(x_{1}\) and \(x_{2}\) has dimension \(d_1\) and \(d_2\).
+  Consider the short regression
+  \[
+    y = x_{1}' \beta_{1 s} + u_s, \quad \E[xu_s] = 0
+  \]
+  and the long regression
+  \[
+    y = x_{1}' \beta_{1 l} + x_{2}' \beta_{2 l} + u_l, \quad \E[xu_l] = 0.
+  \]
+  Then,
+  \[
+    \beta_{1 a} = \beta_{1 l} + \alpha \beta_{2 l},
+  \]
+  where \(\alpha\) is a \(d_1 \times d_2\) dimensional matrix, the \(j\)th column of which if the population regression coefficient vector from regressing the \(j\)th component of \(x_{2}\) onto \(x_{1}\).
+\end{proposition}
+\begin{proof}
+  Note that
+  \begin{align*}
+    \beta_{1 s}
+    &= \E[x_{1} x_{1}']^{-1} \E[x_{1} (x_{1}' \beta_{1} + x_{2}' \beta_{2} + u_i)] \\
+    &= \beta_{1 l} + \underbrace{\E[x_1 x_1'] \E[x_1 x_2']}_{\alpha} \beta_{2l}.
+  \end{align*}
+\end{proof}
+
+\begin{example}
+  Consider
+  \[
+    y = \beta_0 + \beta_1 x_1 + u, \quad \E[xu] = 0.
+  \]
+  Partialling out the constant, we have
+  \[
+    \tilde{y} = y - \bar{y}, \quad
+    \tilde{x}_1 = x_1 - \bar{x}_1.
+  \]
+  Then,
+  \[
+    \beta_1 = \frac{\E[\tilde{x}_1 \tilde{y}]}{\E[\tilde{x}_1^2]}
+    = \frac{\Cov(y, x_1)}{\Var(x_1)}.
+  \]
+\end{example}
+
+\begin{example}[Omitted Variable Bias]
+  Suppose \(x_1\) and \(x_2\) are scalar random variables and
+  \[
+    y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + u,
+  \]
+  where \((\beta_0, \beta_1, \beta_2)\) represents the best linear predictor of \(y\) given \(x_1\) and \(x_2\).
+  Suppose we omit \(x_2\) and instead specify the regression 
+  \[
+    y = b_0 + b_1 x_1 + v,
+  \]
+  where \((b_0, b_1)\) represents the best linear predictor of \(y\) given \(x_1\).
+  We have then that
+  \begin{align*}
+    b_1
+    &= \frac{\Cov(y, x_1)}{\Var(x_1)} \\
+    &= \frac{\beta_1 \Var(x_1) + \beta_2 \Cov(x_1, x_2)}{\Var(x_1)}
+    = \beta_1 + \beta_2 \frac{\Cov(x_1, x_2)}{\Var(x_1)},
+  \end{align*}
+  where the last term is sometimes called the \vocab{omitted variable bias}.
+  The sign of this bias is determined by the signs of \(\Cov(x_1, x_2)\) and \(\beta_2\).
+  If both are positive, then the bias is positive.
+
+  But note that in so saying, we are assuming that the long regression is the true model and interpreting the regression causally.
+  We do not need to include covariates that:
+  \begin{itemize}
+    \item do not affect the dependent variable \(y\), or
+    \item are not correlated with the independent variable \(x_1\).
+  \end{itemize}
+\end{example}
+
+\begin{example}
+  Consider the models
+  \begin{gather*}
+    y = b_0 + b_1 x_1 + v, \\
+    y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + u.
+  \end{gather*}
+  If we interpret them as causal models, we may write \(v = \beta_2 x_2 + \beta_3 x_3 + u\).
+  In a prediction context, however, this is incorrect since \(b_1\) is general is not equal to \(\beta_1\).
+  We have
+  \[
+    \hat{b}_1 = \hat{\beta}_1 + \hat{\beta}_2 \hat{\delta}_1 + \hat{\beta_3} \hat{\gamma}_1.
+  \]
+  This shows that \(\hat{b}_1\) is both biased and inconsistent \emph{as an estimator of \(\beta_1\)}.
+\end{example}
+
+\begin{example}
+  Consider \(X_3 = [1 \  \text{sqft}_i]\) and \(X_4 = [\text{bdrm}_i]\).
+  In the regression \(Y_i = X_3 \delta_0 + X_4 \delta_1\) we have
+  \[
+    \hat{\delta}_1
+    = (X_4' M_{X_3}' M_{X_3} X_4)^{-1} X_4' M_{X_3}' Y
+    = (\hat{r}' \hat{r})^{-1} \hat{r}' Y.
+  \]
+  where \(\hat{r} \coloneqq M_{X_3} X_4\) is the vector of residuals in the regression
+  \[
+    A: \quad \text{bdrm}_s = \alpha_0 + \alpha_1 \text{sqft}_i + r_i.
+  \]
+  Note that \(\hat{\delta}_1\) is proportional to the partial correlation between price and the number of bedrooms.
+  In particular,
+  \[
+    \hat{\delta}_1
+    = \frac{\hat{r}' Y}{\hat{r}' \hat{r}}
+    = \frac{\hat{r}' Y}{\SSR_A}.
+  \]
+  Thus, noting that \(\hat{r}\) only depends on \(X\), we have under MLR.5 that
+  \[
+    \Var(\hat{\delta}_1 | X)
+    = \frac{\hat{r}' \Var(Y|X) \hat{r}}{\SSR_A^2}
+    = \frac{\sigma^2}{\SSR_A}
+    = \frac{\sigma^2}{\SST_A(1 - R_A^2)}.
+  \]
+
+  Now consider the regression
+  \[
+    C:\quad
+    Y_i = \gamma_0 + \text{bdrm}_i \gamma_1 + u_i.
+  \]
+  We have
+  \[
+    \hat{\gamma}_1 = (X_4' M_c X_4)^{-1} X_4' M_c [c \hat{\beta}_0 + X_4 \hat{\beta}_1 + X_s \hat{\beta}_2 + \hat{\epsilon}],
+  \]
+  where \(X_s = [\text{sqft}_i]\).
+  Then,
+  \[
+    \hat{\gamma}_1
+    = \hat{\beta}_1 + (X_4' M_c X_4)^{-1} X_4' M_c X_s \hat{\beta}_2 + (X_4' M_c X_4)^{-1} X_4' M_c \hat{\epsilon},
+  \]
+  where the last term is \(0\) by the normal equations.
+  So,
+  \[
+    \hat{\gamma}_1
+    = \hat{\beta}_1 + \hat{\beta}_2 \frac{\widehat{\Cov}(\text{bdrm}_i, \text{sqft}_i)}{\widehat{\Var}(\text{bdrm}_i)}
+    = \hat{\beta_1} + \hat{\beta}_2 \hat{\alpha}_1.
+  \]
+  We have \emph{no} omitted variable bias if:
+  \begin{itemize}
+    \item \(\hat{\alpha}_1 = 0\): bdrm does not vary linearly with sqft, so we can't falsely attribute the effect of sqft on the price of bdrm.
+    \item \(\hat{\beta}_2 = 0\): sqft does not affect price anyway.
+  \end{itemize}
+
+  Slightly different comparison: \(\E(\hat{\gamma}_1 | X)\) vs \(\beta_1\).
+  Suppose MLR.1-4 hold in \(Y = X \beta + \epsilon\).
+  Then
+  \[
+    \E(\hat{\gamma}_1 | X)
+    = \E(\hat{\beta}_1 + \hat{\beta_2} \hat{\alpha}_1 | X)
+    = \beta_1 + \beta_2 \hat{\alpha}_1.
+  \]
+  We have \emph{no} omitted variable bias unless \(\beta_2 = 0\) or \(\hat{\alpha}_1 = 0\).
+\end{example}
+
+\subsection{The Population Case}
+Suppose we partition \(x\) into \((x_1, x_2)\) and \(\beta\) into \(\beta = (\beta_1, \beta_2)\), each with dimensions \((k_1, k_2)\) and write
+\[
+  y = x_1' \beta_1 + x_2' \beta_2 + u, \quad
+  \E(xu) = 0.
+\] 
+Let \(\tilde{\beta}_1\) represent the best linear predictor of \(y\) given \(x_1\) and write
+\[
+  % \tilde{y} \coloneqq y - x_1' \tilde{\beta}_1.
+  y = x_1' \tilde{\beta}_1 + \tilde{y}, \quad \E(x_1 \tilde{y}) = 0.
+\]
+For each \(j\) write
+\[
+  x_{2j} = \tilde{\gamma}_j' x_1 + \tilde{x}_{2j}, \quad \E(x_1 \tilde{x}_{2j}) = 0.
+\]
+Write
+\[
+  \tilde{\gamma}
+  = \bmat{
+    - \tilde{\gamma}_1' - \\
+    \ \vdots \\
+    - \tilde{\gamma}_{k_2}' -
+  }.
+\]
+Then
+\[
+  x_2 = \tilde{\gamma} x_1 + \tilde{x}_2.
+\]
+Finally, consider
+\[
+  \tilde{y} = \tilde{x}_2' \overline{\beta}_2 + v, \quad \E(\tilde{x}_2 v) = 0.
+\]
+% Let \(\tilde{\gamma}\) represent the matrix of best linear predictors of \(x_2\) given \(x_1\),
+% \[
+%   \tilde{\gamma} \coloneqq \bmat{
+%     [\E(x_1 x_1')^{-1} \E(x_1 x_{21})]' \\
+%     \vdots \\
+%     [\E(x_1 x_1')^{-1} \E(x_1 x_{2k_2})]'
+%   },
+% \]
+% and define similarly
+% \[
+%   \tilde{x}_2 \coloneqq x_2 - \tilde{\gamma} x_1.
+% \]
+
+We have that:
+\begin{theorem}[Yule-Frisch-Waugh-Lovell]
+  \(\beta_2\) is both the best linear predictor of \(\tilde{y}\) given \(\tilde{x}_2\) and the best linear predictor of \(y\) given \(\tilde{x}_2\).
+\end{theorem}
+\begin{proof}
+  Since \(\E(\tilde{x}_2 x_1') = 0\) (as \(\tilde{x}_2\) is the residual of a linear projection of \(x_2\) onto \(x_1\)), we have
+  \begin{align*}
+    \overline{\beta}_2
+    \coloneqq \E(\tilde{x}_2 \tilde{x}_2')^{-1} \E(\tilde{x}_2 \tilde{y})
+    = \E(\tilde{x}_2 \tilde{x}_2')^{-1} \E(\tilde{x}_2 y).
+  \end{align*}
+  Thus \(\overline{\beta}\) represents both the best linear predictor of \(y\) given \(\tilde{x}_2\) and the best linear predictor of \(\tilde{y}\) given \(\tilde{x}_2\).
+  We show next that \(\overline{\beta}_2 = \beta_2\):
+  \begin{align*}
+    \overline{\beta}_2
+    &= \E(\tilde{x}_2 \tilde{x}_2')^{-1} \E(\tilde{x}_2 [x_1' \beta_1 + x_2' \beta_2 + u]) \\
+    &= \E(\tilde{x}_2 \tilde{x}_2')^{-1} \E(\tilde{x}_2 x_2') \beta_2 + \E(\tilde{x}_2 \tilde{x}_2')^{-1} \E(\tilde{x}_2 u) \\
+    &= \E(\tilde{x}_2 \tilde{x}_2')^{-1} \E(\tilde{x}_2 \tilde{x}_2') \beta_2 + \E(\tilde{x}_2 \tilde{x}_2')^{-1} \E([x_2 - \tilde{\gamma} x_1] u) \\
+    &= \beta_2,
+  \end{align*}
+  where the third equality follows from
+  \[
+    \E(\tilde{x}_2 \tilde{x}_2')
+    = \E(\tilde{x}_2 [x_2 - \tilde{\gamma} x_1]')
+    = \E(\tilde{x}_2 x_2'),
+  \]
+  and the fourth because
+  \[
+    \E(xu) = \E\left( \pmat{x_1 \\ x_2} u \right) = 0.
+  \]
+\end{proof}
+\begin{remark}~
+  \begin{itemize}
+    \item We can think of \(x_2' \beta_2\) as the best linear predictor of \(y\) given \(x_2\) after ``controlling for'' \(x_1\).
+    \item \(x_2' \beta_2\) is generally not the best linear predictor of \(y\) given \(x_2\):
+  \end{itemize}
+\end{remark}
+
+% \begin{proposition}
+%   Let \(x_{i 1}\) and \(x_{i 2}\) be of dimensions \(d_1\) and \(d_2\).
+%   Consider the short regression
+%   \[
+%     y_i = x_{i 1}' \beta_{1 s} + u_i
+%   \]
+%   and the long regression
+%   \[
+%     y_i = x_{i 1}' \beta_{1 l} + x_{i 2}' \beta_{2 l} + v_i
+%   \]
+%   Then, we have
+%   \[
+%     \beta_{1 s} = \beta_{1 l} + \alpha \beta_{2 l},
+%   \]
+%   where \(\alpha\) is a \(d_1 \times d_2\) matrix, the \(j\)th column of which is the population regression coefficient vector from regressing the \(j\)th component of \(X_{i 2}\) onto \(x_{i 1}\).
+% \end{proposition}
+% \begin{proof}
+%   \begin{align*}
+%     \beta_{1 s}
+%     &= \E[X_{1}' X_{1}]^{-1} \E[X_1' Y] \\
+%     &= \E[X_{1}' X_{1}]^{-1} \E[X_1' (X_1 \beta_{1 l} + X_2 \beta_{2 l} + U)] \\
+%     &= 
+%   \end{align*}
+% \end{proof}
+
+
+
+
+\section{Inference}
+\subsection{Finite Sample, Homoskedasticity}
+Suppose \(Y | X \sim \Normal(X \beta, \sigma^2 I_n)\), so that
+\[
+  Y = X \beta + U, \quad
+  \E(U|X) = 0, \quad
+  \Var(U|X) = \sigma^2 I_n.
+\]
+This set of assumptions can be generated by the following:
+\begin{itemize}
+  \item \((y_i, x_i)\) are multivariate normal.
+    (We have \((y_1, \dots, y_n, x_1', \dots, x_n')\) is multivariate normal, and hence \(Y| x_1, \dots, x_n\) is multivariate normal.)
+  \item MLR.1--5 with normality: MLR.6:  \(y_i | x_i \sim \Normal(x_i' \beta, \sigma^2)\).
+\end{itemize}
+Under these assumptions, we have
+\[
+  (X' X)^{-1} X' Y | X \sim \Normal(\beta, \sigma^2 (X' X)^{-1}).
+\]
+
+Thus
+\[
+  \hat{\beta}_j | X \sim \Normal\left( \beta_j, \left[ \sigma^2 (X' X)^{-1} \right]_{j, j} \right)
+\]
+and we may write
+\[
+  \frac{\hat{\beta}_j - \beta_j}{\sigma \sqrt{e_j' (X' X)^{-1} e_j}} | X
+  \sim \Normal(0, 1),
+\]
+where \(e_j\) counts the \((j + 1)\)-th column of the identity matrix (so \(e_0\) is the first column).
+
+However, we usually need to estimate \(\sigma^2\):
+Recall that we have an unbiased and consistent estimator of \(\sigma^2\):
+\[
+  \hat{\sigma}^2
+  \coloneqq \frac{\SSR}{n - k}.
+\]
+Note we also have the following result:
+\begin{proposition}
+  Under homoskedasticity, the estimator
+  \[
+    \hat{\sigma}^2
+    \coloneqq \frac{\SSR}{n - k}
+    \sim \frac{\sigma^2}{n - k} \cdot \chi_{n - k}^2
+  \]
+  is unbiased, consistent, and independent of \(\hat{\beta}\).
+\end{proposition}
+\begin{proof}[Sketch, Intuition]
+  Since
+  \[
+    (n - k) \hat{\sigma}^2
+    = \SSR
+    = (M_X Y)' (M_X Y)
+    = U' M_X U.
+  \]
+  It turns out that
+  \[
+    \underbrace{U'U}_{\sigma^2 \chi_n^2}
+    = \underbrace{U' P_{X} U}_{\sigma^2 \chi_{k}^2}
+      + \underbrace{U' M_{X} U}_{\sigma^2 \chi_{n - k}^2}.
+  \]
+  % we have \(\hat{\sigma}_2\) is independent of \(\hat{\beta}\), conditional on \(X\).
+\end{proof}
+
+\subsubsection{Hypothesis on a Single Coefficient}
+Consequently, we have
+\[
+  \left. \frac{\hat{\beta}_j - \beta_j}{\hat{\sigma} \sqrt{e_j' (X' X)^{-1} e_j}} \right| X
+  \sim t_{n - k}.
+\]
+The test
+\[
+  \phi_n \coloneqq \ind\left( \abs*{\frac{\hat{\beta}_j - \beta_j^0}{\hat{\sigma} \sqrt{e_j' (X' X)^{-1} e_j}}} > t_{n - k, 1 - \alpha / 2} \right)
+\]
+has rejection probability \(\alpha\) under the null hypothesis \(H_0: \beta_j = \beta_j^0\).
+The rejection probability is strictly greater than \(\alpha\) when \(H_0\) is false.
+The power curve achieves its minimum \(\alpha\) at \(\beta_j = \beta_j^0\) and asymptotes at \(1\).
+
+\begin{definition}
+  \(\se \hat{\beta}_j \coloneqq \hat{\sigma} \sqrt{e_j' (X'X)^{-1} e_j}\) is called the \vocab{standard error} of \(\hat{\beta}_j\).
+\end{definition}
+
+Conditional on the data, the \(p\)-value is given by
+\begin{align*}
+  \hat{p}_n
+  &\coloneqq \inf_{\alpha \in (0, 1)} \left\{ \abs{T_n} > t_{n - k, 1 - \frac{\alpha}{2}} \right\} \\
+  &= \inf_{\alpha \in (0, 1)} \left\{ \abs{T_n} > F^{-1}\left( 1 - \frac{\alpha}{2} \right) \right\}.
+\end{align*}
+In this case, since \(F^{-1}\) is strictly increasing and continuous, we get
+\[
+  \alpha = 2 [1 - F(\abs{T_n})]
+  = 2 F(- \abs{T_n}).
+\]
+
+\begin{definition}
+  The \(p\)-value is the smallest significance level at which we would reject the null hypothesis.
+\end{definition}
+\begin{remark}
+  The introductory definition of \(p\) being the probability of getting more ``extreme'' test-statistics only works if the null is a singleton.
+\end{remark}
+
+
+
+\subsection{Heteroskedasticity}
+We assume MLR.1--4 hold, but not MLR.5.
+Recall that
+\begin{align*}
+  \Var(\hat{\beta}|X)
+  &= \Var(\beta + (X'X)^{-1} X' U|X) \\
+  &= (X'X)^{-1} X' \Omega X (X'X)^{-1},
+\end{align*}
+where \(\Omega \coloneqq \Var(U|X)\). 
+
+When \(y_i = \beta_0 + \beta_1 x_{i 1} + \dots + \beta_k x_{i k} + u_i\), we have by Yule-Frisch-Waugh-Lovell,
+\[
+  \hat{\beta}_j = \frac{\sum_i \hat{r}_{ij} y_i}{\sum_i \hat{r}_{ij}^2},
+\]
+where \(\hat{r}_{ij}\) is the \(i\)-th residual of a regression of \(x_j\) on all other regresses.
+Thus, denoting \(\sigma_i \coloneqq \Var(y_i|x_i)\), we have
+\[
+  \Var(\hat{\beta}_j|X) = \frac{\sum_i \hat{r}_{ij}^2 \sigma_i^2}{\left( \sum_i \hat{r}_{ij}^2 \right)^2}.
+\]
+Estimating \(\sigma_i^2\) with \(\hat{u}_i^2\), we have the \vocab{heteroskedasticity robust standard error}:
+\[
+  \se \hat{\beta}_j
+  \coloneqq \sqrt{\frac{\sum_i \hat{r}_{ij}^2 \hat{u}_i^2}{(\sum_i \hat{r}_{ij}^2)^2}}.
+\]
+
+\begin{remark}
+  In the simple regression \(y_i = \beta_0 + \beta_1 x_{i} + u_i\), we have
+  \[
+    \se \hat{\beta}_1
+    = \sqrt{\frac{\sum \hat{u}_i^2 (x_i - \overline{x})^2}{(\sum (x_i - \overline{x})^2)^2}}.
+  \]
+  This equals the homoskedasticity standard error when \(\hat{u}_i^2\) is constant.
+\end{remark}
+
+\begin{remark}
+  The heteroskedasticity robust standard error is not necessarily larger.
+  If, for example, \(u\) has small variance for small and large \(x\), then \(\hat{\beta}\) tend to have smaller variance than the homoskedasticity standard error.
+  If \(u\) has large variance for small and large \(x\), then \(\hat{\beta}\) has large variance.
+\end{remark}
+
+\begin{remark}
+  People often use OLS to estimate \(\hat{\beta}\) and then use the heteroskedasticity robust standard errors to estimate \(\se \hat{\beta}\).
+  Note that the OLS estimator is no longer efficient when the errors are heteroskedastic.
+
+  The only advantage of computing homoskedasticity standard errors seems to be that it gives a exact distribution (instead of an approximation by the central limit theorem, though for large \(n\), \(t_{n - k} \sim \Normal\), and this advantage is moot), at the cost of assuming the \emph{very strong} assumptions of MLR.5 and MLR.6.
+\end{remark}
+
+
+\subsection{Linear Restrictions}
+\subsubsection{A Single Linear Restriction}
+Suppose
+\[
+  \sqrt{n} (\hat{\beta}_n - \beta) \longdistto \Normal(0, V),
+\]
+where \(V = \E(xx')^{-1} \E(u^2 xx') \E(xx')^{-1}\).
+Suppose \(V\) is non-singular and \(\hat{V}_n \probto V\) is a consistent estimator of \(V\).
+
+Consider
+\[
+  H_0: r' \beta = c
+  \quad\text{vs}\quad
+  H_1: r' \beta \neq c.
+\]
+The continuous mapping theorem gives
+\[
+  \sqrt{n} (r' \hat{\beta} - r' \beta)
+  \longdistto \Normal(0, r' V r),
+\]
+and so by Slutsky's theorem we have the asymptotic pivot
+\[
+  T_n
+  \coloneqq \frac{\sqrt{n} (r' \hat{\beta} - r' \beta)}{\sqrt{r' \hat{V}_n r}}
+  \longdistto \Normal(0, 1).
+\]
+\begin{itemize}
+  \item The test \(\phi_n \coloneqq \ind(\abs{T_n} > z_{1 - \alpha / 2})\) is of asymptotic size \(\alpha\).
+  \item We can use \(\ind(T_n > z_{1 - \alpha})\) to test \(H_0: r' \beta \leq c\).
+  \item An asymptotic \(1 - \alpha\) confidence interval for \(r' \beta\) is
+    \[
+      \left[
+        r' \hat{\beta} - z_{1 - \frac{\alpha}{2}} \sqrt{\frac{r' \hat{V}_n r}{n}},
+        r' \hat{\beta} + z_{1 - \frac{\alpha}{2}} \sqrt{\frac{r' \hat{V}_n r}{n}}
+      \right]
+    \]
+\end{itemize}
+
+\begin{example}
+  We may want to test the hypothesis that firms exhibit constant returns to scale.
+  With the production function \(Q = A K^{\beta_1} L^{\beta_2} U\).
+  We may write
+  \[
+    \log Q = \beta_0 + \beta_1 \log A + \beta_2 \log K + \beta_3 \log L + u
+  \]
+  and test \(H_0: \beta_1 + \beta_2 = 1\).
+\end{example}
+
+\subsubsection{Multiple Linear Restrictions}
+\begin{proposition}
+  A positive definite and symmetric matrix \(A\) has a square root \(A^{1 / 2}\) with inverse \(A^{-1 / 2} = (A^{-1})^{1 / 2}\).
+\end{proposition}
+
+Consider
+\[
+  H_0: R \beta = c \quad\text{vs}\quad H_1: R \beta \neq c,
+\]
+where \(R\) is a \(p \times k\)-dimensional matrix of full row rank (so none of the restrictions are redundant) and \(c\) is a \(p \times 1\) vector.
+The continuous mapping theorem gives
+\[
+  \sqrt{n} (R \hat{\beta} - R \beta)
+  \longrightarrow \Normal(0, RVR').
+\]
+Note that \(R V R'\) is full rank (because \(R\) and \(V\) are) and hence positive definite (because \(V\) is).
+Slutsky's Theorem then gives
+\[
+  (R \hat{V}_n R')^{- 1 / 2} \sqrt{n} (R \hat{\beta}_n - R \beta)
+  \longrightarrow \Normal(0, I_p),
+\]
+since
+\[
+  (RVR')^{- 1 / 2} R V R' (R V R')^{- 1 / 2}
+  = I_p.
+\]
+We may use the contours of the multivariate normal distribution to test the hypothesis.
+
+Alternatively, note that the continuous mapping theorem gives
+\begin{proposition}[Testing Multiple Linear Restrictions]
+  If \(\hat{V}\) is a consistent estimator of the asymptotic variance of \(\hat{\beta}\), then
+  \begin{align*}
+    &n \cdot (R \hat{\beta}_n - R \beta)' (R \hat{V}_n R')^{- 1 / 2} 
+    (R \hat{V}_n R')^{- 1 / 2} (R \hat{\beta}_n - R \beta) \\
+    &= n \cdot (R \hat{\beta}_n - R \beta)' (R \hat{V}_n R')^{-1} (R \hat{\beta}_n - R \beta)
+    \longdistto \chi_p^2.
+  \end{align*}
+\end{proposition}
+
+We may use this asymptotic pivot to derive a confidence set for \(R \beta\) and conduct hypothesis tests.
+\begin{itemize}
+  \item An asymptotic \(1 - \alpha\) confidence set for \(R \beta\) is given by
+    \[
+      C_n
+      \coloneqq \left\{ c \in \RR^p: n \cdot (R \hat{\beta} - c)' (R \hat{V}_n R')^{-1} (R \hat{\beta} - c) \leq \chi_{p, 1 - \alpha}^2 \right\}.
+    \]
+    Since \((R V R')^{-1}\) is positive definite, this is an ellipsoid in \(\RR^p\) centered at \(R \hat{\beta}\).
+  \item Under \(H_0\), we can reject if
+    \[
+      T_n
+      \coloneqq n \cdot (R \hat{\beta}_n - c)' (R \hat{V}_n R')^{-1} (R \hat{\beta}_n - c)
+      > \chi_{p, 1 - \alpha}^2.
+    \]
+\end{itemize}
+
+\begin{remark}
+  If \(R_1\) and \(R_2\) are related by a invertible linear transformation, then the tests conducted by \(R_1\) and \(R_2\) are equivalent.
+  The way in which we write the restrictions does not matter.
+\end{remark}
+
+\begin{remark}
+  The finite sample homoskedasticity version of this is called a \(F\)-test.
+  To see this, note that if \(U_2 \sim \chi_{d_2}^2\), then as \(d_2 \to \infty\), \(U_2 / d_2 \probto 1\).
+  Thus, \(F = (U_1 / d_1) / (U_2 / d_2) \approx U_1 / d_1 = \chi_{d_1}^2 / d_1\).
+\end{remark}
+
+
+\section{Regression Specification}
+\subsection{Weighted Regression}
+If we know the error variance \(\sigma_i^2\), we could transform the model
+\[
+  \frac{y_i}{\sigma_i} = \left( \frac{1}{\sigma_i}, \frac{x_{i 1}}{\sigma_i}, \dots, \frac{x_{i k}}{\sigma_i} \right) \beta + \frac{u_i}{\sigma_i}.
+\]
+This restores MLR.5, since \(\E((u_i / \sigma_i)^2 | x_i) = \E(u_i^2 | x_i) / \sigma_i^2 = 1\).
+Gauss-Markov then hold, since MLR.1--4 still hold under the transformation.
+
+\begin{example}
+  Suppose the model for observation \(i\) is
+  \[
+    y_i = \beta_0 + \beta_1 x_i + u_i,
+  \]
+  where MLR.1--5 hold.
+  Let \(\Var(u|x) = \sigma^2\).
+  For groups \(k = 1, \dots, K\), we observe
+  \[
+    \overline{y}_k = \frac{1}{n_k} \sum_{i \in \text{group } k} y_i, \quad
+    \overline{x}_k = \frac{1}{n_k} \sum_{i \in \text{group } k} x_i.
+  \]
+
+  The model for averages is
+  \[
+    \overline{y}_k = \beta_0 + \beta_1 \overline{x}_k + \overline{u}_k, \quad
+    \Var(\overline{u}_k | X) = \frac{\sigma^2}{n_k}.
+  \]
+  % with variance \(\Var(\overline{u}_k | X) = \sigma^2 / n_k\).
+  We transform the model to restore MLR.5:
+  \[
+    \sqrt{n_k} \cdot \overline{y}_k
+    = \beta_0 \sqrt{n_k} + \beta_1 \sqrt{n_k} \cdot \overline{x}_k + \sqrt{n_k} \cdot \overline{u}_k, \quad
+    \Var(\sqrt{n_k} \cdot \overline{u}_k | X) = \sigma^2.
+  \]
+\end{example}
+
+\subsection{Log Specifications}
+Recall the approximation
+\[
+  \log x' - \log x
+  = \log \left( \frac{x'}{x} \right)
+  \approx \frac{x' - x}{x}.
+\]
+
+\subsubsection{Level-Log}
+We have \(\E(y|x = t) \approx \alpha + \beta \log t\).
+\[
+  \E(y|x = t + \Delta t) - \E(y|x = t)
+  \approx \beta \frac{\Delta t}{t}.
+\]
+So \(\beta / 100\) is approximately the change in the conditional mean of \(y\) when \(t\) increases by 1\%.
+
+\subsubsection{Log-Level}
+We have \(\E(\log y | x = t) \approx \alpha + \beta t\).
+\begin{align*}
+  \beta
+  &\approx \E(\log y | x = t + 1) - \E(\log y | x = t) \\
+  &\approx \log \E(y| x = t + 1) - \log \E(y| x = t)
+  \approx \frac{\E(y| x = t + 1) - \E(y|x = t)}{\E(y|x = t)}.
+\end{align*}
+So \(100\beta\) is approximately the percentage change in the mean of \(y\) resulting from a unit increase in \(x\).
+\begin{remark}
+  We are committing a sin by interchanging \(\E\) with \(\log\).
+  If this is a causal model (note that we need a lot more assumptions to say this), then we may differentiate the actual conditional mean function:
+  Differentiating \(\log y = \alpha + \beta t\) gives
+  \[
+    \frac{1}{y} \frac{\partial y}{\partial t}
+    = \beta_1,
+  \]
+  and so
+  \[
+    \frac{100 \Delta y}{y}
+    \approx 100 t \cdot \Delta t.
+  \]
+\end{remark}
+
+A less bad interpretation is as follows:
+\begin{align*}
+  \exp \beta - 1
+  &\approx \exp(\E(\log y | x = t + 1) - \E(\log y | x = t)) - 1 \\
+  &= \frac{\exp(\E(\log y | x = t + 1)) - \exp (\E(\log y | x = t))}{\exp(\E(\log y | x = t))}.
+\end{align*}
+Thus when \(\beta \approx 0\) we have \(\beta \approx \exp (\beta) - 1\) is the proportional change in the conditional geometric mean of \(y\) given a unit increase in \(x\).
+
+\subsubsection{Log-Log}
+We have \(\E(\log(y) | x = t) \approx \alpha + \beta \log t\).
+Then,
+\[
+  \E(\log(y) | x = t + \Delta t) - \E(\log(y) | x = t)
+  \approx \beta [\log (t + \Delta t) - \log t],
+\]
+which gives
+\[
+  \frac{\E(y|x = t + \Delta t) - \E(y|x = t)}{\E(y|x = t)}
+  \approx \beta \cdot \frac{\Delta t}{t}.
+\]
+So a 1\% increase in \(x\) is associated with a \(\beta\)\% change in the conditional mean of \(y\) (also known as an ``elasticity'').
+
+
+\subsection{Functional Forms}
+\begin{example}[Polynomials]
+  Consider the approximation
+  \[
+    \E[\mathrm{wage}| \mathrm{exper}]
+    \approx \beta_0 + \beta_1 \mathrm{exper} + \beta \mathrm{exper}^2.
+  \]
+  \begin{itemize}
+    \item We may estimate the turning point to be \(- \hat{\beta}_1 / 2 \hat{\beta}_2\).
+    \item The effect of experience diminishes if \(\beta_2  0\).
+    \item The average partial effect can be estimated using
+      \[
+        \frac{1}{n} \sum (\hat{\beta}_1 + 2 \hat{\beta}_2 \mathrm{exper}_i)
+        = \hat{\beta}_1 + 2 \hat{\beta}_2 \overline{\mathrm{exper}}_n.
+      \]
+  \end{itemize}
+\end{example}
+
+\begin{example}[Kinks and Discontinuities]
+  \begin{align*}
+    y_i
+    &= \beta_0 + \beta_1 x_i + d_i(\gamma + \delta x_i) + \epsilon_i \\
+    &= \beta_0 + \beta_1 x_i + \gamma d_i + \delta d_i x_i + \epsilon_i.
+  \end{align*}
+  If \(d_i = \ind(x_i \geq \overline{x})\), then the jump is \(\gamma + \delta \cdot \overline{x}\).
+\end{example}
+
+\subsection{Dummy Variables}
+\begin{example}[Dummy Variables]
+  For a continuous random variable, we transform it into a categorical variable described by mutually exclusive (\(d_i d_j = 0\) when \(i \neq j\)) and exhaustive (\(\sum d_j = 1\)) dummies \(d_j\).
+  We may for instance estimate the group averages using
+  \[
+    \E(y_i| d_1, \dots, d_k) 
+    = \sum \beta_j d_j,
+  \]
+  where we omit the intercept to avoid perfect collinearity.
+  We may also specify
+  \[
+    \E(y_i| d_1, \dots, d_k) 
+    = \alpha_0 + \sum_{j = 1}^{k - 1} \alpha_j d_j
+  \]
+  where \(\alpha_j\) is the difference in mean between \(d_j\) and \(d_k\) (the base group).
+\end{example}
+
+\begin{definition}
+  We say a regression is \vocab{saturated} if it has one parameter for each possible value of the regressors.
+\end{definition}
+
+
+\section{Regression Cheat Sheet}
+\begin{mdframed}
+Let \(x\) be a scalar.
+\(y = \beta x + u\), \(\E[xu] = 0\).
+\end{mdframed}
+\begin{enumerate}[label=(\roman*)]
+  \item 
+    \[
+      \beta = \frac{\E[xy]}{\E[x^2]}, \quad
+      \hat{\beta} = \frac{\sum x_i y_i}{\sum x_i^2}.
+    \]
+  \item If \(\E[u|x] = 0\) and \(\E[u^2|x] = \E[u^2]\), then
+    \[
+      \sqrt{n} (\hat{\beta} - \beta)
+      \longdistto \Normal\left(0, \frac{\E[u^2]}{\E[x^2]}\right).
+    \]
+  \item \(\se \hat{\beta} = \hat{\sigma} / \sqrt{\sum x_i^2}\).
+\end{enumerate}
+
+% \subsubsection{Simple Linear Regression}
+\begin{mdframed}
+Let \(x\) be a scalar.
+\(y = \beta_0 + \beta_1 x + u\), \(\E[xu] = 0\).
+\end{mdframed}
+\begin{enumerate}[label=(\roman*)]
+  \item
+    \[
+      \beta_1
+      = \frac{\Cov(y, x)}{\Var(x)}, \quad
+      \hat{\beta}_1
+      = \frac{\sum (x_i - \overline{x}) y_i}{\sum (x_i - \overline{x})^2}.
+    \]
+  \item If \(\E[u|x] = 0\) and \(\E[u^2 | x] = \E[u^2]\), then
+    \[
+      \sqrt{n} (\hat{\beta}_1 - \beta_1)
+      \longdistto \Normal\left( 0, \frac{\E[u^2]}{\Var(x)} \right) 
+    \]
+  \item \(R^2 = (\Corr(y_i, x_i))^2\).
+  \item \(\se \hat{\beta}_1 = \hat{\sigma} / \sqrt{\sum x_i^2 - (\sum x_i)^2} = \hat{\sigma} / \sqrt{\sum (x_i - \overline{x})^2}\).
+\end{enumerate}
+
+% \subsection{Multiple Linear Regression}
+\begin{mdframed}
+Let \(x\) be a \((k \times 1)\) vector.
+\(y = x' \beta + u\), \(\E[xu] = 0\).
+\end{mdframed}
+\begin{enumerate}[label=(\roman*)]
+  \item
+    \[
+      \beta = \E[x x']^{-1} \E[x y'], \quad
+      \hat{\beta} = (X' X)^{-1} X' Y.
+    \]
+  \item
+    \[
+      \Var(\hat{\beta}|X)
+      = (X'X)^{-1} X \Omega X (X'X)^{-1}, \quad
+      \Omega \coloneqq \Var(U|X).
+    \]
+  \item If \(\Var(xu)\) exists, then
+    \[
+      \sqrt{n} (\hat{\beta} - \beta)
+      \longdistto \Normal(0, \Sigma),
+    \]
+    where
+    \begin{align*}
+      \Sigma
+      &= \E[xx']^{-1} \Var(xu) \E[xx']^{-1} \\
+      &= \E[xx']^{-1} \E[u^2 xx'] \E[xx']^{-1}.
+    \end{align*}
+  \item \(R^2 = (\Corr(y_i, \hat{y}_i))^2\).
+  \item Under MLR.4 or if we include an intercept, \(\E[U|X] = 0\).
+    Consequently, \(\Omega = \E[U'U|X]\).
+  \item Under MLR.4 and MLR.5, \(\Omega = \sigma^2 I_n\) and \(\Sigma = \sigma^2 \E[x x']^{-1}\).
+  \item Under MLR.5, we have the consistent and unbiased estimator
+    \[
+      \hat{\sigma}^2
+      \coloneqq \frac{\sum \hat{u}_i^2}{n - k} = \frac{\SSR}{n - k}
+      \sim \frac{\sigma^2}{n - k} \cdot \chi_{n - k}^2.
+    \]
+    Consequently, we have the consistent estimator
+    \[
+      \hat{\Sigma} \coloneqq \sigma^2 \left( \frac{1}{n} \sum x_i x_i' \right)^{-1}.
+    \]
+  \item Without MLR.5, we have the consistent estimator
+    \[
+      \hat{\Sigma}
+      \coloneqq n (X' X)^{-1} X' \hat{\Omega} X (X' X)^{-1}
+      = \left( \frac{1}{n} \sum x_i x_i' \right)^{-1} \left( \frac{1}{n} \sum \hat{u}_i^2 x_i x_i' \right) \left( \frac{1}{n} \sum x_i x_i \right)^{-1}.
+    \]
+  \item Write \(x = (w', x_j)'\), where \(x_j\) is a scalar.
+    Then, \(\hat{\beta}_j = (\hat{V}' \hat{V})^{-1} \hat{V}' Y\), where \(\hat{V}\) is the vector of residuals of a regression of \(x_j\) on \(w\).
+    Thus, if MLR.5 holds, then
+    \[
+      \Var(\hat{\beta}_j|X)
+      = \sigma^2 (\hat{V}' \hat{V})^{-1}
+      = \frac{\sigma^2}{\SSR_j}
+      = \frac{\sigma^2}{\SST_j (1 - R_j^2)}.
+    \]
+  \item The standard error is given by
+    \[
+      \se \hat{\beta}_j \coloneqq \hat{\sigma} \sqrt{e_j' (X'X)^{-1} e_j}.
+    \]
+    The heteroskedasticity robust standard error is given by
+    \[
+      \se \hat{\beta}_j
+      = \sqrt{\frac{\sum_i \hat{r}_{ij}^2 \hat{u}_i^2}{\left( \sum \hat{r}_{ij}^2 \right)^2}},
+    \]
+    where \(\hat{r}_{ij}\) denotes the \(i\)th residual of a regression of \(x_j\) on all other regressors.
+\end{enumerate}
+
+
+\section{The Language of Causality}
+\begin{example}[A Primer, CPS]
+  Let \(D_i\) be the indicator of an individual being sampled.
+  Let \(Y_i\) denote the wage of individual \(i\).
+  Let \(X_i\) be the indicator of an individual being of Type 1, who loves to respond to surveys.
+  All other individuals are of Type 0, who hate to respond to surveys.
+  We observe \(D_i Y_i\) instead of \(Y_i\). 
+  Suppose that
+  \begin{gather*}
+    \E[Y|X = 1] = 100, \quad
+    \E[Y|X = 0] = 50, \\
+    \P(D = 1| X = 1) = x_1 = \frac{1}{2}, \quad
+    \P(D = 1| X = 0) = x_0 = \frac{1}{18}, \\
+    \P(X = 1) = \frac{1}{10}, \quad
+    \P(X = 0) = \frac{9}{10}.
+  \end{gather*}
+  Every 1000 individuals surveyed, we expect to get around 50 responses from Type 1 individuals and 50 responses from Type 0 individuals.
+  We have
+  \[
+    \P(X = 1|D = 1) = \frac{1}{2}, \quad
+    \P(X = 0|D = 1) = \frac{1}{2}
+  \]
+  and so
+  \[
+    \frac{1}{n} \sum Y_i D_i
+    \longprobto \E[YD]
+    = \E[Y|D = 1] \P(D = 1).
+  \]
+  Thus,
+  \[
+    \frac{1}{n} \sum \frac{Y_i D_i}{\P(D = 1)} \longprobto \E[Y|D = 1].
+  \]
+
+  If \(Y\) were independent of \(D\) (responses missing at random), then we have \(\E[Y] = \E[Y|D = 1]\).
+  Thus if we know \(\P(D = 1)\), an unbiased and consistent estimator for \(\E[Y]\) would be \(n^{-1} \sum Y_i D_i / \P(D = 1)\)
+  This is not, however, true of our stylized world (assuming \(Y \indep D | X\)):
+  \begin{align*}
+    &\E[Y|D = 1] \\
+    &= \E[Y|D = 1, X = 1]\P(X = 1|D = 1) + \E[Y|D = 1, X = 0]\P(X = 0|D = 1) \\
+    &= 100 \cdot \frac{1}{2} + 50 \cdot \frac{1}{2}
+    = 75 \neq \E[Y|D = 0].
+  \end{align*}
+  In particular \(Y \indep D\), since people who are sampled are Type 1 more often than their relative frequency in the population and Type 1 people earn more.
+
+  Now suppose we are willing to assume non-response is ``at random'' conditional on Type: \(Y \indep D | X\).
+  Then
+  \begin{align*}
+    \E[Y]
+    &= \E[Y|X = 1]\P(X = 1) + \E[Y|X = 0]\P(X = 0) \\
+    &= \E[Y|D = 1, X = 1]\P(X = 1) + \E[Y|D = 1, X = 0]\P(X = 0) \\
+    &= \frac{\E[Y\ind(D = 1, X = 1)]}{\E[\ind(D = 1, X = 1)]} \P(X = 1)
+    + \frac{\E[Y\ind(D = 1, X = 1)]}{\E[\ind(D = 1, X = 1)]} \P(X = 0).
+  \end{align*}
+  We may use the sample analogue principle:
+  \begin{align*}
+    \hat{\E}(Y|D = 1, X = 1)
+    &= \overbrace{\frac{\frac{1}{n} \sum Y_i \ind(D_i = 1, X_i = 1)}{\P(D = 1, X = 1)}}^{\mathclap{\text{Average of Type 1, obtained through reweighing each response by response rate}}} \cdot \underbrace{\P(D = 1)}_{\mathclap{\text{Reweigh by the proportion of Type 1 in the population}}} \\
+    &= \frac{\frac{1}{n} \sum Y_i \ind(D_i = 1, X_i = 1)}{\P(D = 1|X = 1)}
+    = \frac{1}{n} \sum \frac{Y_i D_i}{\P(X_i)},
+  \end{align*}
+  and similarly for the other term.\footnote{It turns out that using the estimated propensity scores is more efficient, see Hirano, Imbens, and Ridder (2003) Efficient Estimation of Average Treatment Effects Using the Estimated Propencity Scores.}
+  Then,
+  \[
+    \hat{\E}[Y]
+    = \frac{1}{n} \sum \frac{Y_i D_i}{\P(X_i)}
+  \]
+  This is called inverse propensity score weighting.
+  The population analogue of this is
+  \[
+    \E[Y]
+    = \E\left( \frac{YD}{\P(X)} \right) 
+  \]
+  This is the weights used in the CPS (base weights).
+\end{example}
+
+
+\begin{definition}~
+  \begin{itemize}
+    \item The \vocab{average treatment effect} (ATE) is defined as
+      \[
+        \E[Y(1) - Y(0)]
+      \]
+    \item The \vocab{average treatment effect on the treated} (ATT) is defined as
+      \[
+        \E[Y(1) - Y(0)|D = 1]
+      \]
+    \item The \vocab{average treatment effect on the untreated} (ATU) is defined as
+      \[
+        \E[Y(1) - Y(0)|D = 0]
+      \]
+  \end{itemize}
+\end{definition}
+
+
+\begin{proposition}
+  We have the decomposition
+  \[
+    \ATE
+    = \ATT \cdot \P(D = 1) + \ATU \cdot \P(D = 0).
+  \]
+\end{proposition}
+
+With a binary treatment \(D\), we may always without loss of generality write the conditional men as
+\[
+  \E(Y|D)
+  = \beta_0 + \beta_1 D.
+\]
+However, the difference in means \(\beta_1\) is not necessarily the treatment effect:
+\begin{align*}
+  \beta_1
+  &= \E[y(1)|D = 1] - \E[y(0)|D = 0] \\
+  &= \underbrace{\E[y(1)|D = 1] - \E[y(0)|D = 1]}_{\text{ATT}} + \underbrace{\E[y(0)| D = 1] - \E[y(0)|D = 0]}_{\text{Selection Bias}}.
+\end{align*}
+We may similarly decompose \(\beta_1\) as the \(\ATU\) and the selection bias in \(y(1)\).
+Combining the two decompositions, we can write \(\beta_1\) as a weighted average of the \(\ATE\) and the selection biases:
+\begin{align*}
+  &\E(y(1)|D = 1) - \E(y(0)|D = 0) \\
+  &= \ATE \\
+  &\quad+ \left\{ \E[y(1)|D = 1] - \E[y(1)|D = 0] \right\} \Pr(D = 0) \\
+  &\quad+ \left\{ \E[y(0)|D = 1] - \E[y(0)|D = 0] \right\} \Pr(D = 1).
+\end{align*}
+
+\begin{example}[Selection Biases]~
+  \begin{itemize}
+    \item Selection bias on \(y(0)\): manager upgrades worse-performing stores.
+    \item Selection bias on \(y(1)\): manager upgrades stores based on their forecasted performance.
+  \end{itemize}
+  When there is no selection bias in \(y(0)\), \(\ATE = \ATT\).
+  When there is no selection bias in \(y(1)\), \(\ATE = \ATU\).
+\end{example}
+
+\begin{example}
+  In a regression \(Y_i = \beta_0 + \beta_1 D_i + v_i\), we have
+  \[
+    \hat{\beta}_1
+    = \frac{\frac{1}{n} \sum Y_i D_i}{\frac{1}{n} \sum D_i}
+    \longprobto \frac{\E[Y D]}{\E[D]}
+    = \E[Y|D = 1].
+  \]
+\end{example}
+
+\begin{example}
+  If there are a control group and \(k\) possible treatments groups.
+  Suppose participants are randomly assigned to either control or one of the treatments and let \(x_{i j}\) denote the indicator for individual \(i\) taking treatment \(j\).
+  We may specify
+  \[
+    \E[Y_i|x_i] = \beta_0 + \sum_{j = 1}^k \beta_j x_{i j} + \epsilon_i,
+  \]
+  where \(\beta_0 = \E[y(0)]\) and \(\beta_j = \E(y(j) - y(0))\).
+\end{example}
+
+\subsection{Random Assignment}
+\begin{example}[Identification Under Random Assignment]
+  Under random assignment, or
+  \[
+    D_i \indep (y_i(0), y_i(1)),
+  \]
+  we have
+  \begin{align*}
+    \beta_1
+    &= \E[y(1)|D = 1] - \E[y(0)|D = 0] \\
+    &= \E(y(1)) - \E(y(0))
+    = \ATE.
+  \end{align*}
+  Thus, under randomized treatment assignment, estimating a linear regression produces an unbiased estimate of the ATE.
+
+  With random assignment to \(k\) different outcomes, we have \(k + 1\) potential outcomes
+  \[
+    Y_i = y_i(0) + \sum_{j = 1}^k (y_j(i) - y_i(0)).
+  \]
+  Using the model
+  \[
+    \E[Y_i|x_i]
+    = \beta_0 + \sum_{j = 1}^k \beta_j x_{ij},
+  \]
+  we can estimate
+  \[
+    \beta_0 = \E(y(0)), \quad
+    \beta_j = \E(y(j) - y(0)).
+  \]
+\end{example}
+
+\subsubsection{Covariate Balance Test}
+A statistical justification for random assignment is a so-called ``balance test'' where we regress treatment dummy \(D_i\):
+ \[
+  D_i = \gamma_0 + x_i' \gamma_1 + \epsilon_i.
+\]
+We can the conduct a \(F\)-test of \(H_0: \gamma_1 = 0_{d_x}\) vs.\ \(H_1: \gamma_1 \neq 0_{d_x}\).
+
+\begin{remark}~
+  \begin{itemize}
+    \item A rejection of the null hypothesis does not imply that the treatment assignment is not random.
+      At the significance level \(\alpha\), we have a probability of \(\alpha\) of rejecting the null hypothesis when it is true.
+    \item Perhaps more importantly, \(D_i\) could be correlated with some unobserved variables.
+      But always note that what we really need is
+      \[
+        D_i \indep (y_i(0), y_i(1))
+      \]
+      instead of \(\D_i \indep X\).
+  \end{itemize}
+\end{remark}
+
+
+\section{Selection on Observables}
+\begin{definition}
+  We say treatment assignment is \vocab{unconfounded} if, conditional on observed covariates \(x_i\), treatment is randomly assigned:
+  \[
+    D_i \indep (y_i(0), y_i(1)) | x_i.
+  \]
+\end{definition}
+\begin{remark}
+  Conditional independence does not imply independence.
+  The converse is false also.
+  In particular, conditional independence may fail to hold when we conditional on too much variables.
+  See the next example.
+\end{remark}
+
+\begin{example}
+  Let \(W\) denote wage and \(D_i\) indicate individual \(i\) is employed.
+  If we assume \(W \indep D\), then \(F_W(\cdot | D = 1) = F_W(\cdot | D = 0)\).
+  Now suppose \(D = 1\) if and only if \(W \geq R\), where \(R\) is a reservation wage.
+  ``Missing at random'' would require that those with high market wages also tend to have high reservation wages.
+  Note that missing at random does not imply that missing at random conditional on reservation wages:
+  \begin{align*}
+    \E[W|D = 1, R = r]
+    = \E[W| W \geq R, R = r]
+    &\geq r, \\
+    \E[W|D = 0, R = r]
+    &\leq r.
+  \end{align*}
+\end{example}
+
+
+Under unconfoundedness, we have
+\begin{align*}
+  \E(y_1 |D, x)
+  &= \E(y_1 | x) \\
+  \E(y_0 |D, x)
+  &= \E(y_0 | x).
+\end{align*}
+Thus, to estimate the ATE, we can write
+\begin{align*}
+  \ATE
+  &= \E\big\{ \E[y_1 - y_0 | x] \big\} \\
+  &= \E\big\{ \E(y_1 |D = 1, x) - \E(y_0 |D = 0, x) \big\} \\
+  &= \E\big\{ \E(y |D = 1, x) - \E(y |D = 0, x) \big\}.
+\end{align*}
+Each term in the last equality can be estimated using observed data.
+
+Since in general \(\P(X = \cdot; D = 1) \neq \P(X = \cdot)\), we cannot simplify the last equality to \(\E[y|D = 1] - \E[y|D = 0]\).
+However, if \(\P(X = \cdot; D = 1) = \P(X = \cdot)\), then
+\[
+  \ATE = \E[y|D = 1] - \E[y|D = 0].
+\]
+
+We thus have the following:
+\begin{proposition}
+  If, in addition to unconfoundedness, we have \(D_i \indep x_i\), then the naive comparison is the ATE.
+\end{proposition}
+
+
+\subsection{Example Specification 1}
+Suppose
+\begin{align*}
+  \E(y(0)|x)
+  &= \alpha_0 + x' \beta_2; \\
+  \E(y(1)|x)
+  &= \alpha_1 + x' \beta_2.
+\end{align*}
+In particular, this is true if we are imposing homogeneous treatment effects.
+
+We may approximate conditional means with a linear model, since
+\begin{align*}
+  \E[Y|D, x]
+  &= \E\left( y_0 + D(y_1 - y_0) | D, x\right) \\
+  &= {\underbrace{\alpha_0}_{\beta_0}} + x' \beta_2 + D(\underbrace{\alpha_1 - \alpha_0}_{\beta_1}) \\
+  &= \beta_0 + \beta_1 D_i + x_i' \beta_2.
+\end{align*}
+We now have
+\[
+  \ATE
+  = \E(Y|D = 1, x) - \E(Y|D = 0, x)
+  = \alpha_1 - \alpha_0
+  = \beta_1
+\]
+and so we may estimate the ATE using \(\hat{\beta}_1\).
+
+
+\subsection{Example Specification 2}
+We may think that potential outcomes should have different \(\beta\):
+\begin{align*}
+  \E[y(0)|x]
+  &= \alpha_0 + x' \beta^0; \\
+  \E[y(1)|x]
+  &= \alpha_1 + x' \beta^1.
+\end{align*}
+The ATE under this model is
+\[
+  \E[y(1) - y(0)]
+  = \E[(\alpha_1 - \alpha_0) + x'(\beta_1 - \beta_0)].
+\]
+A natural estimator of the ATE is then
+\[
+  \hat{\tau}
+  = \frac{1}{n} \sum [y_i(0) - y_i(0)]
+  = \hat{\alpha}_1 - \hat{\alpha}_0 + \overline{x}_n' (\hat{\beta}^1 - \hat{\beta}^0).
+\]
+
+Note that
+\begin{align*}
+  \E[Y|D, x]
+  &= \E[y(0) + D(y(1) - y(0)) | D, x] \\
+  &= \alpha_0 + (\alpha_1 - \alpha_0) D + x' \beta^0 + D x' (\beta^1 - \beta^0),
+\end{align*}
+Estimating this model is mathematically equivalent to estimating the two regressions separately (since we may split the \(\SSR\) into the \(\SSR\)'s of \(D = 0\) and \(D = 1\)).
+
+It is convenient to center \(x\) about \(0\):
+\begin{align*}
+  \E[y(0)|x]
+  &= \delta_0 + (x - \mu_x)' \beta^0; \\
+  \E[y(1)|x]
+  &= \delta_1 + (x - \mu_x)' \beta^1,
+\end{align*}
+since in this model, the ATE is just the difference in intercepts:
+\[
+  \E[y(1) - y(0)]
+  = \delta_1 - \delta_0.
+\]
+We don't know \(\mu_x\), but may replace it with \(\overline{x}_n\) to obtain \(\hat{\tau}\):
+\[
+  Y_i
+  = \delta_0 + \tau D_i + [x_i - \overline{x}_n]' \beta_0 + D_i [x_i - \overline{x}_n]' \rho + \epsilon_i.
+\]
+But be cautious!
+We calculating the standard error, statistical packages will not automatically treat \(\overline{x}_n\) as a random variable, although this error is small when \(n\) is large.
+
+
+\section{Difference-in-Differences}
+\begin{example}
+  Two time periods.
+  Treated units has dummy \(G_i = 1\).
+  We want the ATT:
+  \[
+    \ATT
+    = \E[y_1 - y_0|G = 1, T = 1].
+  \]
+\end{example}
+
+\begin{assumption}[Common Trends]
+  \begin{align*}
+    &\E[y_0|G = 1, T = 1] - \E[y_0|G = 1, T = 0] \\
+    &= \E[y_0|G = 0, T = 1] - \E[y_0|G = 0, T = 0].
+  \end{align*}
+  In other words, the common trends assumption states that the selection bias in \(y_0\) is constant over time.
+\end{assumption}
+\begin{remark}
+  It might be more plausible to assume parallel trends in \(f(y)\), but be careful about the interpretation of the \(ATT\): in general, \(\E(f(y_1) - f(y_0)) \neq f(\E[y_1 - y_0])\).
+\end{remark}
+
+
+In the two period setting, we have
+\begin{align*}
+  \tau^{\mathrm{DiD}}
+  &= \big\{ \E[y|G = 1, T = 1] - \E[y|G = 1, T = 0] \big\} \\
+  &\quad- \big\{ \E[y|G = 0, T = 1] - \E[y|G = 0, T = 0] \big\} \\
+  &= \big\{ \E[y|G = 1, T = 1] - \E[y|G = 1, T = 0] \big\} \\
+  &\quad- \big\{ \E[y_0|G = 0, T = 1] - \E[y_0|G = 0, T = 0] \big\} \\
+  &= \big\{ \E[y|G = 1, T = 1] - \E[y|G = 1, T = 0] \big\} \\
+  &\quad- \big\{ \E[y_0|G = 1, T = 1] - \E[y_0|G = 1, T = 0] \big\} \\
+  &= \ATT.
+\end{align*}
+
+
+\subsection{Regression Implementation}
+We may write the model for \(y_0\) as
+\[
+  \E[y_0|G, T]
+  = \beta_0 + \beta_1 G + \beta_2 T + \beta_3 GT.
+\]
+The common trends assumption holds if and only if \(\beta_3 = 0\).
+Since \(y_1\) is observed if and only if \(GT = 1\), we have
+\begin{align*}
+  \E[Y|G, T]
+  &= \E[y_0|G, T] + \E[y_1 - y_0|G = 1, T = 1] GT.
+\end{align*}
+We thus have
+\begin{align*}
+  \E[Y|G, T]
+  &= \beta_0 + \beta_1 G + \beta_2 T + [\beta_3 + \ATT] GT.
+\end{align*}
+Under common trends, the coefficient on \(GT\) is the \(\ATT\).
+In general, the coefficient on \(GT\) is the \(\ATT\) plus the difference in untreated (average) potential outcome trends between the two groups.
+
+\begin{remark}
+  Since we would assume \(Y|G, T = 1\) to be correlated with \(Y|G, T = 0\), we often use \vocab{clustered standard errors}, with the cluster being the group.
+\end{remark}
+
+\subsection{Conditional Common Trends}
+\begin{remark}
+  Including controls can also reduce the standard errors on the interaction term.
+\end{remark}
+
+Suppose now we believe only the following conditional common trends assumption:
+\begin{assumption}[Conditonal Common Trends]\label{as:DiD-CCT}
+  \begin{align*}
+    &\E[y_0|G = 1, T = 1, X = x] - \E[y_0|G = 1, T = 0, X = x] \\
+    &= \E[y_0|G = 0, T = 1, X = x] - \E[y_0|G = 0, T = 0, X = x].
+  \end{align*}
+\end{assumption}
+
+We may, for example, model \(y_0\) as
+\[
+  \E[y_0|G, T, X]
+  = \beta_0 + \beta_1 G + \beta_2 T + \beta_3 GT + X' \delta.
+\]
+\begin{remark}~
+\begin{itemize}
+  \item Under \Cref{as:DiD-CCT}, we have \(\beta_3 = 0\).
+  \item Note that
+    \begin{align*}
+      &\E[y_0| G = 1, T = 1] - \E[y_0| G = 1, T = 0] \\
+      &= \beta_2 + \left\{ \E[X|G = 1, T = 1] - \E[G = 1, T = 0] \right\}' \delta.
+    \end{align*}
+    The same calculation for \(G = 0\) shows that common trends (without conditioning) holds if the composition of covariates across time changes in the same way in both groups, or if \(\delta = 0\).
+\end{itemize}
+\end{remark}
+
+Using the model above for \(y_0\), we have
+\begin{align*}
+  \E[Y|G, T, X]
+  &= \E[y_0|G, T, X] + \E[y_1 - y_0|G = 1, T = 1, X] GT \\
+  &= \beta_0 + \beta_1 G + \beta_2 T + X' \delta + \ATT(X) GT
+\end{align*}
+Under conditional common trends and assuming a homogeneous effect across covariate values, the coefficient on \(GT\) is the \(\ATT\).
+In this case the model reduces to
+\[
+  \E[Y|G, T, X]
+  = \beta_0 + \beta_1 G + \beta_2 T + \ATT GT + X' \delta.
+\]
+Formally (symbolically), this is the same specification as the naive difference in differences, with the term \(X' \delta\) appended to the formula.
+
+We may also assume instead (for example) that \(\ATT(X) = X' \theta\) and estimate \(\theta\).
+
+
+\subsection{Triple Difference-in-Differences}
+\begin{example}
+  The manager chooses to upgrade stores in city A, but all the upgraded stores were in urban areas.
+  We may no longer believe that changes in sales in the absence of upgrades would be the same.
+  However, we may use the difference in trends between urban and suburban stores in the city where no upgrades occurred to see what the difference in trends would have been in city A had there been no upgrade.
+\end{example}
+\begin{assumption}[Triple Difference-in-Differences]\label{as:DiD-triple}
+  ``In the absence of treatment, the difference in the trend in sales across urban and suburban stores is the same in city B as it would have been in city A.''
+\end{assumption}
+
+Let \(C = 1\) denote city A, where treatment occurred.
+\begin{align*}
+  \E[Y|G, T, C]
+  &= \beta_0 + \beta_1 G + \beta_2 T + \beta_3 GT \\
+  &\quad + C(\gamma_0 + \gamma_1 + \gamma_2 T + [\gamma_3 + \ATT] GT).
+\end{align*}
+Under \Cref{as:DiD-triple}, \(\gamma_3 = 0\), and the coefficient on \(CGT\) is the \(\ATT\).
+
+
+\section{Instrumental Variables: The Simple Case}
+Consider the simple linear regression model
+\[
+  y = \beta_0 + \beta_1 x + v.
+\]
+If we interpret the coefficients as those in the best linear predictor of \(y\) given \(x\), then \(\E[xu] = 0\) is true by contraction.
+However, this may not be true if we interpret the coefficients as the causal effect of \(x\) on \(y\).
+
+\begin{definition}
+  We say \(x_1\) is \vocab{exogenous} if \(\E[vx_1] = 0\).
+  Otherwise, we say \(x_1\) is \vocab{endogenous}.
+\end{definition}
+
+We aim to use instrumental variables to address endogeneity in the model.
+
+\begin{assumption}[Instrumental Variables]\label{as:IV-simple}
+  In the model \(y = \beta_0 + \beta_1 x + v\), instrumental variables satisfy the following:
+  \begin{enumerate}[label=(\roman*)]
+    \item Relevance: \(\Cov(x, z) \neq 0\).
+    \item Validity: \(\Cov(z, v) = 0\).
+    \item Exclusion: \(z\) is not itself a determinant of \(y\).
+      In particular, \(z \indep v\) and \(z \indep y | x\).
+  \end{enumerate}
+\end{assumption}
+\begin{remark}
+  The relevance assumption is empirically testable, we may just run the regression
+  \[
+    x = \pi_0 + \pi_1 z + \epsilon.
+  \]
+\end{remark}
+
+Under \Cref{as:IV-simple}, we have
+\[
+  \Cov(z, y)
+  = \Cov(z, \beta_0 + \beta_1 x + v)
+  = \beta_1 \Cov(z, x) + \Cov(z, v),
+\]
+where the last equality comes from the validity assumption.
+Thus,
+\[
+  \beta_1 = \frac{\Cov(z, y)}{\Cov(z, x)}.
+\]
+
+\begin{remark}
+  We may then think of the OLS estimator as a special case of the IV estimator, where we use \(x\) as its own instrument.
+\end{remark}
+
+
+\begin{proposition}
+  Suppose the model is \(y = \beta_0 + \beta_1 x + v\), where \(x\) is a scalar.
+  Suppose \(z\) satisfies \Cref{as:IV-simple}.
+  Then, the IV estimator for \(\beta_1\)
+  \[
+    \hat{\beta}_1^{\mathrm{IV}}
+    = \frac{\sum (z_i - \overline{z}) y_i}{\sum (z_i - \overline{z}) x_i}
+  \]
+  is consistent and asymptotically normal.
+  If \(\E[v|z] = 0\) and  \(\Var(v|z) = \sigma^2\), then
+   \[
+     \sqrt{n} (\hat{\beta}^{\IV}_1 - \beta_1)
+     \longdistto \Normal\left( 0, \frac{\sigma^2}{\Var(x) \Corr(x, z)^2} \right) 
+  \]
+\end{proposition}
+\begin{remark}
+  From this we see that the IV instrument has a larger asymptotic variance than the OLS estimator, \(\sigma^2 / \Var(x)\).
+\end{remark}
+
+\begin{proof}
+  Consistency comes from the continuous mapping theorem, noting that sample variance is an consistent estimator of the population variance.
+  To see asymptotic normality, write
+  \[
+    \sqrt{n} (\hat{\beta}_1^{\IV} - \beta_1) 
+    = \sqrt{n} \frac{\sum (z_i - \overline{z}) (y_i - x_i \beta_1)}{\sum (z_i  -\overline{z}) x_i}
+    = \frac{\frac{1}{\sqrt{n}} \sum (z_i - \overline{z}) v}{\frac{1}{n} \sum (z_i - \overline{z}) x_i}.
+  \]
+  By the central limit theorem,
+  \[
+    \frac{1}{\sqrt{n}} \sum (z_i - \overline{z}) v
+    \longdistto \Normal(0, \sigma^2 \Var(z)),
+  \]
+  since
+  \[
+    \Var((z - \mu_z) v)
+    = \E((z - \mu_z)^2\Var(v|z))
+    = \sigma^2 \Var(z)
+  \]
+  by the law of total variance.
+  By the weak law of large numbers,
+  \[
+    \frac{1}{n} \sum (z_i - \overline{z}) x_i
+    \longprobto \Cov(x, z).
+  \]
+\end{proof}
+
+\subsection{Standard Errors}
+\begin{remark}
+  We may estimate \(\Var(x)\) consistently using the sample variance.
+  We may estimate \(\Corr(x, z)^2\) consistently using the \(R^2\) of the regression \(x = \pi_0 + \pi_1 z + v\).
+  We may estimate \(\sigma^2\) consistently using
+  \[
+    \hat{\sigma}^2
+    = \frac{\sum (y_i - \hat{\beta}_0^{\IV} - \hat{\beta}_1^{\IV} x_i)^2}{n - 2}.
+  \]
+\end{remark}
+
+In large samples, the variance of \(\hat{\beta}_1^{\IV}\) is approximately
+\[
+  \frac{\sigma^2 / n}{\Var(x) \Corr(x, z)^2}.
+\]
+The standard error computed by regression packages is
+\[
+  \sqrt{\frac{\hat{\sigma}^2}{\SST_x \cdot R_{x, z}^2}}
+\]
+This is typically larger than the OLS standard error \(\hat{\sigma} / \sqrt{\SST_x}\), since we ``lose information'' by first regressing \(x\) on \(z\).
+
+% \begin{align*}
+%   \hat{U} = Y - X \hat{\beta}
+%   = U - X (\hat{\beta} - \beta).
+% \end{align*}
+% \begin{align*}
+%   \hat{U}' \hat{U}
+%   = \hat{U}' \hat{U} + (\hat{\beta} - \beta)' \frac{X' X}{n} (\hat{\beta} - \beta)
+%   + 2 \frac{U' X}{n} (\hat{\beta} - \beta)
+% \end{align*}
+
+\subsection{Weak Instruments}
+Suppose \(\Cov(z, v)\) is small but non-zero.
+We have
+\[
+  \hat{\beta}_1^{\IV}
+  \longprobto \frac{\Cov(z, y)}{\Cov(z, x)}
+  = \beta_1 + \frac{\Cov(z, v)}{\Cov(z, x)}.
+\]
+Even if \(\Cov(z, v)\) is small, small \(\Cov(z, x)\) may mean the inconsistency in the IV estimator is worse than OLS.
+
+We run essentially a \(t\)-test of \(\pi_1\) ``is near \(0\)'' to test for weak instruments.
+
+
+\subsection{Causes of Endogeneity}
+\subsubsection{Omitted Variables}
+Suppose the true model is
+\[
+  y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + u, \quad
+  \E[u|x] = 0
+\]
+but we specified the model as
+\[
+  y = \beta_0 + \beta_1 x_1 + v.
+\]
+Then,
+\[
+  \Cov(x_1, v)
+  = \Cov(x_1, \beta_2 x_2 + u)
+  = \Cov(x_1, x_2) \beta_2.
+\]
+The OLS estimator in the short model is
+\[
+  \tilde{\beta}_1
+  = \hat{\beta}_1 + \hat{\beta}_2 \frac{\widehat{\Cov}(x_1, x_2)}{\widehat{\Var}(x_1)}
+  \longprobto \beta_1 + \beta_2 \frac{\Cov(x_1, x_2)}{\Var(x_1)}.
+\]
+\begin{remark}
+  The sign of this bias is determined by the signs of \(\Cov(x_1, x_2)\) and \(\beta_2\).
+  If both are positive, then the bias is positive.
+\end{remark}
+
+\subsubsection{Measurement Error}
+The key intuition in this case is that when we spread \(x\) out, the slope of the regression line will be smaller.
+
+Suppose \(x_1^*\) is a scalar and
+\[
+  y = \beta_0 + \beta_1 x_1^* + u, \quad
+  \E[u] = 0, \quad
+  \Cov(x_1^*, u) = 0.
+\]
+Suppose we observe a noisy signal of \(x_1^*\), given by \(x_1 = x_1^* + v\), with
+\[
+  \E(v) = 0, \quad
+  \Cov(x_1^*, v) = 0, \quad
+  \Cov(u, v) = 0.
+\]
+These are the assumptions of \vocab{classical measurement error}.
+
+The true model can then be rewritten as
+\[
+  y = \beta_0 + \beta_1 x_1 + \epsilon,
+\]
+where
+\[
+  \Cov(x_1, \epsilon)
+  = \Cov(x_1, u - \beta_1 v)
+  = \Cov(x_1^* + v, u - \beta_1 v)
+  = - \beta_1 \Var(v).
+\]
+The OLS estimator is not consistent since
+\begin{align*}
+  \hat{\beta}_1^{\OLS}
+  &\longprobto \frac{\Cov(x_1, y)}{\Var(x_1)} \\
+  &= \beta_1 + \frac{\Cov(x_1, \epsilon)}{\Var(x_1)}
+  = \beta_1 \left( 1 - \frac{\Var(v)}{\Var(x_1)} \right) \\
+  &= \beta_1 \left( 1 - \frac{\Var(v)}{\Var(x_1^*) + \Var(v)} \right).
+\end{align*}
+% \begin{remark}
+  % We have
+  % \[
+  %   \Var(x_1^*)
+  %   = \Var(x_1^*) + \Var(v)
+  %   \geq \Var(v).
+  % \]
+It follows that \(\hat{\beta}_1^{\OLS}\) will tend be smaller in magnitude than the true causal effect \(\beta_1\).
+% \end{remark}
+
+An instrument for \(x_1\) in this case can be another noisy measurement of \(x_1^*\):\footnote{An example of this method being used can be found in Ashenfelter and Krueger (1994) Estimates of the Economic Return to Schooling from a New Sample of Twins.}
+\[
+  z_1 = z_1^* + w,
+\]
+where
+\[
+  \E(w) = 0, \quad
+  \Cov(x_1^*, w) = 0, \quad
+  \Cov(u, w) = 0
+\]
+and \(\Cov(v, w) = 0\).
+Validity holds since
+\[
+  \Cov(z_1, \epsilon)
+  = \Cov(x_1^* + w, u - \beta_1 v)
+  = 0.
+\]
+For relevance, note that
+\[
+  \Cov(z_1, x_1)
+  = \Cov(x_1^* + v, x_1^* + w)
+  = \Var(x_1^*),
+\]
+which is nonzero provided \(x_1^*\) is not constant.
+
+
+\section{Instrumental Variables}
+\begin{assumption}[Instrumental Variables]\label{as:IV}
+  Suppose we observe outcomes \(y\), covariates \(w\), treatment status \(d\), and instrument \(z\).
+  \begin{enumerate}[label=(\roman*)]
+    \item \vocab{Relevance}: Instrument is correlated with the treatment (conditional on covariates).
+    \item \vocab{Exclusion}: Instrument has no direct effect on potential outcomes.
+      \[
+        Y = y(D, z)
+        = y(D).
+      \]
+      The first equality writes the observed outcome in the potential outcomes framework; the second is our assumption.
+    \item \vocab{Exogeneity}: Instrument is independent of potential outcomes (conditional on covariates).
+      \[
+        y(d) \indep z | w.
+      \]
+  \end{enumerate}
+\end{assumption}
+\begin{remark}
+  Under \Cref{as:IV}, the covariance between instrument and observed outcome occurs only through changes in the treatment, so we can measure the causal effect by adjusting for how much the treatment moves with the instrument.
+\end{remark}
+
+\begin{assumption}[Constant, linear treatment effects]\label{as:IV-linear}
+  For each \(d\),
+  \[
+    y(d) = x(w, d)' \beta + u, \quad
+    \E[u|w] = 0.
+  \]
+  In particular, \(u\) depends on the individual and not \(d\).
+\end{assumption}
+
+
+What grounds do we have to assume that \(u\) does not depend on \(d\)?
+% It turns out that we can interpret \Cref{as:IV-linear} as a consequence of asserting linear conditional mean and constant treatment effects \emph{conditional on \(w\)} by the following 
+The following proposition gives an alternative way of viewing \Cref{as:IV-linear} that can be easier to argue for.
+\begin{proposition}
+  \Cref{as:IV-linear} is equivalent to assuming linear conditional means and constant treatment effects \emph{conditional on \(w\)}.
+\end{proposition}
+\begin{remark}
+  Note, however, that unconditionally, the treatment effect need not be constant, since we allow for interactions.
+\end{remark}
+\begin{proof}
+  First assume linear conditional means and constant treatment effects conditional on \(w\).
+  We have
+  \[
+    y(d) = x(w, d)' \beta + u_d, \quad \E(u_d|w) = 0,
+  \]
+  where \(u_d\) can depend \emph{a priori} on \(d\).
+  Assuming constant conditional treatment effects, we have
+  \begin{align*}
+    y(d)
+    &= \E(y(d) - y(d^*)|w) + y(d^*) \\
+    &= [x(w, d) - x(w, d^*)]' \beta + y(d^*).
+  \end{align*}
+  Since \(u_d = y(d) - x(w, d)' \beta\), it follows that \(u = u_{d^*} \equiv u\) for all \(d\).
+
+  The converse is straightforward.
+\end{proof}
+
+
+\begin{proposition}
+  \Cref{as:IV} and \Cref{as:IV-linear} imply \(\E(u|z, w) = 0\).
+  In particular, we have \vocab{instrumental validity}, \(\E(zu) = 0\).
+\end{proposition}
+\begin{proof}
+  Note that
+  \begin{align*}
+    \E[u|z, w]
+    &= \E[y(d) - x(w, d)' \beta | z, w] \\
+    &= \E[y(d) | w] - x(w, d)' \beta
+    = 0,
+  \end{align*}
+  where the second line follows from the exogeneity assumption.
+\end{proof}
+
+\begin{remark}~
+  \begin{itemize}
+    \item \(\E(zu) = 0\) is the starting point of our estimation, and what we assumed at the outset in the previous section.
+    However, stating from \Cref{as:IV} and \Cref{as:IV-linear} is informative, for it lays bare the precise and tangible assumptions that can be argued for.
+    \item We have similarly that \(\E(u|w) = 0 = \E(uw)\).
+      The set of assumptions that give rise to this result is however drastically different.
+      Here, \(\E(u|w) = 0\) results from the assumption that we correctly specified the conditional mean of \(y(d) | w\).
+      It is also worthy or note that the terms in \(w\) need not be determinants of \(y\), some of them can be control variables.
+      Their only purpose is to specify the conditional mean.
+  \end{itemize}
+\end{remark}
+
+
+Now, let \((y, x, u)\) be a random vector such that \(y\) and \(u\) are scalar random variables and \(x \in \RR^{k \times 1}\) with the first component being 1.
+Let \(\beta \in \RR^{k \times 1}\) be a constant vector of unknown parameters such that \(y = x' \beta + u\).
+
+\begin{definition}~
+  \begin{itemize}
+    \item If \(\E[u x_j] = 0\) for some \(j\), \(x_j\) is \vocab{exogenous}.
+    \item If \(\E[u x_j] \neq 0\) for some \(j\), \(x_j\) is \vocab{endogenous}.
+  \end{itemize}
+  Note that \(x_0\) can always be made exogenous by shifting \(\beta_0\) such that \(\E[x_0 u] = \E[u] = 0\).
+\end{definition}
+\begin{example}
+  Since \(\E(wu) = 0\), control variables are exogenous.
+  Endogenous variables can include combinations of \(d\) and \(w\).
+\end{example}
+
+Pre-multiplying by \(x\) and taking expectations, we have \(\E(y x) = \E(x x') \beta + \E(xu)\).
+It follows that \(\E(xx')^{-1} \E[xy] = \beta + \E(xx')^{-1} \E(xu)\) and thus
+\[
+  \hat{\beta}^{\OLS}
+  = (X'X)^{-1} X'Y
+  \longprobto \beta + \E[xx']^{-1} \E(xu).
+\]
+Under endogeneity, the OLS estimator of \(\beta\) is inconsistent.
+
+\subsection{Identification Setup}
+The goal is to use a random vector \(z \in \RR^{l + 1}\) such that the \vocab{instrumental validity} assumption \(\E(zu) = 0\) is satisfied.
+The components of \(z\) are called \vocab{instrumental variables}.
+The vector \(z\) contains any exogenous components of \(x\) (recall that this includes the intercept and components of \(w\)) and variables that are (partially) correlated with endogenous variables but uncorrelated with \(u\) that are outside the main specification.
+We write \(z_0 = 1\) and
+\[
+  z = (z_0, z_1, \dots, z_l)' \in \RR^{l + 1}.
+\]
+
+\begin{assumption}~
+  \begin{itemize}
+    \item \(\E(zz') < \infty\) and there is no perfect collinearity in \(z\).
+    \item \vocab{Instrument relevance} / \vocab{rank condition}: \(\E(zx')\) has full rank \(k + 1\).
+      Note that a necessary condition for the rank condition is the \vocab{order condition}, \(l \geq k\).
+  \end{itemize}
+\end{assumption}
+
+\begin{remark}
+  If we set \(\E[u] = 0\) and \(z_0 = 1\), then \(\E[zu] = 0\) is equivalent to
+  \[
+    \Cov(z_j, u) = 0, \quad \forall j.
+  \]
+\end{remark}
+
+We now pre-multiply the model by \(z\) and take expectations to get
+\[
+  \E(zy)
+  = \beta \E(zx') + \E(zu)
+  = \beta \E(zx').
+\]
+% It follows that
+% \[
+%   \beta = [\E(zx')]^{-1} \E[zy].
+% \]
+This will be the starting point of our estimation.
+
+
+\subsection{Exact Identification: The IV Estimator}
+Assuming \(I = k\) (there are exactly as many instruments as regressors), \(\E[zx']\) is a square.
+We may thus write
+\begin{align*}
+  \beta
+  &= [\E(zx')]^{-1} \E(zy) \\
+  &= \big[ \underbrace{\E(zz')^{-1} \E(zx')}_{\mathclap{\text{First Stage Coefficients}}} \big]^{-1}
+  \underbrace{\E(zz')^{-1} \E(zy)}_{\mathclap{\text{Reduced Form Coefficients}}},
+\end{align*}
+where the first stage and reduced form refers respectively to the regressions
+\begin{align*}
+  x' &= z' \pi + v', &&
+  \E[zv'] = 0; \\
+  y &= z' \delta + \epsilon, &&
+  \E[z\epsilon] = 0.
+\end{align*}
+
+\begin{proposition}
+  In the case of exact identification, the \vocab{IV estimator}
+  \[
+    \hat{\beta}^{\IV}
+    \coloneqq \left( \frac{1}{n} \sum z_i x_i' \right)^{-1} \left( \frac{1}{n} \sum z_i y_i \right)
+    = (Z'X)^{-1} Z'Y
+  \]
+  coincides with the \vocab{Two Stage Least Squares} (\(\TSLS\)) estimator
+  \[
+    \hat{\beta}_{\TSLS}
+    \coloneqq (X' P_Z X)^{-1} X' P_Z Y.
+  \]
+  Moreover, both estimators are consistent and asymptotically normal.
+\end{proposition}
+\begin{proof}
+  The first statement follows from expanding the projection matrix \(P_Z = Z(Z'Z)^{-1}Z'\).
+  Consistency and asymptotic normality comes from the law of larger numbers and the central limit theorem.
+\end{proof}
+
+
+\begin{example}[Simple IV Estimation]
+  If \(x = (1, x_1)'\) and \(z = (1, z_1)'\).
+  Then
+  \[
+    \beta = \pmat{
+      1 & \pi_0 \\
+      0 & \pi_1
+    }^{-1} \pmat{
+      \delta_0 \\
+      \delta_1
+    }
+    = \frac{1}{\pi_1} \pmat{
+      \pi_1 & -\pi_0 \\
+      0 & 1
+    } \pmat{
+      \delta_0 \\
+      \delta_1
+    }.
+  \]
+  In particular,
+  \[
+    \beta_1 = \frac{\delta_1}{\pi_1}
+    = \frac{\Cov(y, z_1) / \Var(z_1)}{\Cov(x_1, z_1) / \Var(z_1)}.
+  \]
+\end{example}
+
+
+The notation \([\E(zz')^{-1} \E(zx')]^{-1}\) is justified by the following result:
+\begin{proposition}
+  Suppose there is no perfect collinearity in \(z\) and \(\E[zz'] < \infty\).
+  Then, \(\E[zx']\) is full rank if and only if \(\E[zz']^{-1} \E[zx']\) is full rank.
+\end{proposition}
+\begin{proof}
+  Since the rank of \(\E[zx']\) must be weakly larger than that of \(\E[zz']^{-1} \E[zx']\), we have if \(\E[zz']^{-1} \E[zx']\) is full rank, then \(\E[zx']\) is full rank also.
+
+  If \(\E[zx']\) is full rank, then we have \(\E[zz']^{-1} \E[zx']\) is full rank, because \(\E[zz']\) is full rank also by there being no perfect collinearity in \(z\).
+\end{proof}
+
+The matrix \(\E[zz']\E[zx']\) is the matrix of coefficients of the best predictors of each  \(x_j\) given \(z\).
+Thus if we let \(x_j = z' \gamma_j + v_j\),  \(\E[zv_j = 0]\), then
+\begin{align*}
+  \E[zz']^{-1} \E[zx']
+  &= \pmat{
+    | & | &  & | \\
+    \gamma_0 & \gamma_1 & \cdots & \gamma_k \\
+    | & | &  & |
+  }.
+\end{align*}
+If there is a single endogenous regressor \(x_k\) and \(k = I\), then
+\[
+  \E[zz']^{-1} \E[zx'] = \pmat{
+    1 & 0 & \cdots & 0 & \gamma_{k, 0} \\
+    0 & 1 & \cdots & 0 & \gamma_{k, 1} \\
+    \vdots & \vdots & \ddots & \vdots & \vdots \\
+    0 & 0 & \cdots & 1 & \gamma_{k, I - 1} \\
+    0 & 0 & \cdots & 0 & \gamma_{k, I}
+  }
+\]
+is full rank if and only if \(\gamma_{k, I} \neq 0\).
+Thus, with a single endogenous regressor and an exactly identified system, the rank condition holds if and only if a regression of \(x_k\) on other \(x\)'s and the excluded instrument \(z_I\) produces a non-zero coefficient on \(z_I\).
+That is, \(x_k\) must be correlated with \(z_I\) ``after controlling for \(x_0, \dots, x_{k - 1}\).''
+
+Note that the top left submatrix is the identity matrix, thus the rank condition holds if and only if the bottom right submatrix is full rank.
+This submatrix contains the coefficients on the excluded instruments.
+
+
+\subsubsection{Partitioned Regression}
+We can use partitioned regression to derive the slopes for the endogenous variables.
+Partition \(x\) and \(z\) as follows:
+\[
+  x = (w', d')', \quad
+  z = (w', r')',
+\]
+where \(w \in \RR^{k_1}\) contains a constant and any exogenous variables, \(d \in \RR^{k_2}\) contains the endogenous variables, and \(r \in \RR^{k_2}\) contains the excluded instruments.
+The first stage regression is
+\[
+  (w', d') = w' \pi_1 + r' \pi_2 + v',\quad \E[zv'] = 0.
+\]
+This is partitioning the matrix \(\pi\) into two horizontal blocks, \(\pi_1\) and \(\pi_2\).
+We can write a subset of these projections (of \(d\) onto \(z\)) as
+\[
+  d' = w' \pi_{1d} + r' \pi_{2d} + v_d',\quad \E[zv_d'] = 0,
+\]
+where \(\pi_{1d}\) consists of the \(k_2\) right-most columns of \(\pi_1\) and \(\pi_{2d}\) is defined analogously.
+The projection of \(w\) onto \(z\) is just \(w\).
+Now write
+\[
+  y = x' \beta + u
+  = w' \beta_1 + d' \beta_2 + u.
+\]
+Inserting the first stage regression into \(y = x' \beta + u\) gives
+\[
+  y = w' [\beta_1 + \pi_{1d} \beta_2] + r' \pi_{2d} \beta_2 + (v_d' \beta_2 + u),
+\]
+which we can write as \(y = z' \delta + \epsilon\).
+It is easy to verify that \(\E[z \epsilon] = 0\).
+Writing \(\tilde{r} \coloneqq r - \BLP(r|w)\), we have form partitioned regression that
+\begin{align*}
+  \pi_{2d} \beta_2
+  &= \E[\tilde{r} \tilde{r}']^{-1} \E[\tilde{r} y], \\
+  \pi_{2d}
+  &= \E[\tilde{r} \tilde{r}']^{-1} \E[\tilde{r} d'].
+\end{align*}
+It thus follows that
+\begin{align*}
+  \beta_2
+  &= \left\{ \E[\tilde{r} \tilde{r}']^{-1} \E[\tilde{r} d'] \right\}^{-1}
+    \E[\tilde{r} \tilde{r}']^{-1} \E[\tilde{r} y] \\
+  &= \E[\tilde{r} d']^{-1} \E[\tilde{r} y].
+\end{align*}
+
+
+
+\subsection{Overidentification, Generalized Method of Moments}
+If \(I > k\), the moment condition
+\[
+  \E[zu]
+  = \E[z(y - x'\beta)] = 0
+\]
+has a solution by the model specification and the IV validity assumption, but its sample analog may not have a solution, since this would require
+\[
+  \sum z_i y_i
+  = Z'Y = Z' X \hat{\beta}
+  = \sum z_i x_i' \hat{\beta}.
+\]
+We have a \(\RR^{(I + 1)}\) vector on the left hand side but only \(k + 1 < I + 1\) columns on the right.
+
+One obvious solution is to discard extra instruments to reduce the case to that of exact identification.
+This is a waste of data.
+A more optimal way approach is to solve instead the equation
+\[
+  C Z' Y = C Z' X \hat{\beta},
+\]
+where \(C\) is a full rank \((k + 1) \times (I + 1)\) matrix.
+% The matrix \(C\) picks out \(k + 1\) linear combinations of the \(l + 1\) instruments.
+This gives rise to a \vocab{GMM estimator}
+\[
+  \hat{\beta}
+  = (C Z' X)^{-1} (C Z' Y).
+\]
+It turns out that the optimal \(C\) can be consistently estimated.
+
+Suppose \(C \in \RR^{(k + 1) \times (l + 1)}\) and \(C \E[zx']\) is full rank (this is the \vocab{relevance} condition).
+Then \(Cz \in \RR^{k + 1}\) ``selects'' \(k + 1\) linear combinations of \(z\).
+Since \(Czy = Czx' \beta + Czu\) and \(C \E[zx']\) is square, we may write
+\begin{align*}
+  \beta
+  &= \E(Czx')^{-1} \E(Czy) \\
+  &= \big[ \underbrace{\E(Cz[Cz]')^{-1} \E(Czx')}_{\mathclap{\text{First Stage Coefficients}}} \big]^{-1}
+  \underbrace{\E(Cz[Cz]')^{-1} \E(Czy)}_{\mathclap{\text{Reduced Form Coefficients}}},
+\end{align*}
+where the first stage and reduced form refer respectively to the regressions
+\begin{align*}
+  x' &= [cz]' \pi + v', &&
+  \E[czv'] = 0; \\
+  y &= [cz]' \delta + \epsilon, &&
+  \E[cz\epsilon] = 0.
+\end{align*}
+
+\subsubsection{Two Stage Least Squares}
+The \vocab{two stage least squares} estimator is obtained by setting \(C\) to \(\pi\) in the population regression \(x' = z' C + u\).
+That is,
+\[
+  \hat{\beta}_{\TSLS}
+  \coloneqq (X' P_Z X)^{-1} X' P_Z Y.
+\]
+We may interpret this an IV estimator where we use \(\pi' z\), the projection of \(x\) onto \(z\), as instruments.
+Here, \(\pi\) is the matrix of coefficients in the population regression
+\[
+  x' = z' \pi + v', \quad \E[zv'] = 0.
+\]
+It is easy to verify that instrument validity holds.
+
+
+\subsubsection{Simultaneous Equations}
+\begin{example}[Simultaneous Equations]
+  Consider the following supply and demand systems:
+  \begin{align*}
+    q_D
+    &= \beta_0 + \beta_1 p + u, \quad \E[u] = 0; \\
+    q_S
+    &= \gamma_0 + \gamma_1 p + u, \quad \E[v] = 0.
+  \end{align*}
+  Suppose that \(\E(uv) = 0\).
+  We only observe supple and demand in equilibrium \(q_D = q_S\), at which we have
+  \[
+    p = \frac{\gamma_0 - \beta_0 + v - u}{\beta_1 - \gamma_1}.
+  \]
+  Thus \(p\) is endogenous in the equations
+  \begin{align*}
+    q &= \beta_0 + \beta_1 p + u, \\
+    q &= \gamma_0 + \gamma_1 p + u,
+  \end{align*}
+  since, for example,
+  \[
+    \Cov(p, u)
+    = \Cov\left(
+      \frac{\gamma_0 - \beta_0 + v - u}{\beta_1 - \gamma_1}, u
+    \right)
+    = - \frac{\Var(u)}{\beta_1 - \gamma_1}.
+  \]
+
+  Now supple the model is given by
+  \begin{align*}
+    q_D
+    &= \beta_0 + \beta_1 p + u, \quad \E[u] = 0; \\
+    q_S
+    &= \gamma_0 + \gamma_1 p + \gamma_2 z + u, \quad \E[v] = \E[vz] = 0,
+  \end{align*}
+  where \(z\) is an exogenous ``supply shifter.''
+  Thus \(\E(zu) = 0\) also.
+  Solving for the equilibrium price now gives
+  \[
+    p
+    = \frac{\gamma_0 - \beta_0 + \gamma_2 z + v - u}{\beta_1 - \gamma_1}.
+  \]
+
+  The parameters of the demand equation can now be estimated consistently, because \(z\) is a valid instrument for \(p\).
+  Relevance holds if \(\gamma_2 \neq 0\), since
+  \[
+    \Cov(p, z)
+    = \frac{\gamma_2 \Var(z)}{\beta_1 - \gamma_1}.
+  \]
+\end{example}
+
+
+\subsection{Consistency and Asymptotic Normality of GMM Estimators}
+\begin{proposition}[Consistency and Asymptotic Normality of GMM estimators]
+  Let \(C \in \RR^{(k + 1) \times (l + 1)}\) and suppose \(\hat{C} \probto C\).
+  The estimator based on \(\hat{C}\) is consistent and asymptotically normal.
+\end{proposition}
+\begin{proof}
+  For consistency,
+  \begin{align*}
+    \hat{\beta}
+    &\coloneqq (\hat{C} Z' X)^{-1} \hat{C} Z' Y \\
+    &= \beta + \left( \hat{C} \cdot \frac{Z' X}{n} \right)^{-1} \hat{C} \cdot \frac{Z' U}{n} \\
+    &\longprobto \beta + (C\E[zx']^{-1}) C \E[zu] = \beta.
+  \end{align*}
+  For normality, write
+  \begin{align*}
+    \sqrt{n} (\hat{\beta} - \beta)
+    &= \left( \hat{C} \cdot \frac{Z' X}{n} \right)^{-1} \hat{C} \cdot \frac{Z' U}{\sqrt{n}} \\
+    &= \left( \hat{C} \sum z_i x_i' \right)^{-1} \frac{\hat{C}}{\sqrt{n}} \sum z_i u_i \\
+    &\longdistto (C \E[z_i x_i'])^{-1} C \cdot \Normal(0, \E[u_i^2 z_i z_i'])
+    = \Normal(0, V),
+  \end{align*}
+  where
+  \begin{align*}
+    V
+    &= \left( C \E[z_i x_i'] \right)^{-1} C C' \left( \E[z_i x_i'] C' \right)^{-1} \\
+    \Omega
+    &\coloneqq \E[u_i^2 z_i z_i'].
+  \end{align*}
+\end{proof}
+
+\subsection{Optimal GMM Estimation}
+We may now pick the optimal \(C\):
+\begin{proposition}[Optimal Choice of \(C\)]
+  Assume \(\Omega \coloneqq \E(u^2 zz')\) is invertible and let \(Q \coloneqq \E(zx')\).
+  Then,
+  \begin{align*}
+    C_{\OGMM}
+    &\coloneqq Q' \Omega^{-1} = \E(xz') [\E(u^2 zz')]^{-1}
+  \end{align*}
+  minimizes the asymptotic variance of the GMM estimator.
+\end{proposition}
+\begin{proof}
+  With \(C_{\OGMM}\), the asymptotic variance is
+  \begin{align*}
+    V_{\OGMM}
+    &= (C_{\OGMM} Q)^{-1} C_{\OGMM} \Omega C_{\OGMM}' (C_{\OGMM} Q)^{-1} \\
+    &= (Q' \Omega^{-1} Q)^{-1} Q' \Omega^{-1} \Omega \Omega^{-1} Q (Q' \Omega^{-1} Q)^{-1} \\
+    &= (Q' \Omega^{-1} Q)^{-1}.
+  \end{align*}
+  We will show that \((CQ)^{-1} C \Omega C' (Q'C')^{-1} - (Q' \Omega^{-1} Q)\) is positive semidefinite.
+  To do this, we write both terms in sandwich forms:
+  \begin{align*}
+    (Q' \Omega^{-1} Q)^{-1}
+    = (CQ)^{-1} C \Omega^{1 / 2}
+    \times \left( \Omega^{1 / 2} Q (Q' \Omega^{-1} Q)^{-1} Q' \Omega^{- 1 / 2} \right)
+    \times \Omega^{1 / 2} C' (CQ)^{-1}; \\
+    (CQ)^{-1} C \Omega C' (Q'C')^{-1}
+    = (CQ)^{-1} C \Omega^{1 / 2} \times \Omega^{1 / 2} C' (Q' C')^{-1}.
+  \end{align*}
+  Note that since \(\Omega\) is positive definite, \(\Omega^{1 / 2}\) exists.
+  Writing \(R \coloneqq \Omega^{- 1 / 2} Q\), we then have
+  \begin{align*}
+    &(CQ)^{-1} C \Omega C' (Q'C')^{-1} - (Q' \Omega^{-1} Q) \\
+    &= (CQ)^{-1} C \Omega^{1 / 2} \left( I_{l + 1} - R (R'R)^{-1} R' \right) \Omega^{1 / 2} C' (CQ)^{-1} \\
+    &= (CQ)^{-1} C \Omega^{1 / 2} M_R \Omega^{1 / 2} C' (CQ)^{-1} \geq 0,
+  \end{align*}
+  since \(M_R\) is positive semidefinite.
+\end{proof}
+
+Thus:
+\begin{proposition}
+  If \(\hat{\Omega} \probto \Omega \coloneqq \E[u^2 zz']\), we say
+  \[
+    \hat{\beta}_{\OGMM}
+    = (X' Z \hat{\Omega}^{-1} Z' X)^{-1} X' Z \hat{\Omega}^{-1} Z' Y
+  \]
+  is a (feasible) \vocab{optimal GMM estimator}.
+  Note that
+  \[
+    \sqrt{n} (\hat{\beta}_{\OGMM} - \beta)
+    \longdistto \Normal\left( 0, (Q' \Omega^{-1} Q)^{-1} \right).
+  \]
+\end{proposition}
+
+The only problem that remains now is to get a consistent estimate of \(\E[u^2 zz']\).
+What residuals do we use?
+
+
+\subsection{GMM Under Conditional Homoskedasticity, Two Stage Least Squares}
+\begin{assumption}[Conditional Homoskedasticity]
+  \[
+    \E[u^2|z]
+    = \E[u^2] = \sigma^2.
+  \]
+\end{assumption}
+
+Since in this case we have \(\E[u^2 zz] = \sigma^2 \E[zz']\), we set
+\[
+  C_{\OGMM} = \frac{\E[zz']^{-1}\E[zx']}{\sigma^2}.
+\]
+This is precisely the coefficients in the first stage regression of \(x\) on \(z\).
+A feasible optimal GMM estimator is then given by
+\begin{align*}
+  \hat{\beta}_{\OGMM}
+  &= (X' Z [\sigma^2 Z' Z]^{-1} Z X)^{-1} X' Z [\sigma^2 Z' Z]^{-1} Z' Y \\
+  &= (X' P_Z X)^{-1} X' P_Z Y.
+\end{align*}
+This is the \vocab{two-stage least squares} estimator because it performs the previous task of reducing the number of moments by first regressing the columns \(X\) on \(Z\) using OLS.
+
+\begin{remark}
+  The \(\TSLS\) estimator is still consistent for \(\beta\) even if conditional homoscedasticity does not hold, though it is not asymptotically optimal.
+  We will leverage this fact to do optimal GMM estimation under heteroskedasticity.
+\end{remark}
+\begin{remark}
+  For inference, \(\TSLS\) estimator depends only on second moments, while the \(\OGMM\) estimator depends on fourth moments and can thus be more noisy in finite sample, even when it is asymptotically optimal.
+\end{remark}
+
+
+The ``first stage'' regression is
+\[
+  X = Z \Pi + V,
+\]
+where \(\Pi\) is a \((l + 1) \times (k + 1)\) matrix of parameters.
+It find the \(k + 1\) linear combinations of the \(l + 1\) instruments that are closest to \(X\) in the Euclidean norm.
+The projection of each column of \(X\) on to \(Z\) is given by \(P_Z X = Z \hat{\Pi}\).
+This is the sample analog of the choice
+\[
+  cz
+  = \left[ \E(zz')^{-1} \E(zx') \right]' z.
+\]
+Note that for the included instruments \(X_j\), we have \(P_Z X_j = Xj\) because \(X_j\) is one of the columns of \(Z\).
+
+In the ``second stage'', the exogenous and endogenous regressors \(X\) are replaced by the exogenous regressors and the projection of the endogenous regressors onto \(Z\).
+
+The original regression model is \(Y = X \beta + U\).
+The model we actually estimate is  \(Y = P_Z X \overline{\beta} + \epsilon\).
+Estimating this second stage regression by OLS produces
+\[
+  \hat{\beta}_{\TSLS}
+  = (X' P_Z X)^{-1} X' P_Z Y
+  = \hat{\beta}_{\OGMM}.
+\]
+\begin{remark}
+  If \(l = k\), then since \(c\) is square and invertible, we have
+  \[
+    \hat{\beta} = (\hat{C} Z' X)^{-1} \hat{C} Z' Y
+    = (Z' X)^{-1} Z' Y
+    = \hat{\beta}_{IV}.
+  \]
+  All GMM estimators (and in particular the (\(\TSLS\)) estimator) is the same as the \(\IV\) estimator.
+\end{remark}
+
+The asymptotic distribution of the \(\TSLS\) estimator is
+\[
+  \sqrt{n} (\hat{\beta}_{\TSLS} - \beta)
+  \longdistto \Normal\left( 0, \sigma^2 \left[ Q' \E(zz')^{-1} Q \right]^{-1} \right).
+\]
+
+\begin{proposition}
+  Let \(\hat{U} \coloneqq Y - X \hat{\beta}_{\TSLS}\).
+  A consistent estimator of \(\sigma^2\) is given by
+  \[
+    \hat{\sigma}^2
+    \coloneqq \frac{\hat{U}' \hat{U}}{n}.
+  \]
+\end{proposition}
+\begin{proof}
+  Since \(\hat{U} = U - X (\hat{\beta}_{\TSLS} - \beta)\),
+  \[
+    \frac{\hat{U}' \hat{U}}{n}
+    = \frac{U' U}{n} + o_p(1).
+  \]
+\end{proof}
+
+Our results may be summarized as follows:
+\begin{proposition}[Two Stage Least Squares]
+  Under homoskedasticity, \(\hat{\beta}_{\TSLS} \coloneqq (X' P_Z X)^{-1} X' P_Z Y\) is an asymptotically optimal GMM estimator and 
+  \[
+    \sqrt{n} (\hat{\beta}_{\TSLS} - \beta)
+    \longdistto \Normal\left( 0, \sigma^2 \left[ Q' \E(zz')^{-1} Q \right]^{-1} \right),
+  \]
+  where we recall the notation \(Q = \E[zx']\).
+  The asymptotic variance can be consistently estimated by
+  \[
+    \hat{V}
+    \coloneqq n \hat{\sigma}^2 (X' P_Z X)^{-1}.
+  \]
+\end{proposition}
+
+ 
+\subsection{GMM Under Heteroskedasticity}
+Under heteroskedasticity, the variance does not simplify.
+A consistent estimate of \(\Omega\) is given by
+\[
+  \hat{\Omega}
+  \coloneqq \frac{1}{n} \sum \hat{u}_i z_i z_i'
+\]
+where \(\hat{u}_i \coloneqq y_i = x_i' \hat{\beta}_{\TSLS}\).
+The proof is identical to the heteroskedasticity case when considering OLS estimation.
+The result follows because \(\hat{\beta}_{\TSLS}\) is a \(\sqrt{n}\)-consistent estimator of \(\beta\).
+
+While \(\hat{\beta}_{\TSLS}\) is not asymptotically optimal, it does allow for consistent estimation of \(\Omega\) because it depends only on \(Z\), \(X\), and \(Y\).
+
+Under heteroskedasticity, the optimal GMM estimator is
+\[
+  \hat{\beta}_{\OGMM}
+  = (X' Z \hat{\Omega}^{-1} Z' X)^{-1} X' Z \hat{\Omega}^{-1} Z' Y,
+\]
+and
+\[
+  \sqrt{n} (\hat{\beta}_{\OGMM})
+  \longdistto \Normal(0, V),
+\]
+where \(V = (Q' \Omega^{-1} Q)^{-1}\) can be consistently estimated by
+\[
+  \hat{V}
+  \coloneqq \left( \frac{X'Z}{n} \hat{\Omega} \frac{Z' X}{n} \right)^{-1}.
+\]
+
+
+\begin{remark}
+  Although \(\hat{\beta}_{\TSLS}\) is not asymptotically optimal, it does allow for consistent estimation of \(\Omega\) because it depends only \(Z\), \(Z\), \(Y\).
+  Its finite sample performance is also not affect by the need to estimate \(\Omega\).
+\end{remark}
+
+\begin{example}
+  Consider the model
+  \[
+    y = \beta x + u, \quad \E[u|x] = 0,
+  \]
+  where \(x\) and \(y\) are scalar random variables.
+  By the law of iterated expectations, we have \(\E[u f(x)] = 0\) for any function \(f\) of \(x\).
+  Each choice of \(x\) produces a method of moments estimator of \(\beta\) as the solution to \(\E[(y - \beta x) f(x)] = 0\).
+  In particular, we have \(\E[xu] = \E[x^2u] = 0\) and may thus use \(z = (x, x^2)\) as instruments to estimate \(\beta\).
+  Here \(x\) is an included instrument, and \(x^2\) is an excluded instrument.
+
+  Under conditional homoscedasticity, an optimal GMM estimator is the \(\TSLS\) estimator.
+  In the first stage we regress all covariates on the instruments:
+  \[
+    x = \gamma_0 x + \gamma_1 x^2 + v, \quad \E[v\pmat{x & x^2}] = 0.
+  \]
+  But this simply gives \(\gamma_0 = 1\) and \(\gamma_1 = 0\).
+  A perfect fit is obtained, thus the OLS estimator is asymptotically optimal.
+
+  Next consider the heteroskedasticity case.
+  Let \(Z\) be the \(n \times 2\) matrix of the observations of \(z\) and \(X\) be the \(n \times 1\) matrix of the observations of \(x\).
+  We have
+  \[
+    \hat{\beta}_{\OGMM}
+    = (X' Z \hat{\Omega}^{-1} Z' X)^{-1} X' Z \hat{\Omega}^{-1} Z' Y,
+  \]
+  where \(\hat{\Omega}\) is a consistent estimator of \(\Omega = \E[u^2 zz']\).
+  A choice of \(\hat{\Omega}\) is
+  \[
+    \hat{\Omega}
+    = \frac{1}{n} \sum_{i=1}^n \hat{u}_i z_i z_i',
+  \]
+  where \(\hat{u}_i = y_i - x_i' \hat{\beta}_{\OLS}\).
+\end{example}
+
+
+
+\section{Appendix A: A List of Theorems}
+% \phantomsection
+% \addcontentsline{toc}{section}{Appendix A}
+{\footnotesize
+\input{theorem-list.tex}
+}
+
+\section{Appendix B: Common Distributions}
+% \phantomsection
+% \addcontentsline{toc}{section}{Appendix B}
+{\footnotesize
+\input{notes-appendix-dist.tex}
+}
+
+\addcontentsline{toc}{section}{Index}
+\printindex
+\end{document}

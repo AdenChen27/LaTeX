@@ -1,0 +1,493 @@
+\begin{proposition}~
+  \begin{itemize}
+    \item \(\E\) is linear.
+    \item If \(X \leq Y\) with probability \(1\), then \(\E X \leq \E Y\).
+  \end{itemize}
+\end{proposition}
+
+\begin{theorem}[Jensen's Inequality]
+  If \(X\) is such that \(\E X\) and \(\E g(X)\) exist and \(g\) is convex, then 
+  \[
+    g(\E X) \leq \E g(X)
+  \] 
+  where the inequality is strict if \(g\) is strictly convex and \(X\) is not constant.
+\end{theorem}
+
+\begin{proposition}[Properties of Conditional Expectation]~
+  \begin{itemize}
+    \item Linearity.
+    \item (Law of iterated expectation) \(\E(Y) = \E(\E(Y|X))\).
+    \item (Taking out what is known) \(\E(f(X) + g(X) Y | X) = f(X) + g(X) \E(Y|X)\).
+  \end{itemize}
+\end{proposition}
+
+\begin{proposition}[Law of total variance]
+  \[
+    \Var(Y)
+    = \E(\Var(Y|X)) + \Var(\E(Y|X)),
+  \]
+  where
+  \[
+    \Var(Y|X) \coloneqq \E\left\{ [Y - \E(Y|X)]^2 | X \right\} = \E(Y^2|X) - \E(Y|X)^2.
+  \]
+\end{proposition}
+
+\begin{proposition}
+  \begin{align*}
+    X \text{ is independent of } Y
+    &\implies
+    X \text{ is mean independent of } Y \\
+    &\implies \Cov(X, Y) = 0.
+  \end{align*}
+\end{proposition}
+
+\begin{proposition}[Existence of Moments]
+  Suppose \(\E(\abs{X}^k) < \infty\) for some \(k > 0\).
+  Then for \(0 < r < k\), \(\E(\abs{X}^r) < \infty\).
+\end{proposition}
+
+\begin{theorem}[Chebychev's Inequality]
+  Suppose \(X^r\) is a non-negative integrable random variable for some \(r > 0\).
+  Then for any \(\delta > 0\), we have
+  \[
+    \P(X \geq \delta) \leq \frac{\E(X^r)}{\delta^r}.
+  \]
+\end{theorem}
+
+\begin{lemma}
+  \(Y = 0\) almost surely if and only if \(\E Y^2 = 0\).
+\end{lemma}
+
+\begin{theorem}[Cauchy-Schwarz Inequality]
+  If \(\E(X^2)\) and  \(\E(Y^2)\) exist, then
+  \[
+    \abs{\E(XY)}^2 \leq \E(X^2) \E(Y^2)
+  \]
+  with equality if and only if \(X = aY\) almost surely for some constant \(a\).
+\end{theorem}
+
+\begin{corollary}
+  The correlation is bounded between \(-1\) and \(1\), with equality if and only if \(X - \E X = b(Y - \E Y)\) for some constant \(b\), which holds if and only if \(X = a + bY\) for some constants \(a, b\).
+\end{corollary}
+
+\begin{theorem}[Holder's Inequality]
+  If \(X\) and \(Y\) are random variables, then
+  \[
+    \E(\abs{XY}) \leq \E(\abs{X}^p)^{1/p} \E(\abs{Y}^q)^{1/q}
+  \]
+  for any \(p, q > 0\) such that \(1/p + 1/q = 1\).
+\end{theorem}
+
+\begin{proposition}
+  Let \(X\) be a random vector such that \(\Var(X)\) exists.
+  If \(A\) is a constant matrix and \(b\) a constant vector, then
+  \[
+    \Var(AX + b)
+    = A \Var(X) A'.
+  \]
+\end{proposition}
+
+\begin{proposition}
+  Note that \(\E(XX')\) is always positive semidefinite.
+  Moreover, if it is invertible, then it is positive definite.
+\end{proposition}
+
+\begin{proposition}
+  Suppose \(X\) is a \((k \times 1)\) random vector and \(\E(XX')\) exists.
+  Then \(\E(XX')\) is invertible if and only if there is no perfect collinearity in \(X\).
+\end{proposition}
+
+\begin{proposition}
+  If \(X_n\) converges in \(r\)-th mean to  \(X\), then \(X_n \probto X\).
+\end{proposition}
+
+\begin{theorem}[Weak Law of Laege Numbers]
+  Suppose \(\{X_i\}_{i \geq 1}\) is an iid sequence of random variables with \(\E(X_i) = \mu\).
+  Then, \(\overline{X}_n \probto \mu\).
+\end{theorem}
+
+\begin{theorem}[WLLN for Moments]
+  If \(\E(X_i^k) < \infty\), then
+  \[
+    \frac{1}{n} \sum_i X_i^k \longprobto \E(X^k).
+  \]
+\end{theorem}
+
+\begin{proposition}
+  Let \(X_n\) be a sequence of \((k \times 1)\) random vectors.
+  Then,
+  \begin{itemize}
+    \item \(X_n \probto X\) if and only if \(X_{n, i} \probto X_i\) for \(i = 1, \dots, k\). 
+    \item \(X_n \to X\) in \(r\)-th mean if and only if \(X_{n, i} \to X_i\) in \(r\)-th mean for \(i = 1, \dots, k\).
+  \end{itemize}
+\end{proposition}
+
+\begin{corollary}
+  The weak law of large numbers for random vectors.
+\end{corollary}
+
+\begin{theorem}[Continuous Mapping Theorem]~
+  Let \(g: \RR^k \to \RR^n\) be continuous on \(S \subset \RR^k\) with \(\P(X \in S) = 1\).
+  Then the following hold:
+  \begin{enumerate}[label=(\roman*)]
+    \item if \(X_n \probto X\), then \(g(X_n) \probto g(X)\). 
+    \item If \(X_n \distto X\), then \(g(X_n) \distto g(X)\). 
+  \end{enumerate}
+\end{theorem}
+
+\begin{theorem}[Slutsky's Theorem]~
+  Suppose \(X_n \distto X\) and \(Y_n \probto c\) for some constant \(c\).
+  Then,
+  \[
+    X_n + Y_n \longdistto X + c, \quad
+    X_n Y_n \longdistto Xc, \quad
+    X_n / Y_n \longdistto X / c \text{ provided } c \neq 0.
+  \] 
+\end{theorem}
+
+\begin{proposition}
+  Let \(A_n \in \RR^{P \times K}\) be a sequence of matrices converging in probability to a constant matrix \(A\).
+  Let \(B_n\) be a sequence of \((K \times 1)\) random vectors such that \(B_n \distto \Normal(\mu, \Sigma)\).
+  Then,
+  \[
+    A_n B_n \longdistto A \Normal(\mu, \Sigma) \sim \Normal(A \mu, A \Sigma A').
+  \]
+\end{proposition}
+
+\begin{theorem}[Central Limit Theorem]
+  Let \(\{X_i\}_{i \geq 1}\) be an iid sequence of \((K \times 1)\) random vectors with mean \(\mu\) and finite variance matrix \(\Sigma\).
+  Then
+  \[
+    \sqrt{n} (\overline{X}_n - \mu) \longdistto \Normal(0, \Sigma).
+  \]
+\end{theorem}
+
+\begin{theorem}[Delta Method]
+  Let \(\{X_n\}_{n \geq 1}\) be a sequence of \((K \times 1)\) random vectors and suppose
+  \[
+    n^r (X_n - c) \longdistto X
+  \]
+  for some \(r > 0\) and constant vector \(c\).
+  Let \(g: \RR^k \to \RR^d\) be differentiable at the point \(c\).
+  Then,
+  \[
+    n^r (g(X_n) - g(c)) \longdistto \D g(c) X.
+  \]
+  In particular, if \(X \sim \Normal(0, \Sigma)\), then
+  \[
+    n^r (g(X_n) - g(c)) \longdistto \Normal(0, \D g(c) \Sigma \D g(c)').
+  \]
+\end{theorem}
+
+\begin{theorem}
+  Suppose \(\E(y^2) < \infty\) and \(\E(x_j^2) < \infty\) for each \(j = 1, \dots, k\).
+  The function \(g(x) \coloneqq \E(y|x)\) is the best predictor of \(y\) given \(x\) under square loss.
+  That is,
+  \[
+    \E(y|x) \in \argmin_{g} \E\left[ (y - g(x))^2 \right] .
+  \]
+\end{theorem}
+
+\begin{proposition}
+  If \(X\) is full column rank, then the OLS estimator is given by
+  \[
+    \hat{\beta} = (X'X)^{-1} X'Y.
+  \]
+\end{proposition}
+
+\begin{theorem}[Projection Theorem]
+  Let \(y \in \RR^n\) and let \(S\) be any nonempty subspace of \(\RR^n\).
+  There exists a unique point \(\hat{y}\) such that \(\norm{y - \hat{y}}\) is minimized over \(S\).
+  A necessary and sufficient condition for \(\hat{y}\) is that \(y - \hat{y}\) is orthogonal to every vector in \(S\).
+\end{theorem}
+
+\begin{proposition}
+  \(M_X\) projects a vector on to the \(n - k\) dimensional vector space orthogonal to the column space of \(X\).
+\end{proposition}
+
+\begin{proposition}[Projection Matrices, Elementary Properties]~
+  \begin{itemize}
+    \item \(P_X\) is symmetric and idempotent.
+    \item \(P_X M_X = M_X P_X = 0\), since \((P_X Y)' M_X Y = Y' P_X M_X Y = 0\).
+    \item \(P_X X = X\), \(M_X X = 0\). 
+    \item For every \(Y\), \(Y = P_X Y + M_X Y = \hat{Y} + \hat{U}\).
+      Thus \(\norm{Y}^2 = \norm{P_X Y}^2 + \norm{M_X Y}^2\).
+  \end{itemize}
+\end{proposition}
+
+\begin{proposition}
+  Assuming MLR.1--4, we have:
+  \begin{enumerate}[label=(\roman*)]
+    \item The OLS estimator is unbiased.
+    \item Let \(\Omega \coloneqq \Var(U|X) = \E(U'U|X)\).
+      Then,
+      \[
+        \Var(\hat{\beta} | X) = (X'X)^{-1} X' \Omega X (X'X)^{-1}.
+      \]
+      Thus, assuming also MLR.5, we have \(\Omega = \sigma^2 I_n\) and so
+      \[
+        \Var(\hat{\beta} | X) = \sigma^2 (X'X)^{-1}.
+      \]
+  \end{enumerate}
+\end{proposition}
+
+\begin{theorem}[Gauss-Markov]
+  Under MLR.1--5, the OLS estimator is the \vocab{best linear unbiased estimator}.
+  That is, it achieves the smallest variance in the class of linear estimators\footnote{A linear estimator of \(\beta_j\) is a linear combinations of the \(\{y_i\}\), with coefficients depending on \(\{x_i\}\).} that are also unbiased conditional on \(X\).
+  More precisely, let \(\hat{\beta}\) be the OLS estimator and let \(\tilde{\beta} = A(X) Y\) satisfy \(\E(\tilde{\beta} | X) = \beta\).
+  We have then that \(\Var(\tilde{\beta} | X) - \Var(\hat{\beta} | X)\) is positive semidefinite.
+\end{theorem}
+
+\begin{corollary}
+  Let \(r\) be an arbitrary \(k \times 1\) vector.
+  The Gauss-Markov theorem implies that \(r' \hat{\beta}\) is the best linear unbiased estimator of \(r' \beta\), since
+  \[
+    \Var(r' \tilde{\beta} | X) - \Var(r' \hat{\beta} | X)
+    = r' \left[ \Var(\tilde{\beta} | X) - \Var(\hat{\beta} | X) \right] r
+    \geq 0.
+  \]
+  In particular, taking \(r = e_j\), we have \(\Var(\hat{\beta}_j | X) \leq \Var(\tilde{\beta}_j | X)\).
+\end{corollary}
+
+\begin{proposition}
+  Consider the model
+  \[
+    y = x' \beta + u.
+  \]
+  And assume \(\{y_i, x_i\}_{i = 1}^n\) is iid.
+  \begin{enumerate}[label=(\roman*)]
+    \item Suppose \(\E(ux) = 0\) and \(\E(xx')\) is invertible (so that \(n^{-1} \sum x_i x_i'\) is invertible with probability approaching \(1\)).
+      Then, the OLS estimator is consistent; \(\hat{\beta} \probto \beta\).
+
+      Note that if we are doing prediction, \(\E(ux) = 0\) is true by construction.
+      When dealing with causality, however, this is an assumption we need to argue.
+    \item If \(\Var(xu)\) also exists, then \(\hat{\beta}\) is asymptotically normal.
+      Specifically, we have \(\sqrt{n}(\hat{\beta} - \beta) \distto \Normal(0, \Sigma)\), where \(\Sigma \coloneqq \E(xx')^{-1} \Var(xu) \E(xx')^{-1}\).
+  \end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Asymptotic Covariance Under Homoskedasticity]
+  \[
+    \Sigma = \sigma^2 \E(x x')^{-1}.
+  \]
+\end{proposition}
+
+\begin{proposition}[Consistent Estimators]~
+  \begin{enumerate}[label=(\roman*)]
+    \item % (i)
+      The estimator
+      \[
+        \hat{\sigma}^2 \coloneqq \frac{1}{n - k} \sum \hat{u}_i^2 = \frac{\SSR}{n - k}.
+      \]
+      is consistent and unbiased.
+    \item % (ii)
+      The estimator
+      \[
+        \hat{\Sigma} \coloneqq \hat{\sigma}^2 \left( \frac{1}{n} \sum x_i x_i' \right)^{-1}
+      \]
+      is consistent.
+  \end{enumerate}
+\end{proposition}
+
+\begin{lemma}
+  Let \(\{Z_i\}_{i \geq 1}\) be a sequence of identically distributed random vectors such that \(\E(\norm{Z_i}^r) < \infty\).
+  Then,
+  \[
+    \frac{\max_{1 \leq i \leq n} \norm{Z_i}}{n^{1 / r}}
+    \longprobto 0.
+  \]
+\end{lemma}
+
+\begin{proposition}
+  The estimator
+  \[
+    \hat{\Sigma}
+    \coloneqq \left( \frac{1}{n} \sum x_i x_i' \right)^{-1} \left( \frac{1}{n} \sum \hat{u}_i^2 x_i x_i' \right) \left( \frac{1}{n} \sum x_i x_i \right)^{-1}
+  \]
+  is consistent.
+  Note that the estimator can equivalently be written as
+  \[
+    \hat{\Sigma}
+    \equiv n (X' X)^{-1} X' \hat{\Omega} X (X' X)^{-1},
+  \]
+  where
+  \[
+    \hat{\Omega} \coloneqq \pmat{
+      \hat{u}_1^2 &  &  & 0 \\
+       & \hat{u}_2^2 &  &  \\
+       &  & \ddots &  \\
+      0 &  &  & \hat{u}_n^2
+    }.
+  \]
+\end{proposition}
+
+\begin{proposition}
+  Consider the model \(Y = X_1 \beta_1 + X_2 \beta_2 + U\).
+  Let \(\tilde{X}_2 \coloneqq M_{X_1} X_2\) be the vector of residuals from a regression of (each column of \(X_2\) on \(X_1\)).
+  Denote \(\tilde{Y} \coloneqq M_{X_1} Y = \hat{U}\) similarly.
+  Then, the OLS estimator \(\hat{\beta}_2\) equals:
+  \begin{itemize}
+    \item The OLS estimator of \(Y\) on \(\tilde{X}_2\).
+    \item The OLS estimator of \(\tilde{Y}\) on \(\tilde{X}_2\).
+  \end{itemize}
+  In particular, we have the formula
+  \[
+    \hat{\beta}_2
+    = (X_2' M_{X_1} X_2)^{-1} X_2' M_{X_1} Y.
+  \]
+\end{proposition}
+
+\begin{proposition}[Long and Short Regression]
+  Suppose \(x_{1}\) and \(x_{2}\) has dimension \(d_1\) and \(d_2\).
+  Consider the short regression
+  \[
+    y = x_{1}' \beta_{1 s} + u_s, \quad \E[xu_s] = 0
+  \]
+  and the long regression
+  \[
+    y = x_{1}' \beta_{1 l} + x_{2}' \beta_{2 l} + u_l, \quad \E[xu_l] = 0.
+  \]
+  Then,
+  \[
+    \beta_{1 a} = \beta_{1 l} + \alpha \beta_{2 l},
+  \]
+  where \(\alpha\) is a \(d_1 \times d_2\) dimensional matrix, the \(j\)th column of which if the population regression coefficient vector from regressing the \(j\)th component of \(x_{2}\) onto \(x_{1}\).
+\end{proposition}
+
+\begin{theorem}[Yule-Frisch-Waugh-Lovell]
+  \(\beta_2\) is both the best linear predictor of \(\tilde{y}\) given \(\tilde{x}_2\) and the best linear predictor of \(y\) given \(\tilde{x}_2\).
+\end{theorem}
+
+\begin{proposition}
+  Under homoskedasticity, the estimator
+  \[
+    \hat{\sigma}^2
+    \coloneqq \frac{\SSR}{n - k}
+    \sim \frac{\sigma^2}{n - k} \cdot \chi_{n - k}^2
+  \]
+  is unbiased, consistent, and independent of \(\hat{\beta}\).
+\end{proposition}
+
+\begin{proposition}
+  A positive definite and symmetric matrix \(A\) has a square root \(A^{1 / 2}\) with inverse \(A^{-1 / 2} = (A^{-1})^{1 / 2}\).
+\end{proposition}
+
+\begin{proposition}[Testing Multiple Linear Restrictions]
+  If \(\hat{V}\) is a consistent estimator of the asymptotic variance of \(\hat{\beta}\), then
+  \begin{align*}
+    &n \cdot (R \hat{\beta}_n - R \beta)' (R \hat{V}_n R')^{- 1 / 2} 
+    (R \hat{V}_n R')^{- 1 / 2} (R \hat{\beta}_n - R \beta) \\
+    &= n \cdot (R \hat{\beta}_n - R \beta)' (R \hat{V}_n R')^{-1} (R \hat{\beta}_n - R \beta)
+    \longdistto \chi_p^2.
+  \end{align*}
+\end{proposition}
+
+\begin{proposition}
+  We have the decomposition
+  \[
+    \ATE
+    = \ATT \cdot \P(D = 1) + \ATU \cdot \P(D = 0).
+  \]
+\end{proposition}
+
+\begin{proposition}
+  If, in addition to unconfoundedness, we have \(D_i \indep x_i\), then the naive comparison is the ATE.
+\end{proposition}
+
+\begin{proposition}
+  Suppose the model is \(y = \beta_0 + \beta_1 x + v\), where \(x\) is a scalar.
+  Suppose \(z\) satisfies \Cref{as:IV-simple}.
+  Then, the IV estimator for \(\beta_1\)
+  \[
+    \hat{\beta}_1^{\mathrm{IV}}
+    = \frac{\sum (z_i - \overline{z}) y_i}{\sum (z_i - \overline{z}) x_i}
+  \]
+  is consistent and asymptotically normal.
+  If \(\E[v|z] = 0\) and  \(\Var(v|z) = \sigma^2\), then
+   \[
+     \sqrt{n} (\hat{\beta}^{\IV}_1 - \beta_1)
+     \longdistto \Normal\left( 0, \frac{\sigma^2}{\Var(x) \Corr(x, z)^2} \right) 
+  \]
+\end{proposition}
+
+\begin{proposition}
+  \Cref{as:IV-linear} is equivalent to assuming linear conditional means and constant treatment effects \emph{conditional on \(w\)}.
+\end{proposition}
+
+\begin{proposition}
+  \Cref{as:IV} and \Cref{as:IV-linear} imply \(\E(u|z, w) = 0\).
+  In particular, we have \vocab{instrumental validity}, \(\E(zu) = 0\).
+\end{proposition}
+
+\begin{proposition}
+  In the case of exact identification, the \vocab{IV estimator}
+  \[
+    \hat{\beta}^{\IV}
+    \coloneqq \left( \frac{1}{n} \sum z_i x_i' \right)^{-1} \left( \frac{1}{n} \sum z_i y_i \right)
+    = (Z'X)^{-1} Z'Y
+  \]
+  coincides with the \vocab{Two Stage Least Squares} (\(\TSLS\)) estimator
+  \[
+    \hat{\beta}_{\TSLS}
+    \coloneqq (X' P_Z X)^{-1} X' P_Z Y.
+  \]
+  Moreover, both estimators are consistent and asymptotically normal.
+\end{proposition}
+
+\begin{proposition}
+  Suppose there is no perfect collinearity in \(z\) and \(\E[zz'] < \infty\).
+  Then, \(\E[zx']\) is full rank if and only if \(\E[zz']^{-1} \E[zx']\) is full rank.
+\end{proposition}
+
+\begin{proposition}[Consistency and Asymptotic Normality of GMM estimators]
+  Let \(C \in \RR^{(k + 1) \times (l + 1)}\) and suppose \(\hat{C} \probto C\).
+  The estimator based on \(\hat{C}\) is consistent and asymptotically normal.
+\end{proposition}
+
+\begin{proposition}[Optimal Choice of \(C\)]
+  Assume \(\Omega \coloneqq \E(u^2 zz')\) is invertible and let \(Q \coloneqq \E(zx')\).
+  Then,
+  \begin{align*}
+    C_{\OGMM}
+    &\coloneqq Q' \Omega^{-1} = \E(xz') [\E(u^2 zz')]^{-1} \\
+  \end{align*}
+  minimizes the asymptotic variance of the GMM estimator.
+\end{proposition}
+
+\begin{proposition}
+  If \(\hat{\Omega} \probto \Omega \coloneqq \E[u^2 zz']\), we say
+  \[
+    \hat{\beta}_{\OGMM}
+    = (X' Z \hat{\Omega}^{-1} Z' X)^{-1} X' Z \hat{\Omega}^{-1} Z' Y
+  \]
+  is a (feasible) \vocab{optimal GMM estimator}.
+  Note that
+  \[
+    \sqrt{n} (\hat{\beta}_{\OGMM} - \beta)
+    \longdistto \Normal\left( 0, (Q' \Omega^{-1} Q)^{-1} \right).
+  \]
+\end{proposition}
+
+\begin{proposition}
+  Let \(\hat{U} \coloneqq Y - X \hat{\beta}_{\TSLS}\).
+  A consistent estimator of \(\sigma^2\) is given by
+  \[
+    \hat{\sigma}^2
+    \coloneqq \frac{\hat{U}' \hat{U}}{n}.
+  \]
+\end{proposition}
+
+\begin{proposition}[Two Stage Least Squares]
+  Under homoskedasticity, \(\hat{\beta}_{\TSLS} \coloneqq (X' P_Z X)^{-1} X' P_Z Y\) is an asymptotically optimal GMM estimator and 
+  \[
+    \sqrt{n} (\hat{\beta}_{\TSLS} - \beta)
+    \longdistto \Normal\left( 0, \sigma^2 \left[ Q' \E(zz')^{-1} Q \right]^{-1} \right),
+  \]
+  where we recall the notation \(Q = \E[zx']\).
+  The asymptotic variance can be consistently estimated by
+  \[
+    \hat{V}
+    \coloneqq n \hat{\sigma}^2 (X' P_Z X)^{-1}.
+  \]
+\end{proposition}
+

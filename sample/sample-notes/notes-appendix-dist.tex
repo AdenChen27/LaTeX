@@ -1,0 +1,163 @@
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c  c  c  c  c}
+   \(X \sim \) & \(\supp \P(X = \cdot)\) & \(\P(X = x)\) & \(\E\) & \(\Var\)
+  \\ \hline 
+  % Binomial
+  \(\Binomial(n, p)\) 
+    & \(\{0, 1, \dots, n\}\) 
+    & \(\binom{n}{x} p^x (1-p)^{n-x}\) 
+    & \(np\) 
+    & \(np(1-p)\) 
+  \vspace{0.5em}\\
+  % Geometric
+  \(\Geometric(p)\) 
+    & \(\NN\) 
+    & \((1-p)^{x-1} p\) 
+    & \(\frac{1}{p}\) 
+    & \(\frac{1-p}{p^2}\) 
+  \vspace{0.5em}\\
+  % Poisson
+  \(\Poisson(\lambda)\) 
+    & \(\NN \cup \{0\}\) 
+    & \(\frac{\lambda^x e^{-\lambda}}{x!}\) 
+    & \(\lambda\) 
+    & \(\lambda\) 
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c  c  c  c  c}
+   \(X \sim \) & \(\supp f\) & \(f\) & \(\E\) & \(\Var\)
+  \\ \hline 
+  % Uniform
+  \(\Uniform(a, b)\) 
+    & \([a, b]\) 
+    & \(\frac{1}{b-a}\) 
+    & \(\frac{a+b}{2}\) 
+    & \(\frac{(b-a)^2}{12}\) 
+  \vspace{0.5em}\\
+  % Normal
+  \(\Normal(\mu, \sigma^2)\) 
+    & \((-\infty, \infty)\) 
+    & \(\frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}\) 
+    & \(\mu\) 
+    & \(\sigma^2\) 
+  \vspace{0.5em}\\
+  % Exponential
+  \(\Exponential(\lambda) = \GammaDist(1, \lambda)\)
+    & \([0, \infty)\) 
+    & \(\lambda e^{-\lambda x}\) 
+    & \(\frac{1}{\lambda}\) 
+    & \(\frac{1}{\lambda^2}\) 
+  \vspace{0.5em}\\
+  % Gamma
+  \(\GammaDist(\alpha, \beta)\) 
+    & \((0, \infty)\) 
+    & \(\frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}\) 
+    & \(\frac{\alpha}{\beta}\) 
+    & \(\frac{\alpha}{\beta^2}\) 
+  \vspace{0.5em}\\
+  % Beta
+  \(\BetaDist(\alpha, \beta)\) 
+    & \((0, 1)\) 
+    & \(\frac{x^{\alpha - 1} (1 - x)^{\beta - 1}}{B(\alpha, \beta)}\) 
+    & \(\frac{\alpha}{\alpha + \beta}\) 
+    & \(\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}\) 
+  \end{tabular}
+\end{table}
+
+\begin{definition}
+  Let \(Z_i \iidsim \Normal(0, 1)\).
+  \begin{itemize}
+    \item Then
+      \[
+        \sum Z_i^2 \sim \chi_k^2 = \GammaDist\left(\frac{k}{2}, \frac{1}{2}\right).
+      \]
+    \item If \(W \sim \chi_n^2\) and \(Z \indep W\), then
+      \[
+        \frac{Z}{\sqrt{W / k}} \sim t_k.
+      \]
+    \item If \(W_1 \sim \chi_{k_1}^2\), \(W_2 \sim \chi_{k_2}^2\), and \(W_1 \indep W_2\), then
+      \[
+        \frac{W_1 / k_1}{W_2 / k_2} \sim F_{k_1, k_2}.
+      \]
+  \end{itemize}
+\end{definition}
+Note that \(\supp F = \RR_+\), and \(\E[F] = k_2 / (k_1 + k_2) \approx 1\).
+
+
+\begin{proposition}[Approximations of \(\Binomial\)]~
+  \begin{itemize}
+    \item If \(np_n \to \lambda\), then \(\Binomial(n, p) \to \Poisson(\lambda)\).
+    \item Using CLT, \(\Binomial(n, p) \approx \Normal(np, np(1 - p))\).
+  \end{itemize}
+\end{proposition}
+
+\begin{proposition}[\(\Normal\)]
+  Let \(X_i \iidsim \Normal(\mu, \sigma^2)\) and put \(S^2 \coloneqq \frac{1}{n - 1} \sum (X_i - \overline{X})^2\).
+  Then
+  \begin{enumerate}[label=(\roman*)]
+    \item \(\E[S^2] = \sigma^2\).
+      \(\overline{X} \indep S^2\).
+    \item \(\sqrt{n} \frac{\overline{X}_n - \mu}{\sigma} \sim \Normal(0, 1)\).
+    \item \((n - 1) \frac{S^2}{\sigma^2} =  \frac{1}{\sigma^2} \sum (X_i - \overline{X})^2 \sim \chi_{n - 1}^2\).
+    \item \(\sqrt{n} \frac{\overline{X} - \mu}{S} \sim t_{n - 1}\).
+  \end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Multivariate Normal]~
+  Let \((X, Y) \sim \Normal_2\).
+  \begin{itemize}
+    \item \(\Cov(X, Y) = 0\) if and only if \(X \indep Y\).
+    \item The MLEs are given by
+      \[
+        \hat{\mu}_X = \overline{X}, \quad
+        \hat{\sigma}_Y^2 = ^{-1} \sum (X_i - \overline{X})^2, \quad
+        R
+        \coloneqq \hat{\rho}
+        = \frac{\sum (X_i - \overline{X}) (Y_i - \overline{Y})}{\sqrt{\sum (X_i - \overline{X})^2 \sum (Y_i - \overline{Y})^2}}.
+      \]
+      \(R\) is known as the Pearson correlation coefficient.
+    \item \((X, Y) \sim \Normal_2\) if and only if \(aX + bY \sim \Normal\) for any \(a, b \in \RR\).
+    \item The distribution of \(X\) conditional on \(Y = y\) is given by
+      \[
+        X | Y = y
+        \sim \Normal\left(\mu_X + \rho \frac{\sigma_X}{\sigma_Y} (y - \mu_Y), \sigma_X^2 (1 - \rho^2)\right).
+      \]
+  \end{itemize}
+  Let \(\vec{X} \sim \Normal_k(\vec{\mu}, \vec{\Sigma})\).
+  If \(\vec{\Sigma}\) is positive definite, then \(\vec{X}\) has density 
+  \[
+    f(X) = \frac{1}{(2\pi)^{k / 2} \det(\vec{\Sigma})} \exp \left( -\frac{1}{2} (\vec{X} - \vec{\mu})^\tran \vec{\Sigma}^{-1} (\vec{X} - \vec{\mu}) \right).
+  \]
+\end{proposition}
+
+\begin{proposition}[Exponential Distribution, ``Memoryless'']
+  \[
+    \P(T \leq x + y | T > x) = \P(T \leq y).
+  \]
+\end{proposition}
+
+\begin{proposition}[Gamma Distribution]
+  Let \(X \sim \GammaDist(\alpha, \beta)\).
+  \begin{enumerate}[label=(\roman*)]
+    \item % (i)
+      If \(X_i \iidsim \GammaDist(\alpha_i, \beta)\), then 
+      \(\sum X_i \sim \GammaDist\left( \sum \alpha_i, \beta \right)\). 
+    \item % (ii)
+      If \(\alpha > 1\), then 
+      \(\E\left[ 1 / X \right] = \frac{\beta}{\alpha - 1}\). 
+    \item \(\beta X \sim \GammaDist\left( \alpha, 1 \right)\). 
+  \end{enumerate}
+\end{proposition}
+% \begin{proposition}[\(\Gamma\)]~
+%   \begin{itemize}
+%     \item \(\Gamma(\lambda) \coloneqq \int_{0}^{\infty} e^{-x} x^{\lambda - 1} \dd x\).
+%     \item \(\Gamma(1) = 1\); 
+%     \item \(\Gamma(1 / 2) = \sqrt{\pi}\); 
+%     \item \(\Gamma(x + 1) = x \Gamma(x)\); 
+%     \item \(\Gamma(n) = (n - 1)!\).
+%   \end{itemize}
+% \end{proposition}

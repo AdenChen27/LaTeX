@@ -5,7 +5,7 @@
 % ================ PACKAGE OPTIONS ===============
 % ================================================
 \newif\ifadenccolor \adenccolorfalse
-\newif\ifadencplain \adencplaintrue
+\newif\ifadencboxed \adencboxedfalse
 \newif\ifhideproofs \hideproofsfalse
 \newif\ifhidemarkings \hidemarkingsfalse
 \newif\ifworkingpaper \workingpaperfalse
@@ -15,11 +15,8 @@
 % \usepackage[color]{adenc} to color theorem environments.
 \DeclareOption{color}{\adenccolortrue}
 
-% \usepackage[plain]{adenc} to use the default theorem environments: `definition`, `plain`, and `remark`.
-\DeclareOption{plain}{\adencplaintrue}
-
-% \usepackage[boxed]{adenc} to use the colored theorem environments
-\DeclareOption{boxed}{\adencplainfalse}
+% \usepackage[boxed]{adenc} to use mdframed-boxed theorem environments (default: plain amsthm styles).
+\DeclareOption{boxed}{\adencboxedtrue}
 
 % \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
 \DeclareOption{hideproofs}{\hideproofstrue}
@@ -33,7 +30,7 @@
 % \usepackage[fancyqed]{adenc} to use the fancy qed (and other end-of-environment) symbols
 \DeclareOption{fancyqed}{\fancyqedtrue}
 
-\ProcessOptions*
+\ProcessOptions\relax
 
 
 % ================================================
@@ -49,7 +46,6 @@
 
 
 \RequirePackage{tablefootnote}
-\usepackage{pdfsync}
 \synctex=1
 
 
@@ -83,18 +79,15 @@
 \RequirePackage{siunitx}
 \RequirePackage{enumitem}
 
-\usepackage{xparse}
-
-
 % ================================================
 % ================ HYPERREF STYLES ===============
 % ================================================
 \RequirePackage{hyperref}
-% citecolor: NavyBlue by default; blue if option `plain` used
-\ifadencplain
-  \newcommand{\citecolor}{blue}
-\else
+% citecolor: NavyBlue by default; blue if option `boxed` used
+\ifadencboxed
   \newcommand{\citecolor}{NavyBlue}
+\else
+  \newcommand{\citecolor}{blue}
 \fi
 
 \hypersetup{
@@ -178,10 +171,20 @@
   \getThmboxStyle{probbox}{mdprobbox}{black}{white}
 \fi
 
-% If option `plain` passed:
-% - use default styles: `plain`, `definition`, and `remark`
-% - add end-of-remark/example symbol
-\ifadencplain
+% If option `boxed` passed:
+% - use mdframed-boxed styles
+% - no end-of-remark/example symbol
+% Default (plain): use default styles `plain`, `definition`, and `remark`, with end symbols
+\ifadencboxed
+  \newcommand{\thmboxStyle}{thmbox}
+  \newcommand{\defboxStyle}{defbox}
+  \newcommand{\exboxStyle}{exbox}
+  \newcommand{\noteboxStyle}{notebox}
+  \newcommand{\probboxStyle}{probbox}
+  % No end symbols for example and remark
+  \newcommand\remqed{}
+  \newcommand\exqed{}
+\else
   \newcommand{\thmboxStyle}{plain}
   \newcommand{\defboxStyle}{definition}
   \newcommand{\exboxStyle}{remark}
@@ -195,15 +198,6 @@
     \newcommand\remqed{\(\diamond\)}
     \newcommand\exqed{\(\triangleleft\)}
   \fi
-\else
-  \newcommand{\thmboxStyle}{thmbox}
-  \newcommand{\defboxStyle}{defbox}
-  \newcommand{\exboxStyle}{exbox}
-  \newcommand{\noteboxStyle}{notebox}
-  \newcommand{\probboxStyle}{probbox}
-  % No end symbols for example and remark
-  \newcommand\remqed{}
-  \newcommand\exqed{}
 \fi
 
 % % If option `fancy` passed:
@@ -499,8 +493,6 @@
 \newcommand{\bS}{\mathds{S}}
 \newcommand{\bT}{\mathds{T}}
 % === expanding \cX to \mathcal{X} for any capital letter X ===
-\RequirePackage{xparse}
-\RequirePackage{expl3}
 \ExplSyntaxOn
 \clist_map_inline:nn {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 {
@@ -573,13 +565,13 @@
 \DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\Bias}{Bias}
 
-\DeclareMathOperator{\disteq}{\stackrel{\mathrm{d}}{=}}
-\DeclareMathOperator{\distto}{\xrightarrow{\mathrm{d}}}
-\DeclareMathOperator{\longdistto}{\xrightarrow{\ \mathrm{d}\ }}
-% \DeclareMathOperator{\distto}{\to_{\mathrm{d}}}
-% \DeclareMathOperator{\longdistto}{\longrightarrow_{\mathrm{d}}}
-\DeclareMathOperator{\probto}{\xrightarrow{\mathrm{p}}}
-\DeclareMathOperator{\longprobto}{\xrightarrow{\ \mathrm{p}\ }}
+\newcommand{\disteq}{\stackrel{\mathrm{d}}{=}}
+\newcommand{\distto}{\xrightarrow{\mathrm{d}}}
+\newcommand{\longdistto}{\xrightarrow{\ \mathrm{d}\ }}
+% \newcommand{\distto}{\to_{\mathrm{d}}}
+% \newcommand{\longdistto}{\longrightarrow_{\mathrm{d}}}
+\newcommand{\probto}{\xrightarrow{\mathrm{p}}}
+\newcommand{\longprobto}{\xrightarrow{\ \mathrm{p}\ }}
 % \DeclareMathOperator{\longprobto}{\xrightarrow{\ p\ }}
 
 \newcommand{\iidsim}{\overset{\mathrm{iid}}{\sim}}
@@ -623,7 +615,7 @@
 % \renewcommand{\underline}[1]{\mkern 1.5mu\oldunderline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
 
 % nicer vector
-\usepackage{bm}
+\RequirePackage{bm}
 \renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
 % \renewcommand{\vec}[1]{\mathbf{#1}}
 
@@ -684,7 +676,7 @@
 % ================================================
 % ===================== CODE =====================
 % ================================================
-\usepackage{listings}
+\RequirePackage{listings}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}

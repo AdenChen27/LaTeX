@@ -10,7 +10,7 @@
 
 
 
-\usepackage{calc}
+\RequirePackage{calc}
 \newenvironment{transitionframe}{
   % \definecolor{BeigeOffWhite}{RGB}{255,253,218}
   % \setbeamercolor{background canvas}{bg=BeigeOffWhite}
@@ -39,16 +39,13 @@
 % ================ PACKAGE OPTIONS ===============
 % ================================================
 \newif\ifadenccolor \adenccolorfalse
-\newif\ifadencplain \adencplainfalse
+\newif\ifadencboxed \adencboxedtrue
 \newif\ifhideproofs \hideproofsfalse
 \newif\ifhidemarkings \hidemarkingsfalse
 
 
 % \usepackage[color]{adenc} to color theorem environments.
 \DeclareOption{color}{\adenccolortrue}
-
-% \usepackage[plain]{adenc} to use the default theorem environments: `definition`, `plain`, and `remark`.
-\DeclareOption{plain}{\adencplaintrue}
 
 % \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
 \DeclareOption{hideproofs}{\hideproofstrue}
@@ -57,7 +54,7 @@
 \DeclareOption{hidemarkings}{\hidemarkingstrue}
 
 
-\ProcessOptions*
+\ProcessOptions\relax
 
 
 % ================================================
@@ -98,7 +95,6 @@
 
 
 \RequirePackage{graphicx}
-\RequirePackage{subfigure}
 \graphicspath{{./images/}}
 
 \RequirePackage{caption}
@@ -216,8 +212,6 @@
 \newcommand{\bS}{\mathds{S}}
 \newcommand{\bT}{\mathds{T}}
 % === expanding \cX to \mathcal{X} for any capital letter X ===
-\RequirePackage{xparse}
-\RequirePackage{expl3}
 \ExplSyntaxOn
 \clist_map_inline:nn {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 {
@@ -290,13 +284,13 @@
 \DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\Bias}{Bias}
 
-\DeclareMathOperator{\disteq}{\stackrel{\mathrm{d}}{=}}
-\DeclareMathOperator{\distto}{\xrightarrow{\mathrm{d}}}
-\DeclareMathOperator{\longdistto}{\xrightarrow{\ \mathrm{d}\ }}
-% \DeclareMathOperator{\distto}{\to_{\mathrm{d}}}
-% \DeclareMathOperator{\longdistto}{\longrightarrow_{\mathrm{d}}}
-\DeclareMathOperator{\probto}{\xrightarrow{\mathrm{p}}}
-\DeclareMathOperator{\longprobto}{\xrightarrow{\ \mathrm{p}\ }}
+\newcommand{\disteq}{\stackrel{\mathrm{d}}{=}}
+\newcommand{\distto}{\xrightarrow{\mathrm{d}}}
+\newcommand{\longdistto}{\xrightarrow{\ \mathrm{d}\ }}
+% \newcommand{\distto}{\to_{\mathrm{d}}}
+% \newcommand{\longdistto}{\longrightarrow_{\mathrm{d}}}
+\newcommand{\probto}{\xrightarrow{\mathrm{p}}}
+\newcommand{\longprobto}{\xrightarrow{\ \mathrm{p}\ }}
 % \DeclareMathOperator{\longprobto}{\xrightarrow{\ p\ }}
 
 \newcommand{\iidsim}{\overset{\mathrm{iid}}{\sim}}
@@ -340,7 +334,7 @@
 % \renewcommand{\underline}[1]{\mkern 1.5mu\oldunderline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
 
 % nicer vector
-\usepackage{bm}
+\RequirePackage{bm}
 \renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
 % \renewcommand{\vec}[1]{\mathbf{#1}}
 

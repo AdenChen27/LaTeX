@@ -49,7 +49,7 @@ This document can also be found at [template.tex](https://github.com/AdenChen27/
 ```tex
 \documentclass[oneside,reqno,letterpaper]{amsart}
 \usepackage{adenc}
-% Options: color, plain, hideproofs, hidemarkings, workingpaper
+% Options: color, boxed, hideproofs, hidemarkings, workingpaper, fancyqed
 
 \title[]{}
 \author{}

@@ -53,10 +53,20 @@
   \getThmboxStyle{probbox}{mdprobbox}{black}{white}
 \fi
 
-% If option `plain` passed:
-% - use default styles: `plain`, `definition`, and `remark`
-% - add end-of-remark/example symbol
-\ifadencplain
+% If option `boxed` passed:
+% - use mdframed-boxed styles
+% - no end-of-remark/example symbol
+% Default (plain): use default styles `plain`, `definition`, and `remark`, with end symbols
+\ifadencboxed
+  \newcommand{\thmboxStyle}{thmbox}
+  \newcommand{\defboxStyle}{defbox}
+  \newcommand{\exboxStyle}{exbox}
+  \newcommand{\noteboxStyle}{notebox}
+  \newcommand{\probboxStyle}{probbox}
+  % No end symbols for example and remark
+  \newcommand\remqed{}
+  \newcommand\exqed{}
+\else
   \newcommand{\thmboxStyle}{plain}
   \newcommand{\defboxStyle}{definition}
   \newcommand{\exboxStyle}{remark}
@@ -70,15 +80,6 @@
     \newcommand\remqed{\(\diamond\)}
     \newcommand\exqed{\(\triangleleft\)}
   \fi
-\else
-  \newcommand{\thmboxStyle}{thmbox}
-  \newcommand{\defboxStyle}{defbox}
-  \newcommand{\exboxStyle}{exbox}
-  \newcommand{\noteboxStyle}{notebox}
-  \newcommand{\probboxStyle}{probbox}
-  % No end symbols for example and remark
-  \newcommand\remqed{}
-  \newcommand\exqed{}
 \fi
 
 % % If option `fancy` passed:

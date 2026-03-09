@@ -10,7 +10,7 @@
 
 
 
-\usepackage{calc}
+\RequirePackage{calc}
 \newenvironment{transitionframe}{
   % \definecolor{BeigeOffWhite}{RGB}{255,253,218}
   % \setbeamercolor{background canvas}{bg=BeigeOffWhite}
@@ -39,16 +39,13 @@
 % ================ PACKAGE OPTIONS ===============
 % ================================================
 \newif\ifadenccolor \adenccolorfalse
-\newif\ifadencplain \adencplainfalse
+\newif\ifadencboxed \adencboxedtrue
 \newif\ifhideproofs \hideproofsfalse
 \newif\ifhidemarkings \hidemarkingsfalse
 
 
 % \usepackage[color]{adenc} to color theorem environments.
 \DeclareOption{color}{\adenccolortrue}
-
-% \usepackage[plain]{adenc} to use the default theorem environments: `definition`, `plain`, and `remark`.
-\DeclareOption{plain}{\adencplaintrue}
 
 % \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
 \DeclareOption{hideproofs}{\hideproofstrue}
@@ -57,7 +54,7 @@
 \DeclareOption{hidemarkings}{\hidemarkingstrue}
 
 
-\ProcessOptions*
+\ProcessOptions\relax
 
 
 % ================================================
@@ -98,7 +95,6 @@
 
 
 \RequirePackage{graphicx}
-\RequirePackage{subfigure}
 \graphicspath{{./images/}}
 
 \RequirePackage{caption}
