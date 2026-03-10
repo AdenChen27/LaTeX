@@ -23,5 +23,8 @@ beamer: pre-beamer.tex
 
 readme: pre-README.md ../sample/public-template.tex
 	 (cat pre-README.md ; echo '```tex' ; cat ../sample/public-template.tex ; echo '```') > ../README.md
+	 # pdf2img:
+	 cp -f ~/bin/pdf2img.py ../pdf2img/pdf2img.py
+	 # copy from ~/bin so the repo has the real file (not a symlink) for GitHub
 	 (cat pre-pdf2img-README.md ; echo '```' ; ../pdf2img/pdf2img.py -h ; echo '```') > ../pdf2img/README.md
 
