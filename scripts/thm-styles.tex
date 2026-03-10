@@ -30,7 +30,6 @@
 \definecolor{color1}{HTML}{052E66} % blue, thmbox
 \definecolor{color2}{HTML}{8F0A00} % red, defbox
 \definecolor{color3}{HTML}{2B4E2C} % green, exbox
-\definecolor{color4}{HTML}{440793} % purple, notebox
 \definecolor{color5}{HTML}{764506} % orange, probbox
 
 % If no color passed, use black and white
@@ -38,13 +37,11 @@
   \getThmboxStyle{thmbox}{color1}{color1!5}
   \getThmboxStyle{defbox}{color2}{color2!5}
   \getThmboxStyle{exbox}{color3}{color3!5}
-  \getThmboxStyle{notebox}{color4}{color4!5}
   \getThmboxStyle{probbox}{color5}{color5!5}
 \else
   \getThmboxStyle{thmbox}{black}{white}
   \getThmboxStyle{defbox}{black}{white}
   \getThmboxStyle{exbox}{black}{white}
-  \getThmboxStyle{notebox}{black}{white}
   \getThmboxStyle{probbox}{black}{white}
 \fi
 
@@ -56,7 +53,6 @@
   \newcommand{\thmboxStyle}{thmbox}
   \newcommand{\defboxStyle}{defbox}
   \newcommand{\exboxStyle}{exbox}
-  \newcommand{\noteboxStyle}{notebox}
   \newcommand{\probboxStyle}{probbox}
   % No end symbols for example and remark
   \newcommand\remqed{}
@@ -65,7 +61,6 @@
   \newcommand{\thmboxStyle}{plain}
   \newcommand{\defboxStyle}{definition}
   \newcommand{\exboxStyle}{remark}
-  \newcommand{\noteboxStyle}{remark}
   \newcommand{\probboxStyle}{remark}
   % End symbols for example and remark
   \iffancyqed
