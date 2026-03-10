@@ -1,34 +1,29 @@
-% base style
-\mdfdefinestyle{ThmBoxBaseStyle}{
-  skipabove = .5em,
-  skipbelow = .5em,
-  linewidth = 1pt,
-  innertopmargin = .25em,
-  innerbottommargin = .5em,
-  innerleftmargin = .75em,
-  innerrightmargin = .75em,
-  roundcorner = 3pt
+% Base tcolorbox options shared by all theorem boxes
+\tcbset{
+  adenc thmboxbase/.style = {
+    breakable,
+    enhanced,
+    arc = 3pt,
+    boxrule = 1pt,
+    left = .75em,
+    right = .75em,
+    top = 3pt,
+    bottom = 5pt,
+    before skip = 5pt,
+    after skip = .5em,
+  }
 }
 
-% normal box: line skip after label
-% (usage: `\getThmboxStyle{md style name}{theorem style name}{foreground color}{background color}`)
-\newcommand{\getThmboxStyle}[4]{
-  \mdfdefinestyle{#2}{
-    style = ThmBoxBaseStyle, 
-    linecolor = #3,
-    backgroundcolor = #4,
-    nobreak = true,
-    skipabove = 5pt,
-    innertopmargin = 3pt,
-    innerbottommargin = 5pt,
-  }
+% Creates a thmtools style (head formatting only) and a named tcolorbox style.
+% (usage: \getThmboxStyle{style name}{foreground color}{background color})
+\newcommand{\getThmboxStyle}[3]{
   \declaretheoremstyle[
-    headfont = \bfseries\color{#3},
-    notefont = \bfseries\color{#3},
-    mdframed = {style = #2},
+    headfont = \bfseries\color{#2},
+    notefont = \bfseries\color{#2},
     headpunct = {. },
     postheadspace = {0pt},
   ]{#1}
+  \tcbset{adenc #1/.style = {adenc thmboxbase, colframe=#2, colback=#3}}
 }
 
 % Colors for theorem environments
@@ -40,21 +35,21 @@
 
 % If no color passed, use black and white
 \ifadenccolor
-  \getThmboxStyle{thmbox}{mdthmbox}{color1}{color1!5}
-  \getThmboxStyle{defbox}{mddefbox}{color2}{color2!5}
-  \getThmboxStyle{exbox}{mdexbox}{color3}{color3!5}
-  \getThmboxStyle{notebox}{mdnotebox}{color4}{color4!5}
-  \getThmboxStyle{probbox}{mdprobbox}{color5}{color5!5}
+  \getThmboxStyle{thmbox}{color1}{color1!5}
+  \getThmboxStyle{defbox}{color2}{color2!5}
+  \getThmboxStyle{exbox}{color3}{color3!5}
+  \getThmboxStyle{notebox}{color4}{color4!5}
+  \getThmboxStyle{probbox}{color5}{color5!5}
 \else
-  \getThmboxStyle{thmbox}{mdthmbox}{black}{white}
-  \getThmboxStyle{defbox}{mddefbox}{black}{white}
-  \getThmboxStyle{exbox}{mdexbox}{black}{white}
-  \getThmboxStyle{notebox}{mdnotebox}{black}{white}
-  \getThmboxStyle{probbox}{mdprobbox}{black}{white}
+  \getThmboxStyle{thmbox}{black}{white}
+  \getThmboxStyle{defbox}{black}{white}
+  \getThmboxStyle{exbox}{black}{white}
+  \getThmboxStyle{notebox}{black}{white}
+  \getThmboxStyle{probbox}{black}{white}
 \fi
 
 % If option `boxed` passed:
-% - use mdframed-boxed styles
+% - use tcolorbox-boxed styles (breakable across pages)
 % - no end-of-remark/example symbol
 % Default (plain): use default styles `plain`, `definition`, and `remark`, with end symbols
 \ifadencboxed
@@ -82,12 +77,6 @@
   \fi
 \fi
 
-% % If option `fancy` passed:
-% \iffancyqed
-%   \newcommand\proofqedsymbol{\Coffeecup}
-% \else
-%   \newcommand\proofqedsymbol{\qedsymbol}
-% \fi
 \newcommand\proofqedsymbol{\qedsymbol}
 
 
@@ -144,10 +133,10 @@
 
 % proof environment style:
 \declaretheoremstyle[
-  headfont=\bfseries, 
+  headfont=\bfseries,
   notefont = \normalfont\itshape,
-  bodyfont=\normalfont, 
-  numbered=no, 
+  bodyfont=\normalfont,
+  numbered=no,
   qed=\proofqedsymbol
 ]{thmproofbox}
 \declaretheorem[numbered=no, style=thmproofbox, name=Proof]{replacementproof}
@@ -162,3 +151,29 @@
 }{\end{replacementproof}}
 \makeatother
 
+
+% Apply tcolorbox wrapping for boxed mode.
+% \tcolorboxenvironment wraps an existing environment in a tcolorbox using
+% etoolbox hooks, preserving optional arguments like [note].
+\ifadencboxed
+  \tcolorboxenvironment{theorem}{adenc thmbox}
+  \tcolorboxenvironment{theorem*}{adenc thmbox}
+  \tcolorboxenvironment{lemma}{adenc thmbox}
+  \tcolorboxenvironment{lemma*}{adenc thmbox}
+  \tcolorboxenvironment{proposition}{adenc thmbox}
+  \tcolorboxenvironment{proposition*}{adenc thmbox}
+  \tcolorboxenvironment{corollary}{adenc thmbox}
+  \tcolorboxenvironment{corollary*}{adenc thmbox}
+  \tcolorboxenvironment{algorithm}{adenc thmbox}
+  \tcolorboxenvironment{algorithm*}{adenc thmbox}
+  \tcolorboxenvironment{definition}{adenc defbox}
+  \tcolorboxenvironment{definition*}{adenc defbox}
+  \tcolorboxenvironment{example}{adenc exbox}
+  \tcolorboxenvironment{example*}{adenc exbox}
+  \tcolorboxenvironment{problem}{adenc probbox}
+  \tcolorboxenvironment{problem*}{adenc probbox}
+  \tcolorboxenvironment{exercise}{adenc probbox}
+  \tcolorboxenvironment{exercise*}{adenc probbox}
+  \tcolorboxenvironment{question}{adenc probbox}
+  \tcolorboxenvironment{question*}{adenc probbox}
+\fi

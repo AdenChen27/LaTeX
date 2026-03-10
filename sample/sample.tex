@@ -9,8 +9,7 @@
 \renewcommand{\arraystretch}{1.5}
 \usepackage[table]{xcolor}
 
-\renewcommand{\familydefault}{\sfdefault}
-\usepackage{courier}
+\usepackage{lipsum}
 
 \begin{document}
 \maketitle
@@ -60,6 +59,10 @@ To pass multiple options, use: \verb|\usepackage[Option1, Option2, ...]{adenc}|.
 \begin{proof}
   A precise proof.
 \end{proof}
+
+\begin{proposition}[A long proposition that breaks across pages]
+  \lipsum[1-4]
+\end{proposition}
 
 Numbering can be turned off by using the corresponding \verb|*| versions of the environments (e.g. \verb|theorem*| instead of \verb|theorem|). 
 

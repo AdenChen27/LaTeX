@@ -15,7 +15,7 @@
 % \usepackage[color]{adenc} to color theorem environments.
 \DeclareOption{color}{\adenccolortrue}
 
-% \usepackage[boxed]{adenc} to use mdframed-boxed theorem environments (default: plain amsthm styles).
+% \usepackage[boxed]{adenc} to use tcolorbox-boxed theorem environments (default: plain amsthm styles).
 \DeclareOption{boxed}{\adencboxedtrue}
 
 % \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
@@ -114,7 +114,8 @@
 % ================ THEOREM STYLES ================
 % ================================================
 \RequirePackage{thmtools}
-\RequirePackage[framemethod=TikZ]{mdframed}
+\RequirePackage[framemethod=TikZ]{mdframed} % used by marking-commands.tex
+\RequirePackage[breakable, skins]{tcolorbox}
 
 \input{thm-styles.tex}
 
