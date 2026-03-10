@@ -49,7 +49,8 @@ This document can also be found at [template.tex](https://github.com/AdenChen27/
 ```tex
 \documentclass[oneside,reqno,letterpaper]{amsart}
 \usepackage{adenc}
-% Options: color, boxed, hideproofs, hidemarkings, workingpaper, fancyqed
+% Options: color, boxed, hideproofs, hidemarkings, workingpaper
+%          noheader, noclearsection, nofancyqed
 
 \title[]{}
 \author{}

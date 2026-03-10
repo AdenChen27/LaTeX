@@ -9,7 +9,9 @@
 \newif\ifhideproofs \hideproofsfalse
 \newif\ifhidemarkings \hidemarkingsfalse
 \newif\ifworkingpaper \workingpaperfalse
-\newif\iffancyqed \fancyqedfalse
+\newif\iffancyqed \fancyqedtrue
+\newif\ifadencheader \adencheadertrue
+\newif\ifadencsectionpage \adencsectionpagetrue
 
 
 % \usepackage[color]{adenc} to color theorem environments.
@@ -27,8 +29,14 @@
 % \usepackage[workingpaper]{adenc} to get a larger page for the package todonotes
 \DeclareOption{workingpaper}{\workingpapertrue}
 
-% \usepackage[fancyqed]{adenc} to use the fancy qed (and other end-of-environment) symbols
-\DeclareOption{fancyqed}{\fancyqedtrue}
+% \usepackage[nofancyqed]{adenc} to use the default qed symbol instead of the fancy one.
+\DeclareOption{nofancyqed}{\fancyqedfalse}
+
+% \usepackage[noheader]{adenc} to disable the running section header.
+\DeclareOption{noheader}{\adencheaderfalse}
+
+% \usepackage[noclearsection]{adenc} to disable new-page and header suppression at each section.
+\DeclareOption{noclearsection}{\adencsectionpagefalse}
 
 \ProcessOptions\relax
 
@@ -212,3 +220,35 @@
 % ===================== CODE =====================
 % ================================================
 \input{code.tex}
+
+
+% ================================================
+% ==================== HEADER ====================
+% ================================================
+% Default: running section header on left, centered page number in footer.
+% Override header content per-document: \renewcommand{\adencheadercontent}{...}
+% Disable entirely: \usepackage[noheader]{adenc}
+\newcommand{\adencheadercontent}{\small\itshape\nouppercase{\leftmark}}
+\ifadencheader
+  \RequirePackage{fancyhdr}
+  \pagestyle{fancy}
+  \fancyhf{}
+  \fancyhead[L]{\adencheadercontent}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \fancyfoot[C]{\small\thepage}
+  \renewcommand{\sectionmark}[1]{\markboth{\thesection\enspace#1}{}}
+  % plain style: title page gets no header, but keeps centered page number
+  \fancypagestyle{plain}{%
+    \fancyhf{}%
+    \fancyfoot[C]{\small\thepage}%
+    \renewcommand{\headrulewidth}{0pt}%
+  }
+\fi
+
+% sectionpage: new page + suppress header at each section (covers \section and \section*)
+\ifadencsectionpage
+  \AddToHook{cmd/section/before}{\clearpage}
+  \ifadencheader
+    \AddToHook{cmd/section/before}{\thispagestyle{plain}}
+  \fi
+\fi
