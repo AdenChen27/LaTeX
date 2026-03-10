@@ -12,6 +12,7 @@
 \newif\iffancyqed \fancyqedtrue
 \newif\ifadencheader \adencheadertrue
 \newif\ifadencsectionpage \adencsectionpagetrue
+\newif\ifadencindex \adencindexfalse
 
 
 % \usepackage[color]{adenc} to color theorem environments.
@@ -37,6 +38,9 @@
 
 % \usepackage[noclearsection]{adenc} to disable new-page and header suppression at each section.
 \DeclareOption{noclearsection}{\adencsectionpagefalse}
+
+% \usepackage[index]{adenc} to enable automatic indexing of \vocab terms.
+\DeclareOption{index}{\adencindextrue}
 
 \ProcessOptions\relax
 
@@ -437,6 +441,8 @@
 
 \newcommand{\ds}{\displaystyle}
 
+\setcounter{tocdepth}{2}
+
 \RequirePackage{silence} % for suppressing warnings
 \WarningFilter{mdframed}{You have requested package}
 
@@ -749,4 +755,19 @@
   \ifadencheader
     \AddToHook{cmd/section/before}{\thispagestyle{plain}}
   \fi
+\fi
+
+
+% ================================================
+% ==================== INDEX =====================
+% ================================================
+% \usepackage[index]{adenc} to enable automatic indexing of \vocab terms.
+\ifadencindex
+  \RequirePackage{imakeidx}
+  \makeindex
+  \renewcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}\index{#1}}
+  \AtEndDocument{%
+    \addcontentsline{toc}{section}{Index}%
+    \printindex%
+  }
 \fi
