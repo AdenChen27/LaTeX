@@ -1,7 +1,5 @@
 \documentclass[letterpaper, 10pt]{article}
-\usepackage{adenc}
-\usepackage{imakeidx}
-\makeindex
+\usepackage[index]{adenc}
 
 \DeclareMathOperator{\TSS}{TSS}
 \DeclareMathOperator{\ESS}{ESS}
@@ -14,9 +12,6 @@
 \DeclareMathOperator{\TSLS}{2SLS}
 \DeclareMathOperator{\BLP}{BLP}
 
-\setcounter{tocdepth}{2}
-
-\renewcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath{#1}}\index{#1}}
 
 
 \title{ECON21030 (S25): Econometrics - Honors}
@@ -3726,6 +3721,4 @@ where \(V = (Q' \Omega^{-1} Q)^{-1}\) can be consistently estimated by
 \input{notes-appendix-dist.tex}
 }
 
-\addcontentsline{toc}{section}{Index}
-\printindex
 \end{document}
