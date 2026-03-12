@@ -329,11 +329,9 @@
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\Span}{span}
 
-% \newcommand*{\tran}{\intercal}
 \newcommand\T{{\mathpalette\raiseT\intercal}}
 \newcommand\raiseT[2]{\raisebox{0.25ex}{$#1#2$}}
-% \newcommand*{\tran}{\text{T}}
-\newcommand*{\tran}{\T}
+\newcommand*{\tran}{\T} % deprecated
 
 
 
@@ -359,12 +357,12 @@
 % ========== Analysis ==========
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
+\newcommand*{\ii}{\mathrm{i}}
+\newcommand*{\im}{\mathrm{i}} % deprecated
 \newcommand*{\I}{\mathrm{i}} % deprecated
-\newcommand*{\im}{\mathrm{i}}
 
-\renewcommand{\d}{\mathrm{d}}
-\newcommand{\dd}{\ \mathrm{d}}
-\newcommand{\D}{\mathrm{D}}
+\newcommand{\dd}{\mathop{}\!\mathrm{d}}
+\newcommand{\DD}{\mathrm{D}}
 
 \newcommand{\ran}{\mathcal{R}}
 \renewcommand{\ker}{\mathcal{N}}
