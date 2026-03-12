@@ -38,23 +38,36 @@
 % ================================================
 % ================ PACKAGE OPTIONS ===============
 % ================================================
-\newif\ifadenccolor \adenccolorfalse
-\newif\ifadencboxed \adencboxedtrue
-\newif\ifhideproofs \hideproofsfalse
-\newif\ifhidemarkings \hidemarkingsfalse
+\RequirePackage{l3keys2e}
 
+\ExplSyntaxOn
 
-% \usepackage[color]{adenc} to color theorem environments.
-\DeclareOption{color}{\adenccolortrue}
+\bool_new:N \l_adenc_color_bool        \bool_set_false:N \l_adenc_color_bool
+\bool_new:N \l_adenc_boxed_bool        \bool_set_true:N  \l_adenc_boxed_bool  % boxed by default in beamer
+\bool_new:N \l_adenc_hideproofs_bool   \bool_set_false:N \l_adenc_hideproofs_bool
+\bool_new:N \l_adenc_hidemarkings_bool \bool_set_false:N \l_adenc_hidemarkings_bool
 
-% \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
-\DeclareOption{hideproofs}{\hideproofstrue}
+\keys_define:nn { adenc-beamer } {
+  theorembox .choices:nn = { none, plain, color } {
+    \int_case:nn { \l_keys_choice_int } {
+      { 1 } { \bool_set_false:N \l_adenc_boxed_bool  \bool_set_false:N \l_adenc_color_bool }
+      { 2 } { \bool_set_true:N  \l_adenc_boxed_bool  \bool_set_false:N \l_adenc_color_bool }
+      { 3 } { \bool_set_true:N  \l_adenc_boxed_bool  \bool_set_true:N  \l_adenc_color_bool }
+    }
+  },
+  theorembox .default:n = none,
+  hideproofs   .bool_set:N = \l_adenc_hideproofs_bool,   hideproofs   .default:n = true,
+  hidemarkings .bool_set:N = \l_adenc_hidemarkings_bool, hidemarkings .default:n = true,
+}
 
-% \usepackage[hidemarkings]{adenc} to hide all markings (`\markabove` and `\markbelow`; see below).
-\DeclareOption{hidemarkings}{\hidemarkingstrue}
+\ProcessKeysOptions { adenc-beamer }
 
+\cs_new_protected:Npn \adencIfColor        #1#2 { \bool_if:NTF \l_adenc_color_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfBoxed        #1#2 { \bool_if:NTF \l_adenc_boxed_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfHideproofs   #1#2 { \bool_if:NTF \l_adenc_hideproofs_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfHidemarkings #1#2 { \bool_if:NTF \l_adenc_hidemarkings_bool {#1}{#2} }
 
-\ProcessOptions\relax
+\ExplSyntaxOff
 
 
 % ================================================
@@ -472,15 +485,15 @@
 \RequirePackage{environ}
 \NewEnviron{hide}{}
 % hide proofs if the `hideproofs` option is passed:
-\ifhideproofs
+\adencIfHideproofs{%
   \let\proof\hide
   \let\endproof\endhide
-\fi
+}{}
 % hide markings if the `hidemarkings` option is passed:
-\ifhidemarkings
+\adencIfHidemarkings{%
   \renewcommand{\markabove}[2]{}
   \renewcommand{\markbelow}[2]{}
-\fi
+}{}
 
 
 % ================================================

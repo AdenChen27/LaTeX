@@ -4,45 +4,64 @@
 % ================================================
 % ================ PACKAGE OPTIONS ===============
 % ================================================
-\newif\ifadenccolor \adenccolorfalse
-\newif\ifadencboxed \adencboxedfalse
-\newif\ifhideproofs \hideproofsfalse
-\newif\ifhidemarkings \hidemarkingsfalse
-\newif\ifworkingpaper \workingpaperfalse
-\newif\iffancyqed \fancyqedtrue
-\newif\ifadencheader \adencheadertrue
-\newif\ifadencsectionpage \adencsectionpagetrue
-\newif\ifadencindex \adencindexfalse
+\RequirePackage{l3keys2e}
 
+\ExplSyntaxOn
 
-% \usepackage[color]{adenc} to color theorem environments.
-\DeclareOption{color}{\adenccolortrue}
+% Internal booleans (set by key processing below)
+\bool_new:N \l_adenc_color_bool        \bool_set_false:N \l_adenc_color_bool
+\bool_new:N \l_adenc_boxed_bool        \bool_set_false:N \l_adenc_boxed_bool
+\bool_new:N \l_adenc_hideproofs_bool   \bool_set_false:N \l_adenc_hideproofs_bool
+\bool_new:N \l_adenc_hidemarkings_bool \bool_set_false:N \l_adenc_hidemarkings_bool
+\bool_new:N \l_adenc_workingpaper_bool \bool_set_false:N \l_adenc_workingpaper_bool
+\bool_new:N \l_adenc_fancyqed_bool     \bool_set_true:N  \l_adenc_fancyqed_bool
+\bool_new:N \l_adenc_header_bool       \bool_set_true:N  \l_adenc_header_bool
+\bool_new:N \l_adenc_sectionpage_bool  \bool_set_true:N  \l_adenc_sectionpage_bool
+\bool_new:N \l_adenc_index_bool        \bool_set_false:N \l_adenc_index_bool
 
-% \usepackage[boxed]{adenc} to use tcolorbox-boxed theorem environments (default: plain amsthm styles).
-\DeclareOption{boxed}{\adencboxedtrue}
+\keys_define:nn { adenc } {
+  % theorembox: choice key controlling box style and color
+  % none  = plain amsthm styles, no color (default)
+  % plain = tcolorbox boxes, no color
+  % color = tcolorbox boxes + color
+  theorembox .choices:nn = { none, plain, color } {
+    \int_case:nn { \l_keys_choice_int } {
+      { 1 } { \bool_set_false:N \l_adenc_boxed_bool  \bool_set_false:N \l_adenc_color_bool }
+      { 2 } { \bool_set_true:N  \l_adenc_boxed_bool  \bool_set_false:N \l_adenc_color_bool }
+      { 3 } { \bool_set_true:N  \l_adenc_boxed_bool  \bool_set_true:N  \l_adenc_color_bool }
+    }
+  },
+  theorembox .default:n = none,
+  % \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
+  hideproofs   .bool_set:N = \l_adenc_hideproofs_bool,   hideproofs   .default:n = true,
+  % \usepackage[hidemarkings]{adenc} to hide all \markabove and \markbelow annotations.
+  hidemarkings .bool_set:N = \l_adenc_hidemarkings_bool, hidemarkings .default:n = true,
+  % \usepackage[workingpaper]{adenc} for wider margins (todonotes) and draft watermark.
+  workingpaper .bool_set:N = \l_adenc_workingpaper_bool, workingpaper .default:n = true,
+  % \usepackage[index]{adenc} to enable automatic indexing of \vocab terms.
+  index        .bool_set:N = \l_adenc_index_bool,        index        .default:n = true,
+  % \usepackage[fancyqed=false]{adenc} to use the default qed symbol.
+  fancyqed     .bool_set:N = \l_adenc_fancyqed_bool,     fancyqed     .default:n = true,
+  % \usepackage[header=false]{adenc} to disable the running section header.
+  header       .bool_set:N = \l_adenc_header_bool,       header       .default:n = true,
+  % \usepackage[clearsection=false]{adenc} to disable new-page at each section.
+  clearsection .bool_set:N = \l_adenc_sectionpage_bool,  clearsection .default:n = true,
+}
 
-% \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
-\DeclareOption{hideproofs}{\hideproofstrue}
+\ProcessKeysOptions { adenc }
 
-% \usepackage[hidemarkings]{adenc} to hide all markings (`\markabove` and `\markbelow`; see below).
-\DeclareOption{hidemarkings}{\hidemarkingstrue}
+% Bridge macros: valid LaTeX2e csnames callable outside \ExplSyntaxOn
+\cs_new_protected:Npn \adencIfColor        #1#2 { \bool_if:NTF \l_adenc_color_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfBoxed        #1#2 { \bool_if:NTF \l_adenc_boxed_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfHideproofs   #1#2 { \bool_if:NTF \l_adenc_hideproofs_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfHidemarkings #1#2 { \bool_if:NTF \l_adenc_hidemarkings_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfWorkingpaper #1#2 { \bool_if:NTF \l_adenc_workingpaper_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfFancyqed     #1#2 { \bool_if:NTF \l_adenc_fancyqed_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfHeader       #1#2 { \bool_if:NTF \l_adenc_header_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfSectionpage  #1#2 { \bool_if:NTF \l_adenc_sectionpage_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfIndex        #1#2 { \bool_if:NTF \l_adenc_index_bool {#1}{#2} }
 
-% \usepackage[workingpaper]{adenc} to get a larger page for the package todonotes
-\DeclareOption{workingpaper}{\workingpapertrue}
-
-% \usepackage[nofancyqed]{adenc} to use the default qed symbol instead of the fancy one.
-\DeclareOption{nofancyqed}{\fancyqedfalse}
-
-% \usepackage[noheader]{adenc} to disable the running section header.
-\DeclareOption{noheader}{\adencheaderfalse}
-
-% \usepackage[noclearsection]{adenc} to disable new-page and header suppression at each section.
-\DeclareOption{noclearsection}{\adencsectionpagefalse}
-
-% \usepackage[index]{adenc} to enable automatic indexing of \vocab terms.
-\DeclareOption{index}{\adencindextrue}
-
-\ProcessOptions\relax
+\ExplSyntaxOff
 
 
 % ================================================
@@ -64,7 +83,7 @@
 % \RequirePackage[margin=1in]{geometry}
 
 % increase pad 3cm to both left and right sides of the page for todonotes
-\ifworkingpaper
+\adencIfWorkingpaper{%
   % \paperwidth=\dimexpr \paperwidth + 6cm\relax
   \paperwidth=\dimexpr \paperwidth + 3cm\relax
   % \oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
@@ -84,7 +103,7 @@
   % \SetWatermarkText{DRAFT}
   % \SetWatermarkScale{1}
   % \usepackage[light,first,bottomafter]{draftcopy}
-\fi
+}{}
 
 
 \RequirePackage[dvipsnames]{xcolor}
@@ -95,12 +114,8 @@
 % ================ HYPERREF STYLES ===============
 % ================================================
 \RequirePackage{hyperref}
-% citecolor: NavyBlue by default; blue if option `boxed` used
-\ifadencboxed
-  \newcommand{\citecolor}{NavyBlue}
-\else
-  \newcommand{\citecolor}{blue}
-\fi
+% citecolor: NavyBlue if theorembox used; blue otherwise
+\adencIfBoxed{\newcommand{\citecolor}{NavyBlue}}{\newcommand{\citecolor}{blue}}
 
 \hypersetup{
   bookmarksnumbered=true,
@@ -157,15 +172,15 @@
 \RequirePackage{environ}
 \NewEnviron{hide}{}
 % hide proofs if the `hideproofs` option is passed:
-\ifhideproofs
+\adencIfHideproofs{%
   \let\proof\hide
   \let\endproof\endhide
-\fi
+}{}
 % hide markings if the `hidemarkings` option is passed:
-\ifhidemarkings
+\adencIfHidemarkings{%
   \renewcommand{\markabove}[2]{}
   \renewcommand{\markbelow}[2]{}
-\fi
+}{}
 
 
 % ================================================
@@ -233,38 +248,43 @@
 % ================================================
 % Default: running section header on left, centered page number in footer.
 % Override header content per-document: \renewcommand{\adencheadercontent}{...}
-% Disable entirely: \usepackage[noheader]{adenc}
+% Disable entirely: \usepackage[header=false]{adenc}
 \newcommand{\adencheadercontent}{\small\itshape\nouppercase{\leftmark}}
-\ifadencheader
+\adencIfHeader{%
   \RequirePackage{fancyhdr}
-  \pagestyle{fancy}
-  \fancyhf{}
-  \fancyhead[L]{\adencheadercontent}
-  \renewcommand{\headrulewidth}{0.4pt}
-  \fancyfoot[C]{\small\thepage}
-  \renewcommand{\sectionmark}[1]{\markboth{\thesection\enspace#1}{}}
-  % plain style: title page gets no header, but keeps centered page number
-  \fancypagestyle{plain}{%
-    \fancyhf{}%
-    \fancyfoot[C]{\small\thepage}%
-    \renewcommand{\headrulewidth}{0pt}%
-  }
-\fi
+  % Use AtBeginDocument so our setup runs after amsart resets the page style.
+  \AtBeginDocument{%
+    \pagestyle{fancy}
+    \fancyhf{}
+    \fancyhead[L]{\adencheadercontent}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \fancyfoot[C]{\small\thepage}
+    \renewcommand{\sectionmark}[1]{\markboth{\thesection\enspace#1}{}}
+    % plain style: title page gets no header, but keeps centered page number
+    \fancypagestyle{plain}{%
+      \fancyhf{}%
+      \fancyfoot[C]{\small\thepage}%
+      \renewcommand{\headrulewidth}{0pt}%
+    }
+    % Clear amsart's author/title marks so the header is empty until the first section.
+    \markboth{}{}%
+  }%
+}{}
 
 % sectionpage: new page + suppress header at each section (covers \section and \section*)
-\ifadencsectionpage
+\adencIfSectionpage{%
   \AddToHook{cmd/section/before}{\clearpage}
-  \ifadencheader
+  \adencIfHeader{%
     \AddToHook{cmd/section/before}{\thispagestyle{plain}}
-  \fi
-\fi
+  }{}
+}{}
 
 
 % ================================================
 % ==================== INDEX =====================
 % ================================================
 % \usepackage[index]{adenc} to enable automatic indexing of \vocab terms.
-\ifadencindex
+\adencIfIndex{%
   \RequirePackage{imakeidx}
   \makeindex
   \renewcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}\index{#1}}
@@ -272,4 +292,4 @@
     \addcontentsline{toc}{section}{Index}%
     \printindex%
   }
-\fi
+}{}
