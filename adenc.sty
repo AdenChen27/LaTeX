@@ -151,10 +151,11 @@
   adenc thmboxbase/.style = {
     breakable,
     enhanced,
-    arc = 3pt,
-    boxrule = 1pt,
+    frame hidden,
+    arc = 0pt,
+    boxrule = 0pt,
     left = .75em,
-    right = .75em,
+    right = 0pt,
     top = 3pt,
     bottom = 5pt,
     before skip = 5pt,
@@ -163,15 +164,16 @@
 }
 
 % Creates a thmtools style (head formatting only) and a named tcolorbox style.
-% (usage: \getThmboxStyle{style name}{foreground color}{background color})
-\newcommand{\getThmboxStyle}[3]{
+% (usage: \getThmboxStyle{style name}{foreground color}{background color}{body font})
+\newcommand{\getThmboxStyle}[4]{
   \declaretheoremstyle[
     headfont = \bfseries\color{#2},
     notefont = \bfseries\color{#2},
+    bodyfont = #4,
     headpunct = {. },
     postheadspace = {0pt},
   ]{#1}
-  \tcbset{adenc #1/.style = {adenc thmboxbase, colframe=#2, colback=#3}}
+  \tcbset{adenc #1/.style = {adenc thmboxbase, colback=#3, borderline west={3pt}{0pt}{#2}}}
 }
 
 % Colors for theorem environments
@@ -182,15 +184,15 @@
 
 % If color passed, use colors; otherwise black and white
 \adencIfColor{%
-  \getThmboxStyle{thmbox}{color1}{color1!5}
-  \getThmboxStyle{defbox}{color2}{color2!5}
-  \getThmboxStyle{exbox}{color3}{color3!5}
-  \getThmboxStyle{probbox}{color5}{color5!5}
+  \getThmboxStyle{thmbox}{color1}{color1!5}{\itshape}
+  \getThmboxStyle{defbox}{color2}{color2!5}{\normalfont}
+  \getThmboxStyle{exbox}{color3}{color3!5}{\normalfont}
+  \getThmboxStyle{probbox}{color5}{color5!5}{\normalfont}
 }{%
-  \getThmboxStyle{thmbox}{black}{white}
-  \getThmboxStyle{defbox}{black}{white}
-  \getThmboxStyle{exbox}{black}{white}
-  \getThmboxStyle{probbox}{black}{white}
+  \getThmboxStyle{thmbox}{black}{white}{\itshape}
+  \getThmboxStyle{defbox}{black}{white}{\normalfont}
+  \getThmboxStyle{exbox}{black}{white}{\normalfont}
+  \getThmboxStyle{probbox}{black}{white}{\normalfont}
 }
 
 % If theorembox=plain|color: use tcolorbox-boxed styles (breakable across pages), no end symbols
@@ -432,6 +434,12 @@
 % \usepackage{newtxtext}
 % \usepackage{newtxmath}
 
+% newtxmath pre-allocates bold/heavy math alphabet families (hmmax, bmmax default to 3).
+% Each family consumes one of LaTeX's 16 math alphabet slots, which we share with
+% other packages (thmtools, tcolorbox, etc.). Setting these to 0 before loading
+% newtxmath suppresses those pre-allocations and prevents "Too many math alphabets" errors.
+\newcommand\hmmax{0}
+\newcommand\bmmax{0}
 \RequirePackage{newtxtext}
 \RequirePackage[varvw]{newtxmath}
 \RequirePackage{inconsolata}

@@ -195,6 +195,12 @@
 % \usepackage{newtxtext}
 % \usepackage{newtxmath}
 
+% newtxmath pre-allocates bold/heavy math alphabet families (hmmax, bmmax default to 3).
+% Each family consumes one of LaTeX's 16 math alphabet slots, which we share with
+% other packages (thmtools, tcolorbox, etc.). Setting these to 0 before loading
+% newtxmath suppresses those pre-allocations and prevents "Too many math alphabets" errors.
+\newcommand\hmmax{0}
+\newcommand\bmmax{0}
 \RequirePackage{newtxtext}
 \RequirePackage[varvw]{newtxmath}
 \RequirePackage{inconsolata}
