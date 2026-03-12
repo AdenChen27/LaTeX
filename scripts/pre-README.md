@@ -44,5 +44,5 @@ Files I use for taking math notes using LaTeX.
 
 ### `.tex` template using `adenc.sty`:
 
-This document can also be found at [template.tex](https://github.com/AdenChen27/LaTeX/blob/main/sample/public-template.tex)
+This document can also be found at [template.tex](https://github.com/AdenChen27/LaTeX/blob/main/sample/template.tex)
 

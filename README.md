@@ -44,16 +44,31 @@ Files I use for taking math notes using LaTeX.
 
 ### `.tex` template using `adenc.sty`:
 
-This document can also be found at [template.tex](https://github.com/AdenChen27/LaTeX/blob/main/sample/public-template.tex)
+This document can also be found at [template.tex](https://github.com/AdenChen27/LaTeX/blob/main/sample/template.tex)
 
 ```tex
-\documentclass[oneside,reqno,letterpaper]{amsart}
-\usepackage{adenc}
-% Options: theorembox=none|plain|color, hideproofs, hidemarkings, workingpaper, index
-%          header=false, clearsection=false, fancyqed=false
+\documentclass{article}
+\usepackage{/Users/aden/latex/adenc} % Change path to location of adenc.sty
+% Package options (\usepackage[...]{adenc}):
+%   theorembox=plain    tcolorbox frames around theorem environments
+%   theorembox=color    same, but with coloured frames
+%   workingpaper        draft watermark on the first page; wide margin for \todo
+%   hideproofs          collapse all proof environments
+%   hidemarkings        hide \markabove/\markbelow margin annotations
+%   header=false        suppress the running section header
+%   clearsection=false  don't start each section on a new page
+%   fancyqed=false      omit the QED-like symbol at the end of remarks/examples
+%   index               auto-index every \vocab term and print the index at the end
 
-\title[]{}
+
+% For a standalone document:
+\title{}
 \author{}
+
+% For course lecture notes, replace the two lines above with \courseinfo:
+% \courseinfo{course code}{Term}{Full Course Title}{Lecturer}{Notetaker}
+% e.g. \courseinfo{ECMA 30800}{W26}{Theory of Auctions}{Philip Reny}{Aden Chen}
+
 
 \begin{document}
 \maketitle
