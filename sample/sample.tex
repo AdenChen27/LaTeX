@@ -3,10 +3,7 @@
 % options: theorembox=none|plain|color, hideproofs, hidemarkings, workingpaper, index
 %          header=false, clearsection=false, fancyqed=false
 
-\usepackage{tabularx}
-\usepackage{booktabs}
 \usepackage{threeparttable}
-\usepackage{inconsolata}
 \newcommand{\cmd}[1]{\texttt{\small\detokenize{#1}}}
 
 \usepackage{float}
@@ -31,6 +28,7 @@ Check out the \href{https://github.com/AdenChen27/latex}{Github Repository} for 
 
 
 \section{Package Options}
+Options may be passed to the package in the usual way.
 
 \begin{table}[H]
 \centering
@@ -72,7 +70,7 @@ Controls whether sections start on a new page. When on, header will not be displ
 
 \cmd{fancyqed} &
 \cmd{true*}, \cmd{false} &
-Controls whether QED-symbols are used to mark ending of other environments such as remark and example. \\
+Controls whether environments such as \texttt{remark} and \texttt{example} end with a QED-style symbol. \\
 
 \bottomrule
 \end{tabularx}
@@ -101,6 +99,7 @@ Controls whether QED-symbols are used to mark ending of other environments such 
 \end{corollary}
 \begin{remark}
   A remarkable remark. 
+  Note that I intentionally keep the remark environment plain.
 \end{remark}
 \begin{example}
   An exemplary example. 
@@ -171,8 +170,8 @@ A few notable ones are mentioned below:
   \textbf{Description}  & \textbf{Example} & \textbf{LaTeX Commands} \\ 
   \midrule
   Command for styling new vocabulary\tnote{1}
-    & \vocab{vocab}
-    & \cmd{\vocab{vocab}} \\ 
+    & \vocab{word}
+    & \cmd{\vocab{word}} \\ 
   Contradiction symbol\tnote{2}
     & \contradiction
     & \cmd{\contradiction} \\ 
