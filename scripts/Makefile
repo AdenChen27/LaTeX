@@ -10,7 +10,7 @@ endef
 .PHONY: all
 
 
-all: adenc beamer readme
+all: adenc beamer readme snippets
 
 
 adenc: pre-adenc.tex
@@ -19,6 +19,11 @@ adenc: pre-adenc.tex
 
 beamer: pre-beamer.tex
 	@$(call compile,"pre-beamer.tex","adenc-beamer.sty")
+
+
+snippets:
+	mkdir -p ../snippets
+	cp /Users/aden/nix-config/nvim/lua/snippets/tex/*.lua ../snippets/
 
 
 readme: pre-README.md ../sample/public-template.tex
