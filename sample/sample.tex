@@ -204,8 +204,8 @@ A few notable ones are mentioned below:
     & \(\d x, \D f\)
     & \cmd{\d x, \D f} \\
   (Use \cmd{\dd} in integrals for correct spacing.)
-    & \(\ds \int f \dd x\)
-    & \cmd{\int f \dd x} \\ 
+    & \(\displaystyle \int f \dd x\)
+    & \cmd{\int f \dd x} \\
   Imaginary number
     & \(\I\) 
     & \cmd{\I} \\ 
@@ -228,6 +228,18 @@ A few notable ones are mentioned below:
 
 
 
+
+\section{Document Commands}
+
+\cmd{\courseinfo\{code\}\{term\}\{title\}\{lecturer\}\{notetaker\}} sets the document title and author for course lecture notes. For example:
+\begin{verbatim}
+\courseinfo{ECMA308}{W26}{Theory of Auctions}{Philip Reny}{Aden Chen}
+\end{verbatim}
+produces the equivalent of:
+\begin{verbatim}
+\title{ECMA308 (W26): Theory of Auctions}
+\author{{Lecturer: Philip Reny} \\ {Notes by: Aden Chen}}
+\end{verbatim}
 
 \appendix
 \section{Credits}
