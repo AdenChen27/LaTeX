@@ -1,6 +1,5 @@
 \documentclass[10pt, aspectratio=169]{beamer}
-\usepackage[theorembox=color]{adenc-beamer}
-% Options: theorembox=none|plain|color, hideproofs, hidemarkings
+\usepackage{adenc-beamer}
 
 \newcommand{\cmd}[1]{\texttt{\detokenize{#1}}}
 
@@ -23,29 +22,6 @@
 
 
 % ================================================
-\section{Package Options}
-% ================================================
-
-\begin{transitionframe}
-  \begin{center}{\Huge Package Options}\end{center}
-\end{transitionframe}
-
-\begin{frame}{Package Options}
-  Pass options via \cmd{\usepackage[opts]{adenc-beamer}}.
-  \begin{itemize}
-    \item \cmd{theorembox=none|plain|color} --- theorem box style
-      (this slide uses \cmd{theorembox=color})
-    \item \cmd{hideproofs} --- hide all \texttt{proof} environments
-    \item \cmd{hidemarkings} --- hide \cmd{\markabove}/\cmd{\markbelow} annotations
-  \end{itemize}
-
-  \bigskip
-  Beamer-specific defaults: \cmd{theorembox} defaults to \cmd{plain}
-  (boxed, no color) rather than \cmd{none}.
-\end{frame}
-
-
-% ================================================
 \section{Theorem Environments}
 % ================================================
 
@@ -55,55 +31,67 @@
 
 \begin{frame}{Theorem Environments}
   \twocolumns{0.5}{0.5}{%
-    \begin{definition}
-      A \vocab{group} is a set $G$ with a binary operation satisfying
-      closure, associativity, identity, and inverses.
-    \end{definition}
-    \begin{theorem}[Lagrange]
-      If $H \leq G$ is a subgroup of a finite group $G$, then
-      $\lvert H \rvert$ divides $\lvert G \rvert$.
-    \end{theorem}
-    \begin{lemma}
-      Left cosets of $H$ partition $G$.
-    \end{lemma}
-  }{%
-    \begin{corollary}
-      The order of any element divides $\lvert G \rvert$.
-    \end{corollary}
-    \begin{example}
-      $\ZZ/6\ZZ$ has subgroups of orders $1, 2, 3, 6$.
-    \end{example}
-    \begin{remark}
-      The converse of Lagrange's theorem fails in general.
-    \end{remark}
-  }
-\end{frame}
-
-\begin{frame}{More Environments}
-  \twocolumns{0.5}{0.5}{%
-    \begin{proposition}
-      Every cyclic group is abelian.
-    \end{proposition}
+    % \begin{definition}
+    %   A \vocab{group} is a set $G$ with a binary operation satisfying
+    %   closure, associativity, identity, and inverses.
+    % \end{definition}
+    % \begin{theorem}[Lagrange]
+    %   If $H \leq G$ is a subgroup of a finite group $G$, then
+    %   $\lvert H \rvert$ divides $\lvert G \rvert$.
+    % \end{theorem}
+    % \begin{lemma}
+    %   Left cosets of $H$ partition $G$.
+    % \end{lemma}
+    \begin{assumption}
+      The matrix \(A\in\mathbb{R}^{n\times n}\) is symmetric and has a simple largest eigenvalue \(\lambda_1\).
+    \end{assumption}
     \begin{claim}
-      $S_3$ is the smallest non-abelian group.
+      For any unit vector \(x\), we have \(x^\top A x \le \lambda_1\).
     \end{claim}
-    \begin{conjecture}
-      Every finite simple group is either cyclic of prime order
-      or an alternating group $A_n$ ($n \geq 5$), or a group of Lie type, \ldots
-    \end{conjecture}
-  }{%
-    \begin{problem}
-      Classify all groups of order $p^2$.
-    \end{problem}
-    \begin{note}
-      These environments all have starred (\texttt{*}) unnumbered variants,
-      e.g.\ \cmd{theorem*}, \cmd{definition*}.
-    \end{note}
     \begin{proof}
-      Omit. \qed
+      We first prove the following claim. ...
     \end{proof}
-  }
-\end{frame}
+    }{%
+      % \begin{corollary}
+      %   The order of any element divides $\lvert G \rvert$.
+      % \end{corollary}
+      % \begin{example}
+      %   $\ZZ/6\ZZ$ has subgroups of orders $1, 2, 3, 6$.
+      % \end{example}
+      \begin{remark}
+        The converse of Lagrange's theorem fails in general.
+      \end{remark}
+      \begin{observation}
+        If \(x\) is an eigenvector of \(A\), then any scalar multiple of \(x\) is also an eigenvector.
+      \end{observation}
+    }
+  \end{frame}
+
+  % \begin{frame}{More Environments}
+  %   \twocolumns{0.5}{0.5}{%
+  %     \begin{proposition}
+  %       Every cyclic group is abelian.
+  %     \end{proposition}
+%     \begin{claim}
+%       $S_3$ is the smallest non-abelian group.
+%     \end{claim}
+%     \begin{conjecture}
+%       Every finite simple group is either cyclic of prime order
+%       or an alternating group $A_n$ ($n \geq 5$), or a group of Lie type, \ldots
+%     \end{conjecture}
+%   }{%
+%     \begin{problem}
+%       Classify all groups of order $p^2$.
+%     \end{problem}
+%     \begin{note}
+%       These environments all have starred (\texttt{*}) unnumbered variants,
+%       e.g.\ \cmd{theorem*}, \cmd{definition*}.
+%     \end{note}
+%     \begin{proof}
+%       Omit. \qed
+%     \end{proof}
+%   }
+% \end{frame}
 
 
 % ================================================
@@ -130,9 +118,8 @@
   }{%
     \textbf{Mathscr shortcuts} \cmd{\sA}--\cmd{\sZ}:
     \[
-      \sA,\ \sB,\ \sF,\ \sL,\ \sM,\ \sX
+      \sA,\ \sB,\ \sF,\ \sL,\ \sM
     \]
-
     \bigskip
     \textbf{Imaginary unit:} $\ii$ \quad (\cmd{\ii})
 

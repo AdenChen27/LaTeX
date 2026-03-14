@@ -3,7 +3,14 @@
 
 \usetheme{Darmstadt}
 \usecolortheme{dove}
-\setbeamertemplate{frametitle continuation}[from second][(contd.)]
+
+\setbeamertemplate{blocks}[default]
+
+\setbeamercolor{block title}{bg=black!10, fg=black}
+\setbeamercolor{block body}{bg=white}
+
+\setbeamerfont{block title}{series=\bfseries}
+
 
 
 \RequirePackage{calc}
@@ -38,33 +45,18 @@
 
 \ExplSyntaxOn
 
-\bool_new:N \l_adenc_color_bool        \bool_set_false:N \l_adenc_color_bool
-\bool_new:N \l_adenc_boxed_bool        \bool_set_true:N  \l_adenc_boxed_bool  % boxed by default in beamer
 \bool_new:N \l_adenc_hideproofs_bool   \bool_set_false:N \l_adenc_hideproofs_bool
 \bool_new:N \l_adenc_hidemarkings_bool \bool_set_false:N \l_adenc_hidemarkings_bool
-\bool_new:N \l_adenc_fancyqed_bool     \bool_set_false:N \l_adenc_fancyqed_bool  % off by default in beamer
 
 \keys_define:nn { adenc-beamer } {
-  theorembox .choices:nn = { none, plain, color } {
-    \int_case:nn { \l_keys_choice_int } {
-      { 1 } { \bool_set_false:N \l_adenc_boxed_bool  \bool_set_false:N \l_adenc_color_bool }
-      { 2 } { \bool_set_true:N  \l_adenc_boxed_bool  \bool_set_false:N \l_adenc_color_bool }
-      { 3 } { \bool_set_true:N  \l_adenc_boxed_bool  \bool_set_true:N  \l_adenc_color_bool }
-    }
-  },
-  theorembox .default:n = none,
   hideproofs   .bool_set:N = \l_adenc_hideproofs_bool,   hideproofs   .default:n = true,
   hidemarkings .bool_set:N = \l_adenc_hidemarkings_bool, hidemarkings .default:n = true,
-  fancyqed     .bool_set:N = \l_adenc_fancyqed_bool,     fancyqed     .default:n = true,
 }
 
 \ProcessKeysOptions { adenc-beamer }
 
-\cs_new_protected:Npn \adencIfColor        #1#2 { \bool_if:NTF \l_adenc_color_bool {#1}{#2} }
-\cs_new_protected:Npn \adencIfBoxed        #1#2 { \bool_if:NTF \l_adenc_boxed_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfHideproofs   #1#2 { \bool_if:NTF \l_adenc_hideproofs_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfHidemarkings #1#2 { \bool_if:NTF \l_adenc_hidemarkings_bool {#1}{#2} }
-\cs_new_protected:Npn \adencIfFancyqed     #1#2 { \bool_if:NTF \l_adenc_fancyqed_bool {#1}{#2} }
 
 \ExplSyntaxOff
 
@@ -105,37 +97,47 @@
 
 
 
-% ================================================
-% ================ THEOREM STYLES ================
-% ================================================
-\RequirePackage{thmtools}
-\RequirePackage[framemethod=TikZ]{mdframed}
-\RequirePackage[breakable,skins]{tcolorbox}
+% % ================================================
+% % ================ THEOREM STYLES ================
+% % ================================================
+% \RequirePackage{thmtools}
+% \RequirePackage[framemethod=TikZ]{mdframed}
+% \RequirePackage[breakable,skins]{tcolorbox}
+%
+% % Beamer pre-defines theorem, lemma, corollary, definition, example, fact,
+% % problem, solution via \newtheorem. Undefine them (env + counter + \theXxx)
+% % so that thmtools \declaretheorem can redefine freely.
+% \makeatletter
+% \newcommand{\adenc@undef@thm}[1]{%
+%   \expandafter\let\csname #1\endcsname\@undefined
+%   \expandafter\let\csname end#1\endcsname\@undefined
+%   \expandafter\let\csname c@#1\endcsname\@undefined
+%   \expandafter\let\csname the#1\endcsname\@undefined
+% }
+% \adenc@undef@thm{theorem}
+% \adenc@undef@thm{lemma}
+% \adenc@undef@thm{corollary}
+% \adenc@undef@thm{definition}
+% \adenc@undef@thm{definitions}
+% \adenc@undef@thm{fact}
+% \adenc@undef@thm{example}
+% \adenc@undef@thm{examples}
+% \adenc@undef@thm{note}
+% \adenc@undef@thm{problem}
+% \adenc@undef@thm{solution}
+% \makeatother
+%
+% \input{thm-styles.tex}
 
-% Beamer pre-defines theorem, lemma, corollary, definition, example, fact,
-% problem, solution via \newtheorem. Undefine them (env + counter + \theXxx)
-% so that thmtools \declaretheorem can redefine freely.
-\makeatletter
-\newcommand{\adenc@undef@thm}[1]{%
-  \expandafter\let\csname #1\endcsname\@undefined
-  \expandafter\let\csname end#1\endcsname\@undefined
-  \expandafter\let\csname c@#1\endcsname\@undefined
-  \expandafter\let\csname the#1\endcsname\@undefined
-}
-\adenc@undef@thm{theorem}
-\adenc@undef@thm{lemma}
-\adenc@undef@thm{corollary}
-\adenc@undef@thm{definition}
-\adenc@undef@thm{definitions}
-\adenc@undef@thm{fact}
-\adenc@undef@thm{example}
-\adenc@undef@thm{examples}
-\adenc@undef@thm{note}
-\adenc@undef@thm{problem}
-\adenc@undef@thm{solution}
-\makeatother
+\newtheorem{assumption}{Assumption}
+\newtheorem{claim}{Claim}
+\newtheorem{remark}{Remark}
+\newtheorem{observation}{Observation}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\newtheorem{notation}{Notation}
+\newtheorem{condition}{Condition}
 
-\input{thm-styles.tex}
 
 
 
@@ -206,7 +208,6 @@
 
 % \RequirePackage[cal=cm]{mathalpha}
 \RequirePackage{framed}
-
 
 
 
