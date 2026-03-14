@@ -6,10 +6,6 @@
 \setbeamertemplate{frametitle continuation}[from second][(contd.)]
 
 
-\RequirePackage{multicol}
-
-
-
 \RequirePackage{calc}
 \newenvironment{transitionframe}{
   % \definecolor{BeigeOffWhite}{RGB}{255,253,218}
@@ -46,6 +42,7 @@
 \bool_new:N \l_adenc_boxed_bool        \bool_set_true:N  \l_adenc_boxed_bool  % boxed by default in beamer
 \bool_new:N \l_adenc_hideproofs_bool   \bool_set_false:N \l_adenc_hideproofs_bool
 \bool_new:N \l_adenc_hidemarkings_bool \bool_set_false:N \l_adenc_hidemarkings_bool
+\bool_new:N \l_adenc_fancyqed_bool     \bool_set_false:N \l_adenc_fancyqed_bool  % off by default in beamer
 
 \keys_define:nn { adenc-beamer } {
   theorembox .choices:nn = { none, plain, color } {
@@ -58,6 +55,7 @@
   theorembox .default:n = none,
   hideproofs   .bool_set:N = \l_adenc_hideproofs_bool,   hideproofs   .default:n = true,
   hidemarkings .bool_set:N = \l_adenc_hidemarkings_bool, hidemarkings .default:n = true,
+  fancyqed     .bool_set:N = \l_adenc_fancyqed_bool,     fancyqed     .default:n = true,
 }
 
 \ProcessKeysOptions { adenc-beamer }
@@ -66,6 +64,7 @@
 \cs_new_protected:Npn \adencIfBoxed        #1#2 { \bool_if:NTF \l_adenc_boxed_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfHideproofs   #1#2 { \bool_if:NTF \l_adenc_hideproofs_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfHidemarkings #1#2 { \bool_if:NTF \l_adenc_hidemarkings_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfFancyqed     #1#2 { \bool_if:NTF \l_adenc_fancyqed_bool {#1}{#2} }
 
 \ExplSyntaxOff
 
@@ -88,45 +87,21 @@
 
 
 
-% BibLaTeX
-\RequirePackage[natbib=true, style=apa, backend=biber]{biblatex}
-% \renewcommand*{\bibfont}{\small}
-\RequirePackage{cleveref}
-
-
 % Standard:
 \RequirePackage{siunitx}
 \RequirePackage{array}
 \RequirePackage{booktabs}
+\RequirePackage{enumitem}
 
-
-% highlight:
-\newcommand{\hl}[1]{\textcolor{blue!90!black}{\emph{#1}}}
-
-\RequirePackage[framemethod=TikZ]{mdframed}
-
-
-
-\RequirePackage{graphicx}
-\graphicspath{{./images/}}
 
 \RequirePackage{caption}
 \captionsetup{justification=centering}
-\RequirePackage{subcaption}
 
 % Columns:
 \RequirePackage{dcolumn}
 \newcolumntype{d}[0]{D{.}{.}{5}}
 
-% MISC
-\RequirePackage{layouts}
-\RequirePackage{xkeyval}
-\RequirePackage{todonotes}
-\presetkeys{todonotes}{inline}{}
-
 \RequirePackage{etoolbox}
-\AtBeginEnvironment{quote}{\footnotesize\color{gray}}
-\surroundwithmdframed{quote}
 
 
 
@@ -135,8 +110,32 @@
 % ================================================
 \RequirePackage{thmtools}
 \RequirePackage[framemethod=TikZ]{mdframed}
+\RequirePackage[breakable,skins]{tcolorbox}
 
-% \input{thm-styles.tex}
+% Beamer pre-defines theorem, lemma, corollary, definition, example, fact,
+% problem, solution via \newtheorem. Undefine them (env + counter + \theXxx)
+% so that thmtools \declaretheorem can redefine freely.
+\makeatletter
+\newcommand{\adenc@undef@thm}[1]{%
+  \expandafter\let\csname #1\endcsname\@undefined
+  \expandafter\let\csname end#1\endcsname\@undefined
+  \expandafter\let\csname c@#1\endcsname\@undefined
+  \expandafter\let\csname the#1\endcsname\@undefined
+}
+\adenc@undef@thm{theorem}
+\adenc@undef@thm{lemma}
+\adenc@undef@thm{corollary}
+\adenc@undef@thm{definition}
+\adenc@undef@thm{definitions}
+\adenc@undef@thm{fact}
+\adenc@undef@thm{example}
+\adenc@undef@thm{examples}
+\adenc@undef@thm{note}
+\adenc@undef@thm{problem}
+\adenc@undef@thm{solution}
+\makeatother
+
+\input{thm-styles.tex}
 
 
 
@@ -162,9 +161,9 @@
 % ================================================
 \RequirePackage{amsfonts}
 \RequirePackage{mathtools}
-\RequirePackage{bbm}
+\RequirePackage{dsfont}
+\RequirePackage{mathrsfs}
 \RequirePackage{nth}
-\newcommand{\ds}{\displaystyle}
 \input{math-commands.tex}
 
 
@@ -173,6 +172,7 @@
 % ================ TODO COMMANDS =================
 % ================================================
 \input{marking-commands.tex}
+\presetkeys{todonotes}{inline}{}
 
 
 % ================================================

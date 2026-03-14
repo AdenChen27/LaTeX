@@ -147,6 +147,9 @@ It is for these reasons that the following commands are introduced:
     Test test test\markabove{c}{above!} test\markbelow{r}{math! \(\alpha\)}.
   \end{mdframed}
   is produced by the following code:
+  \item \verb|\draftnote[Label][color]{text}| produces a short inline draft comment.
+  The label and color are optional; they default to \verb|Note| and red, respectively.
+  For example, \verb|\draftnote{fix this}| produces \draftnote{fix this} and \verb|\draftnote[TODO][blue]{rewrite}| produces \draftnote[TODO][blue]{rewrite}.
 \end{enumerate}
 \begin{verbatim}
 Test test test\markabove{l}{test1} test\markbelow{c}{I'm marking below here}.

@@ -6,10 +6,6 @@
 \setbeamertemplate{frametitle continuation}[from second][(contd.)]
 
 
-\RequirePackage{multicol}
-
-
-
 \RequirePackage{calc}
 \newenvironment{transitionframe}{
   % \definecolor{BeigeOffWhite}{RGB}{255,253,218}
@@ -46,6 +42,7 @@
 \bool_new:N \l_adenc_boxed_bool        \bool_set_true:N  \l_adenc_boxed_bool  % boxed by default in beamer
 \bool_new:N \l_adenc_hideproofs_bool   \bool_set_false:N \l_adenc_hideproofs_bool
 \bool_new:N \l_adenc_hidemarkings_bool \bool_set_false:N \l_adenc_hidemarkings_bool
+\bool_new:N \l_adenc_fancyqed_bool     \bool_set_false:N \l_adenc_fancyqed_bool  % off by default in beamer
 
 \keys_define:nn { adenc-beamer } {
   theorembox .choices:nn = { none, plain, color } {
@@ -58,6 +55,7 @@
   theorembox .default:n = none,
   hideproofs   .bool_set:N = \l_adenc_hideproofs_bool,   hideproofs   .default:n = true,
   hidemarkings .bool_set:N = \l_adenc_hidemarkings_bool, hidemarkings .default:n = true,
+  fancyqed     .bool_set:N = \l_adenc_fancyqed_bool,     fancyqed     .default:n = true,
 }
 
 \ProcessKeysOptions { adenc-beamer }
@@ -66,6 +64,7 @@
 \cs_new_protected:Npn \adencIfBoxed        #1#2 { \bool_if:NTF \l_adenc_boxed_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfHideproofs   #1#2 { \bool_if:NTF \l_adenc_hideproofs_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfHidemarkings #1#2 { \bool_if:NTF \l_adenc_hidemarkings_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfFancyqed     #1#2 { \bool_if:NTF \l_adenc_fancyqed_bool {#1}{#2} }
 
 \ExplSyntaxOff
 
@@ -88,45 +87,21 @@
 
 
 
-% BibLaTeX
-\RequirePackage[natbib=true, style=apa, backend=biber]{biblatex}
-% \renewcommand*{\bibfont}{\small}
-\RequirePackage{cleveref}
-
-
 % Standard:
 \RequirePackage{siunitx}
 \RequirePackage{array}
 \RequirePackage{booktabs}
+\RequirePackage{enumitem}
 
-
-% highlight:
-\newcommand{\hl}[1]{\textcolor{blue!90!black}{\emph{#1}}}
-
-\RequirePackage[framemethod=TikZ]{mdframed}
-
-
-
-\RequirePackage{graphicx}
-\graphicspath{{./images/}}
 
 \RequirePackage{caption}
 \captionsetup{justification=centering}
-\RequirePackage{subcaption}
 
 % Columns:
 \RequirePackage{dcolumn}
 \newcolumntype{d}[0]{D{.}{.}{5}}
 
-% MISC
-\RequirePackage{layouts}
-\RequirePackage{xkeyval}
-\RequirePackage{todonotes}
-\presetkeys{todonotes}{inline}{}
-
 \RequirePackage{etoolbox}
-\AtBeginEnvironment{quote}{\footnotesize\color{gray}}
-\surroundwithmdframed{quote}
 
 
 
@@ -135,9 +110,204 @@
 % ================================================
 \RequirePackage{thmtools}
 \RequirePackage[framemethod=TikZ]{mdframed}
+\RequirePackage[breakable,skins]{tcolorbox}
 
-% \input{thm-styles.tex}
+% Beamer pre-defines theorem, lemma, corollary, definition, example, fact,
+% problem, solution via \newtheorem. Undefine them (env + counter + \theXxx)
+% so that thmtools \declaretheorem can redefine freely.
+\makeatletter
+\newcommand{\adenc@undef@thm}[1]{%
+  \expandafter\let\csname #1\endcsname\@undefined
+  \expandafter\let\csname end#1\endcsname\@undefined
+  \expandafter\let\csname c@#1\endcsname\@undefined
+  \expandafter\let\csname the#1\endcsname\@undefined
+}
+\adenc@undef@thm{theorem}
+\adenc@undef@thm{lemma}
+\adenc@undef@thm{corollary}
+\adenc@undef@thm{definition}
+\adenc@undef@thm{definitions}
+\adenc@undef@thm{fact}
+\adenc@undef@thm{example}
+\adenc@undef@thm{examples}
+\adenc@undef@thm{note}
+\adenc@undef@thm{problem}
+\adenc@undef@thm{solution}
+\makeatother
 
+% Base tcolorbox options shared by all theorem boxes.
+% Uses only standard tcolorbox options (no enhanced/skins) for Beamer compatibility.
+% leftrule=3pt + colframe (set per style) replaces enhanced+frame hidden+borderline west.
+\tcbset{
+  adenc thmboxbase/.style = {
+    breakable,
+    arc = 0pt,
+    leftrule = 3pt,
+    rightrule = 0pt,
+    toprule = 0pt,
+    bottomrule = 0pt,
+    left = .75em,
+    right = 0pt,
+    top = 3pt,
+    bottom = 5pt,
+    before skip = 5pt,
+    after skip = .5em,
+  }
+}
+
+% Creates a thmtools style (head formatting only) and a named tcolorbox style.
+% (usage: \getThmboxStyle{style name}{foreground color}{background color}{body font})
+\newcommand{\getThmboxStyle}[4]{
+  \declaretheoremstyle[
+    headfont = \bfseries\color{#2},
+    notefont = \bfseries\color{#2},
+    bodyfont = #4,
+    headpunct = {. },
+    postheadspace = {0pt},
+  ]{#1}
+  \tcbset{adenc #1/.style = {adenc thmboxbase, colback=#3, colframe=#2}}
+}
+
+% Colors for theorem environments
+\definecolor{color1}{HTML}{052E66} % blue, thmbox
+\definecolor{color2}{HTML}{8F0A00} % red, defbox
+\definecolor{color3}{HTML}{2B4E2C} % green, exbox
+\definecolor{color5}{HTML}{764506} % orange, probbox
+
+% If color passed, use colors; otherwise black and white
+\adencIfColor{%
+  \getThmboxStyle{thmbox}{color1}{color1!5}{\itshape}
+  \getThmboxStyle{defbox}{color2}{color2!5}{\normalfont}
+  \getThmboxStyle{exbox}{color3}{color3!5}{\normalfont}
+  \getThmboxStyle{probbox}{color5}{color5!5}{\normalfont}
+}{%
+  \getThmboxStyle{thmbox}{black}{white}{\itshape}
+  \getThmboxStyle{defbox}{black}{white}{\normalfont}
+  \getThmboxStyle{exbox}{black}{white}{\normalfont}
+  \getThmboxStyle{probbox}{black}{white}{\normalfont}
+}
+
+% If theorembox=plain|color: use tcolorbox-boxed styles (breakable across pages), no end symbols
+% Default (theorembox=none): use default styles `plain`, `definition`, and `remark`, with end symbols
+\adencIfBoxed{%
+  \newcommand{\thmboxStyle}{thmbox}
+  \newcommand{\defboxStyle}{defbox}
+  \newcommand{\exboxStyle}{exbox}
+  \newcommand{\probboxStyle}{probbox}
+  % No end symbols for example and remark
+  \newcommand\remqed{}
+  \newcommand\exqed{}
+}{%
+  \newcommand{\thmboxStyle}{plain}
+  \newcommand{\defboxStyle}{definition}
+  \newcommand{\exboxStyle}{remark}
+  \newcommand{\probboxStyle}{remark}
+  % End symbols for example and remark
+  \adencIfFancyqed{%
+    \newcommand\remqed{\Coffeecup}
+    \newcommand\exqed{\Faxmachine} % \Telefon
+  }{%
+    \newcommand\remqed{\(\diamond\)}
+    \newcommand\exqed{\(\triangleleft\)}
+  }
+}
+
+\newcommand\proofqedsymbol{\qedsymbol}
+
+
+\declaretheorem[style = \thmboxStyle, name = Theorem, numberwithin = section]{theorem}
+\declaretheorem[style = \thmboxStyle, name = Theorem, numbered = no]{theorem*}
+\declaretheorem[style = \thmboxStyle, name = Lemma, sibling = theorem]{lemma}
+\declaretheorem[style = \thmboxStyle, name = Lemma, numbered = no]{lemma*}
+\declaretheorem[style = \thmboxStyle, name = Proposition, sibling = theorem]{proposition}
+\declaretheorem[style = \thmboxStyle, name = Proposition, numbered = no]{proposition*}
+\declaretheorem[style = \thmboxStyle, name = Corollary, sibling = theorem]{corollary}
+\declaretheorem[style = \thmboxStyle, name = Corollary, numbered = no]{corollary*}
+
+\declaretheorem[style = \defboxStyle, name = Definition, sibling = theorem]{definition}
+\declaretheorem[style = \defboxStyle, name = Definition, numbered = no]{definition*}
+
+\declaretheorem[style = \exboxStyle, name = Example, sibling = theorem, qed = \exqed]{example}
+\declaretheorem[style = \exboxStyle, name = Example, numbered = no, qed = \exqed]{example*}
+
+
+% or use \noteboxStyle
+\declaretheorem[style = remark, name = Remark, sibling = theorem, qed = \remqed]{remark}
+\declaretheorem[style = remark, name = Remark, numbered = no, qed = \remqed]{remark*}
+\declaretheorem[style = remark, name = Note, sibling=theorem]{note}
+\declaretheorem[style = remark, name = Note, numbered=no]{note*}
+\declaretheorem[style = remark, name = Assumption, sibling=theorem]{assumption}
+\declaretheorem[style = remark, name = Assumption, numbered=no]{assumption*}
+\declaretheorem[style = remark, name = Intuition, sibling=theorem]{intuition}
+\declaretheorem[style = remark, name = Intuition, numbered=no]{intuition*}
+\declaretheorem[style = remark, name = Properties, sibling=theorem]{properties}
+\declaretheorem[style = remark, name = Properties, numbered=no]{properties*}
+\declaretheorem[style = remark, name = Fact, sibling = theorem]{fact}
+\declaretheorem[style = remark, name = Fact, numbered = no]{fact*}
+\declaretheorem[style = remark, name = Claim, sibling = theorem]{claim}
+\declaretheorem[style = remark, name = Claim, numbered = no]{claim*}
+\declaretheorem[style = remark, name = Notation, sibling = theorem]{notation}
+\declaretheorem[style = remark, name = Notation, numbered = no]{notation*}
+\declaretheorem[style = remark, name = Conjecture, sibling = theorem]{conjecture}
+\declaretheorem[style = remark, name = Conjecture, numbered = no]{conjecture*}
+
+\declaretheorem[style = \probboxStyle, name = Problem, sibling = theorem]{problem}
+\declaretheorem[style = \probboxStyle, name = Problem, numbered = no]{problem*}
+\declaretheorem[style = \probboxStyle, name = Exercise, sibling = theorem]{exercise}
+\declaretheorem[style = \probboxStyle, name = Exercise, numbered = no]{exercise*}
+\declaretheorem[style = \probboxStyle, name = Question, sibling = theorem]{question}
+\declaretheorem[style = \probboxStyle, name = Question, numbered = no]{question*}
+
+% for cref:
+% \crefname{assumption}{Assumption}{Assumptions}
+% \Crefname{assumption}{Assumption}{Assumptions}
+
+
+% proof environment style:
+\declaretheoremstyle[
+  headfont=\bfseries,
+  notefont = \normalfont\itshape,
+  bodyfont=\normalfont,
+  numbered=no,
+  qed=\proofqedsymbol
+]{thmproofbox}
+\declaretheorem[numbered=no, style=thmproofbox, name=Proof]{replacementproof}
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{%
+    \ifx#1\proofname
+        \begin{replacementproof}%
+    \else
+        \begin{replacementproof}[#1]%
+    \fi
+}{\end{replacementproof}}
+\makeatother
+
+
+% Apply tcolorbox wrapping for boxed mode.
+% \tcolorboxenvironment wraps an existing environment in a tcolorbox using
+% etoolbox hooks, preserving optional arguments like [note].
+\adencIfBoxed{%
+  \tcolorboxenvironment{theorem}{adenc thmbox}
+  \tcolorboxenvironment{theorem*}{adenc thmbox}
+  \tcolorboxenvironment{lemma}{adenc thmbox}
+  \tcolorboxenvironment{lemma*}{adenc thmbox}
+  \tcolorboxenvironment{proposition}{adenc thmbox}
+  \tcolorboxenvironment{proposition*}{adenc thmbox}
+  \tcolorboxenvironment{corollary}{adenc thmbox}
+  \tcolorboxenvironment{corollary*}{adenc thmbox}
+  \tcolorboxenvironment{definition}{adenc defbox}
+  \tcolorboxenvironment{definition*}{adenc defbox}
+  \tcolorboxenvironment{example}{adenc exbox}
+  \tcolorboxenvironment{example*}{adenc exbox}
+  \tcolorboxenvironment{problem}{adenc probbox}
+  \tcolorboxenvironment{problem*}{adenc probbox}
+  \tcolorboxenvironment{exercise}{adenc probbox}
+  \tcolorboxenvironment{exercise*}{adenc probbox}
+  \tcolorboxenvironment{question}{adenc probbox}
+  \tcolorboxenvironment{question*}{adenc probbox}
+}{}
+ 
 
 
 % ================================================
@@ -162,9 +332,9 @@
 % ================================================
 \RequirePackage{amsfonts}
 \RequirePackage{mathtools}
-\RequirePackage{bbm}
+\RequirePackage{dsfont}
+\RequirePackage{mathrsfs}
 \RequirePackage{nth}
-\newcommand{\ds}{\displaystyle}
 % ========== GENERAL MATH COMMANDS ==========
 % vocab:
 \newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
@@ -474,7 +644,8 @@
   \smash{\bottomlap{#1}{\scriptsize#2}}%
 }}
 
- 
+ \presetkeys{todonotes}{inline}{}
+
 
 % ================================================
 % ============== HIDING ENVIRONMENTS =============

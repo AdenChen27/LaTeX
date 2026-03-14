@@ -115,8 +115,9 @@
 % ================ HYPERREF STYLES ===============
 % ================================================
 \RequirePackage{hyperref}
-% citecolor: NavyBlue if theorembox used; blue otherwise
-\adencIfBoxed{\newcommand{\citecolor}{NavyBlue}}{\newcommand{\citecolor}{blue}}
+% % citecolor: NavyBlue if theorembox used; blue otherwise
+% \adencIfBoxed{\newcommand{\citecolor}{NavyBlue}}{\newcommand{\citecolor}{blue}}
+\newcommand{\citecolor}{NavyBlue}
 
 \hypersetup{
   bookmarksnumbered=true,
@@ -145,14 +146,17 @@
 \RequirePackage[framemethod=TikZ]{mdframed} % used by marking-commands.tex
 \RequirePackage[breakable, skins]{tcolorbox}
 
-% Base tcolorbox options shared by all theorem boxes
+% Base tcolorbox options shared by all theorem boxes.
+% Uses only standard tcolorbox options (no enhanced/skins) for Beamer compatibility.
+% leftrule=3pt + colframe (set per style) replaces enhanced+frame hidden+borderline west.
 \tcbset{
   adenc thmboxbase/.style = {
     breakable,
-    enhanced,
-    frame hidden,
     arc = 0pt,
-    boxrule = 0pt,
+    leftrule = 3pt,
+    rightrule = 0pt,
+    toprule = 0pt,
+    bottomrule = 0pt,
     left = .75em,
     right = 0pt,
     top = 3pt,
@@ -172,7 +176,7 @@
     headpunct = {. },
     postheadspace = {0pt},
   ]{#1}
-  \tcbset{adenc #1/.style = {adenc thmboxbase, colback=#3, borderline west={3pt}{0pt}{#2}}}
+  \tcbset{adenc #1/.style = {adenc thmboxbase, colback=#3, colframe=#2}}
 }
 
 % Colors for theorem environments

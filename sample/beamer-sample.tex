@@ -1,17 +1,12 @@
-\documentclass[notes, 10pt, aspectratio=169]{beamer}
-\usepackage{adenc-beamer}
+\documentclass[10pt, aspectratio=169]{beamer}
+\usepackage[theorembox=color]{adenc-beamer}
+% Options: theorembox=none|plain|color, hideproofs, hidemarkings
 
+\newcommand{\cmd}[1]{\texttt{\detokenize{#1}}}
 
-
-
-
-
-\title{How are Texas Superintendents Portrayed in News Media?}
+\title{\texttt{adenc-beamer.sty} Feature Showcase}
 \author{Aden Chen}
-\institute{University of Chicago}
 \date{\today}
-
-
 
 
 \begin{document}
@@ -22,59 +17,203 @@
 \end{frame}
 
 
-\begin{frame}[t]{Contents}
-  % \tableofcontents
-  \begin{multicols}{2}
+\begin{frame}{Contents}
   \tableofcontents
-  \end{multicols}
 \end{frame}
 
 
-\section{Overview}
+% ================================================
+\section{Package Options}
+% ================================================
 
 \begin{transitionframe}
-  \begin{center}
-    {\Huge Overview}
-  \end{center}
+  \begin{center}{\Huge Package Options}\end{center}
 \end{transitionframe}
- 
 
-\begin{frame}{Overview}
-  % We are interested in the four following types of biases:
-  When news articles discuss superintendents of different demographic backgrounds \(\dots \)
+\begin{frame}{Package Options}
+  Pass options via \cmd{\usepackage[opts]{adenc-beamer}}.
   \begin{itemize}
-    \item \textbf{Coverage Bias}: Do they display equal interest? 
-    \item \textbf{Nominal Bias}: Is there equal respect in how they refer to superintendents from different demographic backgrounds? (E.g. Is there a discrepancy in the proportion of times ``Dr.'' instead of the superintendents' first names are used?)
-    \item \textbf{Sentimental Bias}: Do news articles express equal sentiment and power levels?
-    \item \textbf{Lexical Biases}: Is there any difference in the words used or topics covered?
+    \item \cmd{theorembox=none|plain|color} --- theorem box style
+      (this slide uses \cmd{theorembox=color})
+    \item \cmd{hideproofs} --- hide all \texttt{proof} environments
+    \item \cmd{hidemarkings} --- hide \cmd{\markabove}/\cmd{\markbelow} annotations
   \end{itemize}
+
+  \bigskip
+  Beamer-specific defaults: \cmd{theorembox} defaults to \cmd{plain}
+  (boxed, no color) rather than \cmd{none}.
 \end{frame}
 
 
-\section{Data Set}
+% ================================================
+\section{Theorem Environments}
+% ================================================
 
 \begin{transitionframe}
-  \begin{center}
-    {\Huge Data Set}
-  \end{center}
+  \begin{center}{\Huge Theorem Environments}\end{center}
 \end{transitionframe}
 
+\begin{frame}{Theorem Environments}
+  \twocolumns{0.5}{0.5}{%
+    \begin{definition}
+      A \vocab{group} is a set $G$ with a binary operation satisfying
+      closure, associativity, identity, and inverses.
+    \end{definition}
+    \begin{theorem}[Lagrange]
+      If $H \leq G$ is a subgroup of a finite group $G$, then
+      $\lvert H \rvert$ divides $\lvert G \rvert$.
+    \end{theorem}
+    \begin{lemma}
+      Left cosets of $H$ partition $G$.
+    \end{lemma}
+  }{%
+    \begin{corollary}
+      The order of any element divides $\lvert G \rvert$.
+    \end{corollary}
+    \begin{example}
+      $\ZZ/6\ZZ$ has subgroups of orders $1, 2, 3, 6$.
+    \end{example}
+    \begin{remark}
+      The converse of Lagrange's theorem fails in general.
+    \end{remark}
+  }
+\end{frame}
 
-
-
-\begin{frame}{Topic Modeling}
-  We performed also topic modeling using LDA. But no meaningful cluster was found. 
+\begin{frame}{More Environments}
+  \twocolumns{0.5}{0.5}{%
+    \begin{proposition}
+      Every cyclic group is abelian.
+    \end{proposition}
+    \begin{claim}
+      $S_3$ is the smallest non-abelian group.
+    \end{claim}
+    \begin{conjecture}
+      Every finite simple group is either cyclic of prime order
+      or an alternating group $A_n$ ($n \geq 5$), or a group of Lie type, \ldots
+    \end{conjecture}
+  }{%
+    \begin{problem}
+      Classify all groups of order $p^2$.
+    \end{problem}
+    \begin{note}
+      These environments all have starred (\texttt{*}) unnumbered variants,
+      e.g.\ \cmd{theorem*}, \cmd{definition*}.
+    \end{note}
+    \begin{proof}
+      Omit. \qed
+    \end{proof}
+  }
 \end{frame}
 
 
+% ================================================
+\section{Math Commands}
+% ================================================
+
+\begin{transitionframe}
+  \begin{center}{\Huge Math Commands}\end{center}
+\end{transitionframe}
+
+\begin{frame}{Number Sets \& Blackboard Bold}
+  \twocolumns{0.5}{0.5}{%
+    \textbf{Number sets (long and short forms):}
+    \[
+      \NN,\ \ZZ,\ \QQ,\ \RR,\ \CC,\ \FF,\ \PP
+    \]
+    equivalent to \cmd{\bN, \bZ, \bQ, \bR, \bC, \bF, \bP}.
+
+    \bigskip
+    \textbf{Mathcal shortcuts} \cmd{\cA}--\cmd{\cZ}:
+    \[
+      \cA,\ \cB,\ \cF,\ \cG,\ \cH,\ \cL,\ \cM,\ \cX
+    \]
+  }{%
+    \textbf{Mathscr shortcuts} \cmd{\sA}--\cmd{\sZ}:
+    \[
+      \sA,\ \sB,\ \sF,\ \sL,\ \sM,\ \sX
+    \]
+
+    \bigskip
+    \textbf{Imaginary unit:} $\ii$ \quad (\cmd{\ii})
+
+    \bigskip
+    \textbf{Indicator function:} $\ind{A}$ \quad (\cmd{\ind{A}})
+  }
+\end{frame}
+
+\begin{frame}{Delimiters \& Operators}
+  \twocolumns{0.5}{0.5}{%
+    \textbf{Auto-sizing delimiters:}
+    \[
+      \abs*{\frac{x}{y}},\quad \norm*{\frac{v}{w}},\quad
+      \ceil*{\frac{n}{2}},\quad \floor*{\frac{n}{2}}
+    \]
+
+    \bigskip
+    \textbf{Vectors \& matrices:}
+    \[
+      \vec{v},\quad
+      \bmat{1 & 0 \\ 0 & 1},\quad
+      \pmat{a & b \\ c & d}
+    \]
+  }{%
+    \textbf{Calculus:}
+    \[
+      \DD f,\quad \int_0^1 f(x)\,\dd x,\quad
+      \int e^{\ii t}\,\dd t
+    \]
+
+    \bigskip
+    \textbf{Probability:}
+    \[
+      \E[X],\quad \Var(X),\quad \Cov(X,Y),\quad X \indep Y
+    \]
+  }
+\end{frame}
 
 
+% ================================================
+\section{Annotations \& Markup}
+% ================================================
 
+\begin{transitionframe}
+  \begin{center}{\Huge Annotations \& Markup}\end{center}
+\end{transitionframe}
 
+\begin{frame}{Draft Annotations}
+  \textbf{\cmd{\draftnote[Label][color]{text}}} --- inline draft comment.
 
+  \bigskip
+  \begin{itemize}
+    \item \cmd{\draftnote{fix this}} produces \draftnote{fix this}
+    \item \cmd{\draftnote[TODO][blue]{rewrite}} produces \draftnote[TODO][blue]{rewrite}
+  \end{itemize}
 
+  \bigskip\bigskip
+  \textbf{\cmd{\vocab{word}}} --- bold vocabulary term, as in:
+  a \vocab{normal subgroup} $N \trianglelefteq G$ satisfies $gNg^{-1} = N$.
+\end{frame}
 
+\begin{frame}{Two-Column Layout}
+  \cmd{\twocolumns{lw}{rw}{left content}{right content}} splits a frame:
+  \bigskip
+
+  \twocolumns{0.45}{0.45}{%
+    \textbf{Left column} (\texttt{lw=0.45})\\
+    Content here spans 45\% of \cmd{\textwidth}.
+    \begin{itemize}
+      \item Item one
+      \item Item two
+    \end{itemize}
+  }{%
+    \textbf{Right column} (\texttt{rw=0.45})\\
+    Content here spans another 45\%.
+    \begin{enumerate}[label=(\roman*)]
+      \item First
+      \item Second
+    \end{enumerate}
+  }
+\end{frame}
 
 
 \end{document}
-
