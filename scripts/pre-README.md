@@ -46,8 +46,6 @@ Files I use for taking math notes using LaTeX.
 
 - [`sample.tex`](https://github.com/AdenChen27/LaTeX/blob/main/sample/sample.tex) — a comprehensive showcase of `adenc.sty`: documents every package option, theorem environment, annotation command, and math shortcut, with rendered output. Good reference for what the package can do.
 
-- [`template.tex`](https://github.com/AdenChen27/LaTeX/blob/main/sample/template.tex) — a minimal starter template. Copy this as a starting point for new documents; all package options are listed in comments.
-
 - [`sample-notes/notes.tex`](https://github.com/AdenChen27/LaTeX/blob/main/sample/sample-notes/notes.tex) — an example of real course lecture notes built with `adenc.sty`, using `\courseinfo`, theorem environments, `\vocab`, and math shortcut commands.
 
 
