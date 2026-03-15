@@ -23,7 +23,7 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 % inner product
-\DeclarePairedDelimiterX\ip[2]{\langle}{\rangle}{#1,\, #2}
+\DeclarePairedDelimiterX\ip[2]{\langle}{\rangle}{#1, #2}
 
 % === shortcuts for mathbb, mathcal, and mathscr ===
 \newcommand{\NN}{\mathds{N}}
@@ -57,6 +57,11 @@
 }
 \ExplSyntaxOff
 
+% === short cut for Greek letters variants ===
+\newcommand{\eps}{\varepsilon}
+\newcommand{\vphi}{\varphi}
+
+
 % ==================== MATH, BY AREA ====================
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -82,17 +87,22 @@
 \DeclareMathOperator{\Int}{Int}
 
 % ========== Probability ==========
+\let\Pr\relax
+\DeclareMathOperator{\Pr}{\mathds{P}}
+\let\P\Pr
+
+\DeclareMathOperator{\E}{\mathds{E}}
+
 \DeclareMathOperator{\Var}{Var}
-\DeclareMathOperator{\sd}{sd}
-\DeclareMathOperator{\se}{se}
-\DeclareMathOperator*{\plim}{plim}
 \DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\Corr}{Corr}
-\renewcommand{\Pr}{\mathds{P}}
-\renewcommand{\P}{\mathds{P}}
-\newcommand{\E}{\mathds{E}}
+\DeclareMathOperator{\sd}{sd}
+\DeclareMathOperator{\se}{se}
+
 \DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\Bias}{Bias}
+
+\DeclareMathOperator*{\plim}{plim}
 
 \newcommand{\disteq}{\stackrel{\mathrm{d}}{=}}
 \newcommand{\distto}{\xrightarrow{\mathrm{d}}}
@@ -102,20 +112,17 @@
 
 \newcommand{\iidsim}{\overset{\mathrm{iid}}{\sim}}
 
-\newcommand{\eps}{\varepsilon}
-\newcommand{\vphi}{\varphi}
-
-\DeclareMathOperator{\Bernoulli}{Bernoulli}
-\DeclareMathOperator{\Binomial}{Binomial}
-\DeclareMathOperator{\Multinomial}{Multinomial}
-\DeclareMathOperator{\Geometric}{Geometric}
-\DeclareMathOperator{\Poisson}{Poisson}
-\DeclareMathOperator{\Exponential}{Exponential}
-\DeclareMathOperator{\DirichletDist}{Dirichlet}
-\DeclareMathOperator{\GammaDist}{Gamma}
-\DeclareMathOperator{\BetaDist}{Beta}
-\DeclareMathOperator{\Normal}{\mathcal{N}}
-\DeclareMathOperator{\Uniform}{Uniform}
+\newcommand{\Bernoulli}{Bernoulli}
+\newcommand{\Binomial}{Binomial}
+\newcommand{\Multinomial}{Multinomial}
+\newcommand{\Geometric}{Geometric}
+\newcommand{\Poisson}{Poisson}
+\newcommand{\Exponential}{Exponential}
+\newcommand{\DirichletDist}{Dirichlet}
+\newcommand{\GammaDist}{Gamma}
+\newcommand{\BetaDist}{Beta}
+\newcommand{\Normal}{\mathcal{N}}
+\newcommand{\Uniform}{Uniform}
 \let\Unif\Uniform
 
 % ========== Linear Algebra ==========
@@ -134,7 +141,7 @@
 
 
 % nicer vector
-\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\renewcommand{\vec}[1]{\bm{#1}}
 
 % matrices
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
