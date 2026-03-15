@@ -16,15 +16,14 @@
   }
 }
 
-% better looking mod:
-\renewcommand{\mod}[1]{\ \text{mod}\ #1}
-
 % \abs and \norm
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
 % floor and ceil
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+% inner product
+\DeclarePairedDelimiterX\ip[2]{\langle}{\rangle}{#1,\, #2}
 
 % === shortcuts for mathbb, mathcal, and mathscr ===
 \newcommand{\NN}{\mathds{N}}
@@ -51,21 +50,23 @@
 {
   \cs_new:cpn { s#1 } { \mathscr{#1} }
 }
+% \fX -> \mathfrak{X}  (excluding I to avoid \fi TeX primitive clash)
+\clist_map_inline:nn {A,B,C,D,E,F,G,H,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+{
+  \cs_new:cpn { f#1 } { \mathfrak{#1} }
+}
 \ExplSyntaxOff
-
-\newcommand{\fM}{\mathfrak{M}}
 
 % ==================== MATH, BY AREA ====================
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 % ========== Set Theory ==========
 % complement: \complement
-\renewcommand{\complement}[0]{\mathsf{c}}
+\renewcommand{\complement}{\mathsf{c}}
 % nicer emptyset
 \let\emptyset\varnothing
 % cardinality: \card
-\newcommand{\card}[1]{\left|#1\right|}
-\newcommand{\dom}{\mathcal{D}}
+\DeclarePairedDelimiter\card{\lvert}{\rvert}
 % indicator function
 \makeatletter
 \NewDocumentCommand{\ind}{}{%
@@ -81,11 +82,11 @@
 \DeclareMathOperator{\Int}{Int}
 
 % ========== Probability ==========
-\DeclareMathOperator{\Var}{\mathds{V}}
+\DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\sd}{sd}
 \DeclareMathOperator{\se}{se}
 \DeclareMathOperator*{\plim}{plim}
-\newcommand{\Cov}{\mathds{C}}
+\DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\Corr}{Corr}
 \renewcommand{\Pr}{\mathds{P}}
 \renewcommand{\P}{\mathds{P}}
@@ -100,6 +101,9 @@
 \newcommand{\longprobto}{\xrightarrow{\ \mathrm{p}\ }}
 
 \newcommand{\iidsim}{\overset{\mathrm{iid}}{\sim}}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\vphi}{\varphi}
 
 \DeclareMathOperator{\Bernoulli}{Bernoulli}
 \DeclareMathOperator{\Binomial}{Binomial}
@@ -124,11 +128,10 @@
 
 \newcommand\T{{\mathpalette\raiseT\intercal}}
 \newcommand\raiseT[2]{\raisebox{0.25ex}{$#1#2$}}
-\newcommand*{\tran}{\T} % deprecated
+\newcommand*{\tran}{\PackageWarning{adenc}{\string\tran\space is deprecated, use \string\T}\T}
 
 
 
-\newcommand\spanset[1]{\ensuremath\Span\left(#1\right)}
 
 % nicer vector
 \renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
@@ -142,20 +145,16 @@
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \newcommand*{\ii}{\mathrm{i}}
-\let\im\ii % deprecated
-\let\I\ii % deprecated
+\newcommand*{\im}{\PackageWarning{adenc}{\string\im\space is deprecated, use \string\ii}\ii}
+\newcommand*{\I}{\PackageWarning{adenc}{\string\I\space is deprecated, use \string\ii}\ii}
 
 \newcommand{\dd}{\mathop{}\!\mathrm{d}}
 \newcommand{\DD}{\mathrm{D}}
 
-\newcommand{\ran}{\mathcal{R}}
-\renewcommand{\ker}{\mathcal{N}}
 
 \DeclareMathOperator{\dist}{dist}
 \DeclareMathOperator{\diam}{diam}
 
-\DeclareMathOperator{\graph}{G}
-\let\gr\graph
 \DeclareMathOperator{\epi}{epi}
 
 \DeclareMathOperator{\supp}{supp}
@@ -170,7 +169,6 @@
 \DeclareMathOperator{\spec}{spec}
 
 % ========== Measure Theory ==========
-\newcommand{\essran}{\mathrm{ess\ ran}\ }
 \newcommand{\weakto}{\rightharpoonup}
 
 % ========== Algebra ==========

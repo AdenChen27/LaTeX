@@ -1,4 +1,4 @@
-\ProvidesPackage{adenc}[2024/08/14]
+\ProvidesPackage{adenc-beamer}[2026/03/14]
 
 
 \usetheme{Darmstadt}
@@ -96,38 +96,6 @@
 \RequirePackage{etoolbox}
 
 
-
-% % ================================================
-% % ================ THEOREM STYLES ================
-% % ================================================
-% \RequirePackage{thmtools}
-% \RequirePackage[framemethod=TikZ]{mdframed}
-% \RequirePackage[breakable,skins]{tcolorbox}
-%
-% % Beamer pre-defines theorem, lemma, corollary, definition, example, fact,
-% % problem, solution via \newtheorem. Undefine them (env + counter + \theXxx)
-% % so that thmtools \declaretheorem can redefine freely.
-% \makeatletter
-% \newcommand{\adenc@undef@thm}[1]{%
-%   \expandafter\let\csname #1\endcsname\@undefined
-%   \expandafter\let\csname end#1\endcsname\@undefined
-%   \expandafter\let\csname c@#1\endcsname\@undefined
-%   \expandafter\let\csname the#1\endcsname\@undefined
-% }
-% \adenc@undef@thm{theorem}
-% \adenc@undef@thm{lemma}
-% \adenc@undef@thm{corollary}
-% \adenc@undef@thm{definition}
-% \adenc@undef@thm{definitions}
-% \adenc@undef@thm{fact}
-% \adenc@undef@thm{example}
-% \adenc@undef@thm{examples}
-% \adenc@undef@thm{note}
-% \adenc@undef@thm{problem}
-% \adenc@undef@thm{solution}
-% \makeatother
-%
-% \input{thm-styles.tex}
 
 \newtheorem{assumption}{Assumption}
 \newtheorem{claim}{Claim}
