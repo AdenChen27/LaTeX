@@ -81,13 +81,9 @@
 \RequirePackage{tabularx}
 
 
-% \RequirePackage[margin=1in]{geometry}
-
 % increase pad 3cm to both left and right sides of the page for todonotes
 \adencIfWorkingpaper{%
-  % \paperwidth=\dimexpr \paperwidth + 6cm\relax
   \paperwidth=\dimexpr \paperwidth + 3cm\relax
-  % \oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
   \evensidemargin=\dimexpr\evensidemargin + 3cm\relax
   \marginparwidth=\dimexpr \marginparwidth + 3cm\relax
 
@@ -95,15 +91,11 @@
   \SetWatermarkText{\sffamily%
     Draft \the\year/\twodigit\month/\twodigit\day%
   }
-  % \today}
   \SetWatermarkColor{red!50}
   \SetWatermarkFontSize{20pt}
   \SetWatermarkAngle{0}
   \SetWatermarkVerCenter{0.1\paperheight}
   \SetWatermarkHorCenter{0.5\paperwidth}
-  % \SetWatermarkText{DRAFT}
-  % \SetWatermarkScale{1}
-  % \usepackage[light,first,bottomafter]{draftcopy}
 }{}
 
 
@@ -115,8 +107,6 @@
 % ================ HYPERREF STYLES ===============
 % ================================================
 \RequirePackage{hyperref}
-% % citecolor: NavyBlue if theorembox used; blue otherwise
-% \adencIfBoxed{\newcommand{\citecolor}{NavyBlue}}{\newcommand{\citecolor}{blue}}
 \newcommand{\citecolor}{NavyBlue}
 
 \hypersetup{
@@ -134,16 +124,13 @@
 % ================================================
 % ================== REFERENCES ==================
 % ================================================
-% \RequirePackage[natbib=true, backend=biber]{biblatex}
 \RequirePackage{cleveref}
-% \addbibresource{references.bib}
 
 
 % ================================================
 % ================ THEOREM STYLES ================
 % ================================================
 \RequirePackage{thmtools}
-\RequirePackage[framemethod=TikZ]{mdframed} % used by marking-commands.tex
 \RequirePackage[breakable, skins]{tcolorbox}
 
 % Base tcolorbox options shared by all theorem boxes.
@@ -241,8 +228,6 @@
 \declaretheorem[style = \exboxStyle, name = Example, sibling = theorem, qed = \exqed]{example}
 \declaretheorem[style = \exboxStyle, name = Example, numbered = no, qed = \exqed]{example*}
 
-
-% or use \noteboxStyle
 \declaretheorem[style = remark, name = Remark, sibling = theorem, qed = \remqed]{remark}
 \declaretheorem[style = remark, name = Remark, numbered = no, qed = \remqed]{remark*}
 \declaretheorem[style = remark, name = Note, sibling=theorem]{note}
@@ -269,11 +254,6 @@
 \declaretheorem[style = \probboxStyle, name = Question, sibling = theorem]{question}
 \declaretheorem[style = \probboxStyle, name = Question, numbered = no]{question*}
 
-% for cref:
-% \crefname{assumption}{Assumption}{Assumptions}
-% \Crefname{assumption}{Assumption}{Assumptions}
-
-
 % proof environment style:
 \declaretheoremstyle[
   headfont=\bfseries,
@@ -296,28 +276,37 @@
 
 
 % Apply tcolorbox wrapping for boxed mode.
-% \tcolorboxenvironment wraps an existing environment in a tcolorbox using
-% etoolbox hooks, preserving optional arguments like [note].
-\adencIfBoxed{%
-  \tcolorboxenvironment{theorem}{adenc thmbox}
-  \tcolorboxenvironment{theorem*}{adenc thmbox}
-  \tcolorboxenvironment{lemma}{adenc thmbox}
-  \tcolorboxenvironment{lemma*}{adenc thmbox}
-  \tcolorboxenvironment{proposition}{adenc thmbox}
-  \tcolorboxenvironment{proposition*}{adenc thmbox}
-  \tcolorboxenvironment{corollary}{adenc thmbox}
-  \tcolorboxenvironment{corollary*}{adenc thmbox}
-  \tcolorboxenvironment{definition}{adenc defbox}
-  \tcolorboxenvironment{definition*}{adenc defbox}
-  \tcolorboxenvironment{example}{adenc exbox}
-  \tcolorboxenvironment{example*}{adenc exbox}
-  \tcolorboxenvironment{problem}{adenc probbox}
-  \tcolorboxenvironment{problem*}{adenc probbox}
-  \tcolorboxenvironment{exercise}{adenc probbox}
-  \tcolorboxenvironment{exercise*}{adenc probbox}
-  \tcolorboxenvironment{question}{adenc probbox}
-  \tcolorboxenvironment{question*}{adenc probbox}
-}{}
+% Defined outside \adencIfBoxed so expl3 catcodes are set before tokenisation.
+\ExplSyntaxOn
+\cs_new_protected:Nn \__adenc_apply_thmboxes:
+{
+  \clist_map_inline:nn {theorem, lemma, proposition, corollary}
+  {
+    \tcolorboxenvironment{##1}{adenc~thmbox}
+    \tcolorboxenvironment{##1*}{adenc~thmbox}
+  }
+  \clist_map_inline:nn {definition}
+  {
+    \tcolorboxenvironment{##1}{adenc~defbox}
+    \tcolorboxenvironment{##1*}{adenc~defbox}
+  }
+  \clist_map_inline:nn {example}
+  {
+    \tcolorboxenvironment{##1}{adenc~exbox}
+    \tcolorboxenvironment{##1*}{adenc~exbox}
+  }
+  \clist_map_inline:nn {problem, exercise, question}
+  {
+    \tcolorboxenvironment{##1}{adenc~probbox}
+    \tcolorboxenvironment{##1*}{adenc~probbox}
+  }
+}
+\cs_new_protected:Nn \adenc_apply_thmboxes_bridge:
+{
+  \adencIfBoxed { \__adenc_apply_thmboxes: } { }
+}
+\adenc_apply_thmboxes_bridge:
+\ExplSyntaxOff
  
 
 % ================================================
@@ -338,19 +327,16 @@
 \RequirePackage[textwidth=1.5in]{todonotes}
 \RequirePackage{comment}
 \newenvironment{nomarginbox}[2]{%
-  \begin{mdframed}[
-    innerleftmargin=0pt,
-    innerrightmargin=0pt,
-    innertopmargin=0pt,
-    innerbottommargin=0pt,
-    skipabove=0pt,
-    skipbelow=0pt,
-    backgroundcolor=#1,
-    linecolor=#2,
-    linewidth=1pt
+  \begin{tcolorbox}[
+    sharp corners,
+    boxrule=1pt,
+    left=0pt, right=0pt, top=0pt, bottom=0pt,
+    before skip=0pt, after skip=0pt,
+    colback=#1,
+    colframe=#2
   ]
 }{%
-  \end{mdframed}
+  \end{tcolorbox}
 }
 
 \newcommand{\todocolor}{violet!75!red}
@@ -408,8 +394,7 @@
 % ============== HIDING ENVIRONMENTS =============
 % ========= (Hiding markings and proofs) =========
 % ================================================
-\RequirePackage{environ}
-\NewEnviron{hide}{}
+\excludecomment{hide}
 % hide proofs if the `hideproofs` option is passed:
 \adencIfHideproofs{%
   \let\proof\hide
@@ -425,13 +410,6 @@
 % ================================================
 % ================= FONTS/STYLES =================
 % ================================================
-% \usepackage{libertine}
-% \usepackage{helvet} % PSNFSS Font, in every TeX distribution
-% \renewcommand{\familydefault}{\sfdefault}
-
-% \usepackage{newtxtext}
-% \usepackage{newtxmath}
-
 % newtxmath pre-allocates bold/heavy math alphabet families (hmmax, bmmax default to 3).
 % Each family consumes one of LaTeX's 16 math alphabet slots, which we share with
 % other packages (thmtools, tcolorbox, etc.). Setting these to 0 before loading
@@ -441,12 +419,9 @@
 \RequirePackage{newtxtext}
 \RequirePackage[varvw]{newtxmath}
 \RequirePackage{inconsolata}
-% \usepackage{mathptmx}
-% \usepackage{mathpazo}
 
 \RequirePackage[cal=cm]{mathalpha}
 \RequirePackage{marvosym}
-\RequirePackage{framed}
 
 
 % ================================================
@@ -462,9 +437,6 @@
 
 \setcounter{tocdepth}{2}
 
-\RequirePackage{silence} % for suppressing warnings
-\WarningFilter{mdframed}{You have requested package}
-
 
 % ================================================
 % ===================== MATH =====================
@@ -472,7 +444,7 @@
 \RequirePackage{mathtools}
 
 \RequirePackage{dsfont}
-% \RequirePackage{bbm}
+\RequirePackage{bm}
 \RequirePackage{nth}
 % ========== GENERAL MATH COMMANDS ==========
 % vocab:
@@ -484,9 +456,6 @@
 \DeclareMathOperator{\arccsc}{arccsc}
 
 % contradiction
-% \newcommand{\contradiction}{
-%   \ensuremath{{\Rightarrow\mspace{-2mu}\Leftarrow}}
-% }
 \newcommand{\contradiction}{
   {\hbox{
     \setbox0=\hbox{\(\mkern-3mu{\times}\mkern-3mu\)}
@@ -505,17 +474,7 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
-% % Swap the definition of \abs* and \norm*, so that \abs 
-% % and \norm resizes the size of the brackets, and the
-% % starred version does not.
-% \makeatletter
-% \let\oldabs\abs
-% \def\abs{\@ifstar{\oldabs}{\oldabs*}}
-% \let\oldnorm\norm
-% \def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
-% \makeatother
-
-% === shotcuts for mathbb, mathcal, and mathscr ===
+% === shortcuts for mathbb, mathcal, and mathscr ===
 \newcommand{\NN}{\mathds{N}}
 \newcommand{\ZZ}{\mathds{Z}}
 \newcommand{\QQ}{\mathds{Q}}
@@ -524,40 +483,23 @@
 \newcommand{\PP}{\mathds{P}}
 \newcommand{\FF}{\mathds{F}}
 
-\newcommand{\bN}{\mathds{N}}
-\newcommand{\bZ}{\mathds{Z}}
-\newcommand{\bQ}{\mathds{Q}}
-\newcommand{\bR}{\mathds{R}}
-\newcommand{\bC}{\mathds{C}}
-\newcommand{\bP}{\mathds{P}}
-\newcommand{\bF}{\mathds{F}}
-\newcommand{\bS}{\mathds{S}}
-\newcommand{\bT}{\mathds{T}}
-% === expanding \cX to \mathcal{X} for any capital letter X ===
 \ExplSyntaxOn
+% \bX -> \mathds{X}
+\clist_map_inline:nn {N,Z,Q,R,C,P,F,S,T}
+{
+  \cs_new:cpn { b#1 } { \mathds{#1} }
+}
+% \cX -> \mathcal{X}
 \clist_map_inline:nn {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 {
   \cs_new:cpn { c#1 } { \mathcal{#1} }
 }
+% \sX -> \mathscr{X}
+\clist_map_inline:nn {A,B,C,D,E,F,K,L,M,P,R,S,T,U,V}
+{
+  \cs_new:cpn { s#1 } { \mathscr{#1} }
+}
 \ExplSyntaxOff
-
-% === mathscr ===
-\newcommand{\sA}{\mathscr{A}}
-\newcommand{\sB}{\mathscr{B}}
-\newcommand{\sC}{\mathscr{C}}
-\newcommand{\sD}{\mathscr{D}}
-\newcommand{\sE}{\mathscr{E}}
-\newcommand{\sF}{\mathscr{F}}
-\newcommand{\sS}{\mathscr{S}}
-
-\newcommand{\sK}{\mathscr{K}}
-\newcommand{\sL}{\mathscr{L}}
-\newcommand{\sM}{\mathscr{M}}
-\newcommand{\sP}{\mathscr{P}}
-\newcommand{\sR}{\mathscr{R}}
-\newcommand{\sT}{\mathscr{T}}
-\newcommand{\sU}{\mathscr{U}}
-\newcommand{\sV}{\mathscr{V}}
 
 \newcommand{\fM}{\mathfrak{M}}
 
@@ -566,16 +508,13 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 % ========== Set Theory ==========
 % complement: \complement
-\let\Oldcomplement\complement
 \renewcommand{\complement}[0]{\mathsf{c}}
 % nicer emptyset
-\let\oldemptyset\emptyset
 \let\emptyset\varnothing
 % cardinality: \card
 \newcommand{\card}[1]{\left|#1\right|}
 \newcommand{\dom}{\mathcal{D}}
 % indicator function
-% \providecommand{\ind}{\ensuremath{\mathds{1}}}
 \makeatletter
 \NewDocumentCommand{\ind}{}{%
   \mathds{1}%
@@ -585,13 +524,11 @@
   \!\left\{\,#1\,\right\}%
 }
 \makeatother
-% \providecommand{\ind}{\mathbbm{1}}
 
 % ========== Point Set Topology ==========
 \DeclareMathOperator{\Int}{Int}
 
 % ========== Probability ==========
-% \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\Var}{\mathds{V}}
 \DeclareMathOperator{\sd}{sd}
 \DeclareMathOperator{\se}{se}
@@ -600,8 +537,6 @@
 \DeclareMathOperator{\Corr}{Corr}
 \renewcommand{\Pr}{\mathds{P}}
 \renewcommand{\P}{\mathds{P}}
-% \DeclareMathOperator{\E}{E}
-% \usepackage{bbm}
 \newcommand{\E}{\mathds{E}}
 \DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\Bias}{Bias}
@@ -609,11 +544,8 @@
 \newcommand{\disteq}{\stackrel{\mathrm{d}}{=}}
 \newcommand{\distto}{\xrightarrow{\mathrm{d}}}
 \newcommand{\longdistto}{\xrightarrow{\ \mathrm{d}\ }}
-% \newcommand{\distto}{\to_{\mathrm{d}}}
-% \newcommand{\longdistto}{\longrightarrow_{\mathrm{d}}}
 \newcommand{\probto}{\xrightarrow{\mathrm{p}}}
 \newcommand{\longprobto}{\xrightarrow{\ \mathrm{p}\ }}
-% \DeclareMathOperator{\longprobto}{\xrightarrow{\ p\ }}
 
 \newcommand{\iidsim}{\overset{\mathrm{iid}}{\sim}}
 
@@ -627,8 +559,8 @@
 \DeclareMathOperator{\GammaDist}{Gamma}
 \DeclareMathOperator{\BetaDist}{Beta}
 \DeclareMathOperator{\Normal}{\mathcal{N}}
-\DeclareMathOperator{\Unif}{Uniform}
 \DeclareMathOperator{\Uniform}{Uniform}
+\let\Unif\Uniform
 
 % ========== Linear Algebra ==========
 \DeclareMathOperator{\Id}{Id}
@@ -645,18 +577,9 @@
 
 
 \newcommand\spanset[1]{\ensuremath\Span\left(#1\right)}
-% % nicer \overline
-% \let\oldoverline\overline
-% \renewcommand{\overline}[1]{\mkern 1.5mu\oldoverline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
-
-% % nicer \underline
-% \let\oldunderline\underline
-% \renewcommand{\underline}[1]{\mkern 1.5mu\oldunderline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
 
 % nicer vector
-\RequirePackage{bm}
 \renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
-% \renewcommand{\vec}[1]{\mathbf{#1}}
 
 % matrices
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
@@ -667,8 +590,8 @@
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \newcommand*{\ii}{\mathrm{i}}
-\newcommand*{\im}{\mathrm{i}} % deprecated
-\newcommand*{\I}{\mathrm{i}} % deprecated
+\let\im\ii % deprecated
+\let\I\ii % deprecated
 
 \newcommand{\dd}{\mathop{}\!\mathrm{d}}
 \newcommand{\DD}{\mathrm{D}}
@@ -679,8 +602,8 @@
 \DeclareMathOperator{\dist}{dist}
 \DeclareMathOperator{\diam}{diam}
 
-\DeclareMathOperator{\gr}{G}
 \DeclareMathOperator{\graph}{G}
+\let\gr\graph
 \DeclareMathOperator{\epi}{epi}
 
 \DeclareMathOperator{\supp}{supp}

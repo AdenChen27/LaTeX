@@ -93,8 +93,6 @@
 \declaretheorem[style = \exboxStyle, name = Example, sibling = theorem, qed = \exqed]{example}
 \declaretheorem[style = \exboxStyle, name = Example, numbered = no, qed = \exqed]{example*}
 
-
-% or use \noteboxStyle
 \declaretheorem[style = remark, name = Remark, sibling = theorem, qed = \remqed]{remark}
 \declaretheorem[style = remark, name = Remark, numbered = no, qed = \remqed]{remark*}
 \declaretheorem[style = remark, name = Note, sibling=theorem]{note}
@@ -121,11 +119,6 @@
 \declaretheorem[style = \probboxStyle, name = Question, sibling = theorem]{question}
 \declaretheorem[style = \probboxStyle, name = Question, numbered = no]{question*}
 
-% for cref:
-% \crefname{assumption}{Assumption}{Assumptions}
-% \Crefname{assumption}{Assumption}{Assumptions}
-
-
 % proof environment style:
 \declaretheoremstyle[
   headfont=\bfseries,
@@ -148,25 +141,34 @@
 
 
 % Apply tcolorbox wrapping for boxed mode.
-% \tcolorboxenvironment wraps an existing environment in a tcolorbox using
-% etoolbox hooks, preserving optional arguments like [note].
-\adencIfBoxed{%
-  \tcolorboxenvironment{theorem}{adenc thmbox}
-  \tcolorboxenvironment{theorem*}{adenc thmbox}
-  \tcolorboxenvironment{lemma}{adenc thmbox}
-  \tcolorboxenvironment{lemma*}{adenc thmbox}
-  \tcolorboxenvironment{proposition}{adenc thmbox}
-  \tcolorboxenvironment{proposition*}{adenc thmbox}
-  \tcolorboxenvironment{corollary}{adenc thmbox}
-  \tcolorboxenvironment{corollary*}{adenc thmbox}
-  \tcolorboxenvironment{definition}{adenc defbox}
-  \tcolorboxenvironment{definition*}{adenc defbox}
-  \tcolorboxenvironment{example}{adenc exbox}
-  \tcolorboxenvironment{example*}{adenc exbox}
-  \tcolorboxenvironment{problem}{adenc probbox}
-  \tcolorboxenvironment{problem*}{adenc probbox}
-  \tcolorboxenvironment{exercise}{adenc probbox}
-  \tcolorboxenvironment{exercise*}{adenc probbox}
-  \tcolorboxenvironment{question}{adenc probbox}
-  \tcolorboxenvironment{question*}{adenc probbox}
-}{}
+% Defined outside \adencIfBoxed so expl3 catcodes are set before tokenisation.
+\ExplSyntaxOn
+\cs_new_protected:Nn \__adenc_apply_thmboxes:
+{
+  \clist_map_inline:nn {theorem, lemma, proposition, corollary}
+  {
+    \tcolorboxenvironment{##1}{adenc~thmbox}
+    \tcolorboxenvironment{##1*}{adenc~thmbox}
+  }
+  \clist_map_inline:nn {definition}
+  {
+    \tcolorboxenvironment{##1}{adenc~defbox}
+    \tcolorboxenvironment{##1*}{adenc~defbox}
+  }
+  \clist_map_inline:nn {example}
+  {
+    \tcolorboxenvironment{##1}{adenc~exbox}
+    \tcolorboxenvironment{##1*}{adenc~exbox}
+  }
+  \clist_map_inline:nn {problem, exercise, question}
+  {
+    \tcolorboxenvironment{##1}{adenc~probbox}
+    \tcolorboxenvironment{##1*}{adenc~probbox}
+  }
+}
+\cs_new_protected:Nn \adenc_apply_thmboxes_bridge:
+{
+  \adencIfBoxed { \__adenc_apply_thmboxes: } { }
+}
+\adenc_apply_thmboxes_bridge:
+\ExplSyntaxOff

@@ -81,13 +81,9 @@
 \RequirePackage{tabularx}
 
 
-% \RequirePackage[margin=1in]{geometry}
-
 % increase pad 3cm to both left and right sides of the page for todonotes
 \adencIfWorkingpaper{%
-  % \paperwidth=\dimexpr \paperwidth + 6cm\relax
   \paperwidth=\dimexpr \paperwidth + 3cm\relax
-  % \oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
   \evensidemargin=\dimexpr\evensidemargin + 3cm\relax
   \marginparwidth=\dimexpr \marginparwidth + 3cm\relax
 
@@ -95,15 +91,11 @@
   \SetWatermarkText{\sffamily%
     Draft \the\year/\twodigit\month/\twodigit\day%
   }
-  % \today}
   \SetWatermarkColor{red!50}
   \SetWatermarkFontSize{20pt}
   \SetWatermarkAngle{0}
   \SetWatermarkVerCenter{0.1\paperheight}
   \SetWatermarkHorCenter{0.5\paperwidth}
-  % \SetWatermarkText{DRAFT}
-  % \SetWatermarkScale{1}
-  % \usepackage[light,first,bottomafter]{draftcopy}
 }{}
 
 
@@ -115,8 +107,6 @@
 % ================ HYPERREF STYLES ===============
 % ================================================
 \RequirePackage{hyperref}
-% % citecolor: NavyBlue if theorembox used; blue otherwise
-% \adencIfBoxed{\newcommand{\citecolor}{NavyBlue}}{\newcommand{\citecolor}{blue}}
 \newcommand{\citecolor}{NavyBlue}
 
 \hypersetup{
@@ -134,16 +124,13 @@
 % ================================================
 % ================== REFERENCES ==================
 % ================================================
-% \RequirePackage[natbib=true, backend=biber]{biblatex}
 \RequirePackage{cleveref}
-% \addbibresource{references.bib}
 
 
 % ================================================
 % ================ THEOREM STYLES ================
 % ================================================
 \RequirePackage{thmtools}
-\RequirePackage[framemethod=TikZ]{mdframed} % used by marking-commands.tex
 \RequirePackage[breakable, skins]{tcolorbox}
 
 \input{thm-styles.tex}
@@ -171,8 +158,7 @@
 % ============== HIDING ENVIRONMENTS =============
 % ========= (Hiding markings and proofs) =========
 % ================================================
-\RequirePackage{environ}
-\NewEnviron{hide}{}
+\excludecomment{hide}
 % hide proofs if the `hideproofs` option is passed:
 \adencIfHideproofs{%
   \let\proof\hide
@@ -188,13 +174,6 @@
 % ================================================
 % ================= FONTS/STYLES =================
 % ================================================
-% \usepackage{libertine}
-% \usepackage{helvet} % PSNFSS Font, in every TeX distribution
-% \renewcommand{\familydefault}{\sfdefault}
-
-% \usepackage{newtxtext}
-% \usepackage{newtxmath}
-
 % newtxmath pre-allocates bold/heavy math alphabet families (hmmax, bmmax default to 3).
 % Each family consumes one of LaTeX's 16 math alphabet slots, which we share with
 % other packages (thmtools, tcolorbox, etc.). Setting these to 0 before loading
@@ -204,12 +183,9 @@
 \RequirePackage{newtxtext}
 \RequirePackage[varvw]{newtxmath}
 \RequirePackage{inconsolata}
-% \usepackage{mathptmx}
-% \usepackage{mathpazo}
 
 \RequirePackage[cal=cm]{mathalpha}
 \RequirePackage{marvosym}
-\RequirePackage{framed}
 
 
 % ================================================
@@ -225,9 +201,6 @@
 
 \setcounter{tocdepth}{2}
 
-\RequirePackage{silence} % for suppressing warnings
-\WarningFilter{mdframed}{You have requested package}
-
 
 % ================================================
 % ===================== MATH =====================
@@ -235,7 +208,7 @@
 \RequirePackage{mathtools}
 
 \RequirePackage{dsfont}
-% \RequirePackage{bbm}
+\RequirePackage{bm}
 \RequirePackage{nth}
 \input{math-commands.tex}
 

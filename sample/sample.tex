@@ -136,7 +136,7 @@ It is for these reasons that the following commands are introduced:
   Both commands take two arguments: (1) align method (\verb|l|, \verb|c|, or \verb|r|); and (2) text to display. 
   For example, 
 
-  \begin{mdframed}
+  \begin{tcolorbox}[sharp corners, boxrule=1pt, left=0pt, right=0pt, top=0pt, bottom=0pt]
     \noindent
     Test test test\markabove{l}{test1} test\markbelow{c}{I'm marking below here}.
 
@@ -145,7 +145,7 @@ It is for these reasons that the following commands are introduced:
 
     \noindent
     Test test test\markabove{c}{above!} test\markbelow{r}{math! \(\alpha\)}.
-  \end{mdframed}
+  \end{tcolorbox}
   is produced by the following code:
   \item \verb|\draftnote[Label][color]{text}| produces a short inline draft comment.
   The label and color are optional; they default to \verb|Note| and red, respectively.

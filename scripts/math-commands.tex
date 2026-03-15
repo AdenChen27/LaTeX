@@ -8,9 +8,6 @@
 \DeclareMathOperator{\arccsc}{arccsc}
 
 % contradiction
-% \newcommand{\contradiction}{
-%   \ensuremath{{\Rightarrow\mspace{-2mu}\Leftarrow}}
-% }
 \newcommand{\contradiction}{
   {\hbox{
     \setbox0=\hbox{\(\mkern-3mu{\times}\mkern-3mu\)}
@@ -29,17 +26,7 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
-% % Swap the definition of \abs* and \norm*, so that \abs 
-% % and \norm resizes the size of the brackets, and the
-% % starred version does not.
-% \makeatletter
-% \let\oldabs\abs
-% \def\abs{\@ifstar{\oldabs}{\oldabs*}}
-% \let\oldnorm\norm
-% \def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
-% \makeatother
-
-% === shotcuts for mathbb, mathcal, and mathscr ===
+% === shortcuts for mathbb, mathcal, and mathscr ===
 \newcommand{\NN}{\mathds{N}}
 \newcommand{\ZZ}{\mathds{Z}}
 \newcommand{\QQ}{\mathds{Q}}
@@ -48,40 +35,23 @@
 \newcommand{\PP}{\mathds{P}}
 \newcommand{\FF}{\mathds{F}}
 
-\newcommand{\bN}{\mathds{N}}
-\newcommand{\bZ}{\mathds{Z}}
-\newcommand{\bQ}{\mathds{Q}}
-\newcommand{\bR}{\mathds{R}}
-\newcommand{\bC}{\mathds{C}}
-\newcommand{\bP}{\mathds{P}}
-\newcommand{\bF}{\mathds{F}}
-\newcommand{\bS}{\mathds{S}}
-\newcommand{\bT}{\mathds{T}}
-% === expanding \cX to \mathcal{X} for any capital letter X ===
 \ExplSyntaxOn
+% \bX -> \mathds{X}
+\clist_map_inline:nn {N,Z,Q,R,C,P,F,S,T}
+{
+  \cs_new:cpn { b#1 } { \mathds{#1} }
+}
+% \cX -> \mathcal{X}
 \clist_map_inline:nn {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 {
   \cs_new:cpn { c#1 } { \mathcal{#1} }
 }
+% \sX -> \mathscr{X}
+\clist_map_inline:nn {A,B,C,D,E,F,K,L,M,P,R,S,T,U,V}
+{
+  \cs_new:cpn { s#1 } { \mathscr{#1} }
+}
 \ExplSyntaxOff
-
-% === mathscr ===
-\newcommand{\sA}{\mathscr{A}}
-\newcommand{\sB}{\mathscr{B}}
-\newcommand{\sC}{\mathscr{C}}
-\newcommand{\sD}{\mathscr{D}}
-\newcommand{\sE}{\mathscr{E}}
-\newcommand{\sF}{\mathscr{F}}
-\newcommand{\sS}{\mathscr{S}}
-
-\newcommand{\sK}{\mathscr{K}}
-\newcommand{\sL}{\mathscr{L}}
-\newcommand{\sM}{\mathscr{M}}
-\newcommand{\sP}{\mathscr{P}}
-\newcommand{\sR}{\mathscr{R}}
-\newcommand{\sT}{\mathscr{T}}
-\newcommand{\sU}{\mathscr{U}}
-\newcommand{\sV}{\mathscr{V}}
 
 \newcommand{\fM}{\mathfrak{M}}
 
@@ -90,16 +60,13 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 % ========== Set Theory ==========
 % complement: \complement
-\let\Oldcomplement\complement
 \renewcommand{\complement}[0]{\mathsf{c}}
 % nicer emptyset
-\let\oldemptyset\emptyset
 \let\emptyset\varnothing
 % cardinality: \card
 \newcommand{\card}[1]{\left|#1\right|}
 \newcommand{\dom}{\mathcal{D}}
 % indicator function
-% \providecommand{\ind}{\ensuremath{\mathds{1}}}
 \makeatletter
 \NewDocumentCommand{\ind}{}{%
   \mathds{1}%
@@ -109,13 +76,11 @@
   \!\left\{\,#1\,\right\}%
 }
 \makeatother
-% \providecommand{\ind}{\mathbbm{1}}
 
 % ========== Point Set Topology ==========
 \DeclareMathOperator{\Int}{Int}
 
 % ========== Probability ==========
-% \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\Var}{\mathds{V}}
 \DeclareMathOperator{\sd}{sd}
 \DeclareMathOperator{\se}{se}
@@ -124,8 +89,6 @@
 \DeclareMathOperator{\Corr}{Corr}
 \renewcommand{\Pr}{\mathds{P}}
 \renewcommand{\P}{\mathds{P}}
-% \DeclareMathOperator{\E}{E}
-% \usepackage{bbm}
 \newcommand{\E}{\mathds{E}}
 \DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\Bias}{Bias}
@@ -133,11 +96,8 @@
 \newcommand{\disteq}{\stackrel{\mathrm{d}}{=}}
 \newcommand{\distto}{\xrightarrow{\mathrm{d}}}
 \newcommand{\longdistto}{\xrightarrow{\ \mathrm{d}\ }}
-% \newcommand{\distto}{\to_{\mathrm{d}}}
-% \newcommand{\longdistto}{\longrightarrow_{\mathrm{d}}}
 \newcommand{\probto}{\xrightarrow{\mathrm{p}}}
 \newcommand{\longprobto}{\xrightarrow{\ \mathrm{p}\ }}
-% \DeclareMathOperator{\longprobto}{\xrightarrow{\ p\ }}
 
 \newcommand{\iidsim}{\overset{\mathrm{iid}}{\sim}}
 
@@ -151,8 +111,8 @@
 \DeclareMathOperator{\GammaDist}{Gamma}
 \DeclareMathOperator{\BetaDist}{Beta}
 \DeclareMathOperator{\Normal}{\mathcal{N}}
-\DeclareMathOperator{\Unif}{Uniform}
 \DeclareMathOperator{\Uniform}{Uniform}
+\let\Unif\Uniform
 
 % ========== Linear Algebra ==========
 \DeclareMathOperator{\Id}{Id}
@@ -169,18 +129,9 @@
 
 
 \newcommand\spanset[1]{\ensuremath\Span\left(#1\right)}
-% % nicer \overline
-% \let\oldoverline\overline
-% \renewcommand{\overline}[1]{\mkern 1.5mu\oldoverline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
-
-% % nicer \underline
-% \let\oldunderline\underline
-% \renewcommand{\underline}[1]{\mkern 1.5mu\oldunderline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
 
 % nicer vector
-\RequirePackage{bm}
 \renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
-% \renewcommand{\vec}[1]{\mathbf{#1}}
 
 % matrices
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
@@ -191,8 +142,8 @@
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \newcommand*{\ii}{\mathrm{i}}
-\newcommand*{\im}{\mathrm{i}} % deprecated
-\newcommand*{\I}{\mathrm{i}} % deprecated
+\let\im\ii % deprecated
+\let\I\ii % deprecated
 
 \newcommand{\dd}{\mathop{}\!\mathrm{d}}
 \newcommand{\DD}{\mathrm{D}}
@@ -203,8 +154,8 @@
 \DeclareMathOperator{\dist}{dist}
 \DeclareMathOperator{\diam}{diam}
 
-\DeclareMathOperator{\gr}{G}
 \DeclareMathOperator{\graph}{G}
+\let\gr\graph
 \DeclareMathOperator{\epi}{epi}
 
 \DeclareMathOperator{\supp}{supp}
