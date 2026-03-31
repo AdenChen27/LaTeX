@@ -173,7 +173,7 @@
 
 \ExplSyntaxOn
 % \bX -> \mathds{X}
-\clist_map_inline:nn {N,Z,Q,R,C,P,F,S,T}
+\clist_map_inline:nn {N,Z,Q,R,C,P,F,S,T,L,A}
 {
   \cs_new:cpn { b#1 } { \mathds{#1} }
 }
@@ -231,13 +231,15 @@
 \DeclareMathOperator{\E}{\mathds{E}}
 
 \DeclareMathOperator{\Var}{Var}
-\DeclareMathOperator{\sd}{sd}
-\DeclareMathOperator{\se}{se}
-\DeclareMathOperator*{\plim}{plim}
 \DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\sd}{sd}
+\DeclareMathOperator{\se}{se}
+
 \DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\Bias}{Bias}
+
+\DeclareMathOperator*{\plim}{plim}
 
 \newcommand{\disteq}{\stackrel{\mathrm{d}}{=}}
 \newcommand{\distto}{\xrightarrow{\mathrm{d}}}
@@ -257,7 +259,7 @@
 \newcommand{\GammaDist}{Gamma}
 \newcommand{\BetaDist}{Beta}
 \newcommand{\Normal}{\mathcal{N}}
-\newcommand{\Uniform}{Uniform}
+\newcommand{\Uniform}{\text{Uniform}}
 \let\Unif\Uniform
 
 % ========== Linear Algebra ==========

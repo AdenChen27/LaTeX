@@ -57,9 +57,10 @@
   \newcommand{\defboxStyle}{defbox}
   \newcommand{\exboxStyle}{exbox}
   \newcommand{\probboxStyle}{probbox}
-  % No end symbols for example and remark
+  % No end symbols for example, remark, and problem
   \newcommand\remqed{}
   \newcommand\exqed{}
+  \newcommand\probqed{}
 }{%
   \newcommand{\thmboxStyle}{plain}
   \newcommand{\defboxStyle}{definition}
@@ -69,9 +70,11 @@
   \adencIfFancyqed{%
     \newcommand\remqed{\Coffeecup}
     \newcommand\exqed{\Faxmachine} % \Telefon
+    \newcommand\probqed{\WritingHand}
   }{%
     \newcommand\remqed{\(\diamond\)}
     \newcommand\exqed{\(\triangleleft\)}
+    \newcommand\probqed{\(\triangle\)}
   }
 }
 
@@ -112,8 +115,8 @@
 \declaretheorem[style = remark, name = Conjecture, sibling = theorem]{conjecture}
 \declaretheorem[style = remark, name = Conjecture, numbered = no]{conjecture*}
 
-\declaretheorem[style = \probboxStyle, name = Problem, sibling = theorem]{problem}
-\declaretheorem[style = \probboxStyle, name = Problem, numbered = no]{problem*}
+\declaretheorem[style = \probboxStyle, name = Problem, sibling = theorem, qed = \probqed]{problem}
+\declaretheorem[style = \probboxStyle, name = Problem, numbered = no, qed = \probqed]{problem*}
 \declaretheorem[style = \probboxStyle, name = Exercise, sibling = theorem]{exercise}
 \declaretheorem[style = \probboxStyle, name = Exercise, numbered = no]{exercise*}
 \declaretheorem[style = \probboxStyle, name = Question, sibling = theorem]{question}

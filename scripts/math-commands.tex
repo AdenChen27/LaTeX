@@ -36,7 +36,7 @@
 
 \ExplSyntaxOn
 % \bX -> \mathds{X}
-\clist_map_inline:nn {N,Z,Q,R,C,P,F,S,T}
+\clist_map_inline:nn {N,Z,Q,R,C,P,F,S,T,L,A}
 {
   \cs_new:cpn { b#1 } { \mathds{#1} }
 }
@@ -122,7 +122,7 @@
 \newcommand{\GammaDist}{Gamma}
 \newcommand{\BetaDist}{Beta}
 \newcommand{\Normal}{\mathcal{N}}
-\newcommand{\Uniform}{Uniform}
+\newcommand{\Uniform}{\text{Uniform}}
 \let\Unif\Uniform
 
 % ========== Linear Algebra ==========

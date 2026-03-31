@@ -4,10 +4,17 @@
 
 local M = {}
 
--- math / not math zones
+-- math / not math zones (cached per event-loop tick)
+
+local math_cache = { valid = false, value = false }
 
 function M.in_math()
-	return vim.api.nvim_eval("vimtex#syntax#in_mathzone()") == 1
+	if not math_cache.valid then
+		math_cache.value = vim.fn["vimtex#syntax#in_mathzone"]() == 1
+		math_cache.valid = true
+		vim.schedule(function() math_cache.valid = false end)
+	end
+	return math_cache.value
 end
 
 -- comment detection
@@ -47,7 +54,7 @@ function M.in_align()
 end
 
 function M.show_line_begin(line_to_cursor)
-	return #line_to_cursor <= 3
+	return #line_to_cursor <= 3 -- allows up to 3 chars of leading whitespace/indentation
 end
 
 return M
