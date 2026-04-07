@@ -125,7 +125,7 @@ vim.list_extend(snippets, {
 	s({ trig = "ul", wordTrig = true, condition = in_math }, fmt("\\underline{{{}}}", { i(1) })),
 	autosnippet({ trig = "vec", wordTrig = true, condition = in_math }, fmt("\\vec{{{}}}", { i(1) })),
 	s({ trig = "dot", wordTrig = false, condition = in_math }, fmt("\\dot{{{}}}", { i(1) })),
-	s({ trig = "ddot", wordTrig = false, condition = in_math }, fmt("\\ddot{{{}}}", { i(1) })),
+	s({ trig = "ddot", wordTrig = false, priority = 1001, condition = in_math }, fmt("\\ddot{{{}}}", { i(1) })),
 
 	-- Postfix decorations
 	-- Mode 2: single-char postfix — frontier pattern prevents match after another word char

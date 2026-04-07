@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage[theorembox=color, workingpaper, header]{adenc}
 % options: theorembox=none|plain|color, hideproofs, hidemarkings, workingpaper, index
-%          header=false, clearsection=false, fancyqed=false
+%          header=false, clearsection=false, fancyqed=false, pset
 
 \usepackage{threeparttable}
 \newcommand{\cmd}[1]{\texttt{\small\detokenize{#1}}}
@@ -71,6 +71,11 @@ Controls whether sections start on a new page. When on, header will not be displ
 \cmd{fancyqed} &
 \cmd{true*}, \cmd{false} &
 Controls whether environments such as \texttt{remark} and \texttt{example} end with a QED-style symbol. \\
+
+\cmd{pset} &
+\cmd{false*}, \cmd{true} &
+Preset for problem sets: sets \cmd{clearsection=true}, \cmd{header=false}, and \cmd{tocdepth} to 1.
+Options listed after \cmd{pset} override its defaults. \\
 
 \bottomrule
 \end{tabularx}

@@ -67,6 +67,7 @@ This document can also be found at [template.tex](https://github.com/AdenChen27/
 %   clearsection=false  don't start each section on a new page
 %   fancyqed=false      omit the QED-like symbol at the end of remarks/examples
 %   index               auto-index every \vocab term and print the index at the end
+%   pset                preset for problem sets (clearsection, no header, tocdepth=1)
 
 
 % For a standalone document:

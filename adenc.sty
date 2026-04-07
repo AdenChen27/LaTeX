@@ -18,6 +18,7 @@
 \bool_new:N \l_adenc_header_bool       \bool_set_true:N  \l_adenc_header_bool
 \bool_new:N \l_adenc_sectionpage_bool  \bool_set_true:N  \l_adenc_sectionpage_bool
 \bool_new:N \l_adenc_index_bool        \bool_set_false:N \l_adenc_index_bool
+\bool_new:N \l_adenc_pset_bool         \bool_set_false:N \l_adenc_pset_bool
 
 \keys_define:nn { adenc } {
   % theorembox: choice key controlling box style and color
@@ -46,6 +47,15 @@
   header       .bool_set:N = \l_adenc_header_bool,       header       .default:n = true,
   % \usepackage[clearsection=false]{adenc} to disable new-page at each section.
   clearsection .bool_set:N = \l_adenc_sectionpage_bool,  clearsection .default:n = true,
+  % \usepackage[pset]{adenc} — preset for problem sets.
+  % Sets clearsection=true, header=false, tocdepth=1.
+  % Individual options after pset override its defaults.
+  pset .code:n = {
+    \bool_set_true:N  \l_adenc_pset_bool
+    \bool_set_true:N  \l_adenc_sectionpage_bool
+    \bool_set_false:N \l_adenc_header_bool
+  },
+  pset .default:n = {},
 }
 
 \ProcessKeysOptions { adenc }
@@ -60,6 +70,7 @@
 \cs_new_protected:Npn \adencIfHeader       #1#2 { \bool_if:NTF \l_adenc_header_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfSectionpage  #1#2 { \bool_if:NTF \l_adenc_sectionpage_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfIndex        #1#2 { \bool_if:NTF \l_adenc_index_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfPset         #1#2 { \bool_if:NTF \l_adenc_pset_bool {#1}{#2} }
 
 \ExplSyntaxOff
 
@@ -417,6 +428,7 @@
 % newtxmath suppresses those pre-allocations and prevents "Too many math alphabets" errors.
 \newcommand\hmmax{0}
 \newcommand\bmmax{0}
+\RequirePackage[T1]{fontenc}
 \RequirePackage{newtxtext}
 \RequirePackage[varvw]{newtxmath}
 \RequirePackage{inconsolata}
@@ -436,7 +448,7 @@
   \endgroup
 }
 
-\setcounter{tocdepth}{2}
+\adencIfPset{\setcounter{tocdepth}{1}}{\setcounter{tocdepth}{2}}
 
 
 % ================================================
@@ -514,6 +526,10 @@
 % ==================== MATH, BY AREA ====================
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\ran}{ran}
+
+
+
 % ========== Set Theory ==========
 % complement: \complement
 \renewcommand{\complement}{\mathsf{c}}
@@ -576,6 +592,7 @@
 
 % ========== Linear Algebra ==========
 \DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\col}{col}
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\RREF}{RREF}
@@ -662,8 +679,10 @@
     numbersep=5pt,                  
     showspaces=false,                
     showstringspaces=false,
-    showtabs=false,                  
-    tabsize=2
+    showtabs=false,
+    tabsize=2,
+    frame=l,
+    literate={~}{\textasciitilde}{1}
 }
 \lstset{style=lststyle}
 
