@@ -238,11 +238,11 @@ vim.list_extend(snippets, {
 	-- Derivatives
 	s(
 		{ trig = "deri", wordTrig = true, condition = in_math },
-		fmt("\\frac{{\\d {}}}{{\\d {}}}", { i(1, ""), i(2, "x") })
+		fmt("\\frac{{\\dd {}}}{{\\dd {}}}", { i(1, ""), i(2, "x") })
 	),
 	s(
 		{ trig = "derik", wordTrig = true, condition = in_math },
-		fmt("\\frac{{\\d^{{{}}} {}}}{{\\d {}^{{{}}}}}", { i(1, "k"), i(2, ""), i(3, "x"), rep(1) })
+		fmt("\\frac{{\\dd^{{{}}} {}}}{{\\dd {}^{{{}}}}}", { i(1, "k"), i(2, ""), i(3, "x"), rep(1) })
 	),
 	s(
 		{ trig = "part", wordTrig = true, condition = in_math },

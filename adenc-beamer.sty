@@ -220,7 +220,8 @@
   \@ifnextchar\bgroup{\ind@witharg}{}%
 }
 \NewDocumentCommand{\ind@witharg}{m}{%
-  \!\left\{\,#1\,\right\}%
+  \!\left\{#1\right\}%
+  % \!\left[#1\right]%
 }
 \makeatother
 

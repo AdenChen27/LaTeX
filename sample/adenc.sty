@@ -546,7 +546,8 @@
   \@ifnextchar\bgroup{\ind@witharg}{}%
 }
 \NewDocumentCommand{\ind@witharg}{m}{%
-  \!\left\{\,#1\,\right\}%
+  \!\left\{#1\right\}%
+  % \!\left[#1\right]%
 }
 \makeatother
 
@@ -663,30 +664,41 @@
 % ================================================
 % ===================== CODE =====================
 % ================================================
-\RequirePackage{listings}
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\lstdefinestyle{lststyle}{
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    frame=l,
-    literate={~}{\textasciitilde}{1}
+\RequirePackage{minted}
+\usemintedstyle{xcode}
+\setminted{
+  fontsize=\scriptsize,
+  breaklines,
+  autogobble,
+  frame=single,
+  linenos,
+  numbersep=6pt
 }
-\lstset{style=lststyle}
+
+% \RequirePackage{listings}
+% \definecolor{codegreen}{rgb}{0,0.6,0}
+% \definecolor{codegray}{rgb}{0.5,0.5,0.5}
+% \definecolor{codepurple}{rgb}{0.58,0,0.82}
+% \lstdefinestyle{lststyle}{
+%     commentstyle=\color{codegreen},
+%     keywordstyle=\color{magenta},
+%     numberstyle=\tiny\color{codegray},
+%     stringstyle=\color{codepurple},
+%     basicstyle=\ttfamily\footnotesize,
+%     breakatwhitespace=false,         
+%     breaklines=true,                 
+%     captionpos=b,                    
+%     keepspaces=true,                 
+%     numbers=left,                    
+%     numbersep=5pt,                  
+%     showspaces=false,                
+%     showstringspaces=false,
+%     showtabs=false,
+%     tabsize=2,
+%     frame=l,
+%     literate={~}{\textasciitilde}{1}
+% }
+% \lstset{style=lststyle}
 
  
 
