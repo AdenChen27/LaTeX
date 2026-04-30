@@ -8,7 +8,7 @@ $(filename): $(filename).tex
 	mv ./aux/$(filename).pdf ./$(filename).pdf
 
 view: $(filename).pdf
-	open $(filename).pdf -a Skim
+	open $(filename).pdf
 
 clean:
 	latexmk -c -output-directory=aux

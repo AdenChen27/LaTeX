@@ -182,6 +182,18 @@
 \definecolor{color2}{HTML}{8F0A00} % red, defbox
 \definecolor{color3}{HTML}{2B4E2C} % green, exbox
 \definecolor{color5}{HTML}{764506} % orange, probbox
+\definecolor{colorpset}{HTML}{4B2580} % dark purple, pset problem environments
+
+\tcbset{adenc psetprobbox/.style = {
+  adenc thmboxbase,
+  colback = white,
+  colframe = colorpset,
+  leftrule = 0.6pt,
+  rightrule = 0.6pt,
+  toprule = 0.6pt,
+  bottomrule = 0.6pt,
+  right = .75em,
+}}
 
 % If color passed, use colors; otherwise black and white
 \adencIfColor{%
@@ -212,6 +224,16 @@
   \newcommand{\defboxStyle}{definition}
   \newcommand{\exboxStyle}{remark}
   \newcommand{\probboxStyle}{remark}
+  \adencIfPset{%
+    \declaretheoremstyle[
+      headfont = \bfseries\color{colorpset},
+      notefont = \bfseries\color{colorpset},
+      bodyfont = \normalfont\color{colorpset},
+      headpunct = {. },
+      postheadspace = {0pt},
+    ]{psetprobbox}
+    \renewcommand{\probboxStyle}{psetprobbox}
+  }{}
   % End symbols for example and remark
   \adencIfFancyqed{%
     \newcommand\remqed{\Coffeecup}
@@ -317,9 +339,17 @@
     \tcolorboxenvironment{##1*}{adenc~probbox}
   }
 }
+\cs_new_protected:Nn \__adenc_apply_pset_thmboxes:
+{
+  \clist_map_inline:nn {problem, exercise, question}
+  {
+    \tcolorboxenvironment{##1}{adenc~psetprobbox}
+    \tcolorboxenvironment{##1*}{adenc~psetprobbox}
+  }
+}
 \cs_new_protected:Nn \adenc_apply_thmboxes_bridge:
 {
-  \adencIfBoxed { \__adenc_apply_thmboxes: } { }
+  \adencIfBoxed { \__adenc_apply_thmboxes: } { \adencIfPset { \__adenc_apply_pset_thmboxes: } { } }
 }
 \adenc_apply_thmboxes_bridge:
 \ExplSyntaxOff
@@ -464,6 +494,8 @@
 % ========== GENERAL MATH COMMANDS ==========
 % vocab:
 \newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
+% inline problem statement (pset purple):
+\newcommand{\iproblem}[1]{\noindent{\color{colorpset}#1\,\probqed}\par}
 
 % inverse trigs: \arcsec, \arccot, \arccsc
 \DeclareMathOperator{\arcsec}{arcsec}

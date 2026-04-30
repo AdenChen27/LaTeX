@@ -13,7 +13,7 @@ beamer: beamer-sample.tex
 	mv ./aux/beamer-sample.pdf ./beamer-sample.pdf
 
 view: $(filename).pdf
-	open $(filename).pdf -a Skim
+	open $(filename).pdf
 
 clean:
 	latexmk -c -output-directory=aux
