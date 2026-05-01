@@ -1,43 +1,6 @@
 \ProvidesPackage{adenc-beamer}[2026/03/14]
 
 
-\usetheme{Darmstadt}
-\usecolortheme{dove}
-
-\setbeamertemplate{blocks}[default]
-
-\setbeamercolor{block title}{bg=black!10, fg=black}
-\setbeamercolor{block body}{bg=white}
-
-\setbeamerfont{block title}{series=\bfseries}
-
-
-
-\RequirePackage{calc}
-\newenvironment{transitionframe}{
-  % \definecolor{BeigeOffWhite}{RGB}{255,253,218}
-  % \setbeamercolor{background canvas}{bg=BeigeOffWhite}
-  \begin{frame}
-}{
-  \end{frame}
-}
-
-\newcommand{\twocolumns}[4]{
-  \begin{columns}[T]
-    \begin{column}{#1\textwidth}
-      #3
-    \end{column}
-    \begin{column}{#2\textwidth}
-      #4
-    \end{column}
-  \end{columns}
-}
-
-
-\setbeamertemplate{caption}{\raggedright\insertcaption\par}
-
-
-
 % ================================================
 % ================ PACKAGE OPTIONS ===============
 % ================================================
@@ -62,6 +25,79 @@
 
 
 % ================================================
+% ================= BEAMER SETUP =================
+% ================================================
+\usetheme{Darmstadt}
+\usecolortheme{dove}
+
+\setbeamertemplate{blocks}[default]
+
+\setbeamercolor{block title}{bg=black!10, fg=black}
+\setbeamercolor{block body}{bg=white}
+
+\setbeamerfont{block title}{series=\bfseries}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+\RequirePackage{calc}
+\newenvironment{transitionframe}{
+  % \definecolor{BeigeOffWhite}{RGB}{255,253,218}
+  % \setbeamercolor{background canvas}{bg=BeigeOffWhite}
+  \begin{frame}
+}{
+  \end{frame}
+}
+
+\newcommand{\twocolumns}[4]{
+  \begin{columns}[T]
+    \begin{column}{#1\textwidth}
+      #3
+    \end{column}
+    \begin{column}{#2\textwidth}
+      #4
+    \end{column}
+  \end{columns}
+}
+
+
+% ================================================
+% ================ STANDARD PACKAGES =============
+% ================================================
+\RequirePackage{siunitx}
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{enumitem}
+
+\RequirePackage{caption}
+\captionsetup{justification=centering}
+
+\RequirePackage{dcolumn}
+\newcolumntype{d}[0]{D{.}{.}{5}}
+
+\RequirePackage{etoolbox}
+\RequirePackage{framed}
+
+
+% ================================================
+% ============= THEOREM ENVIRONMENTS =============
+% ================================================
+\newtheorem{assumption}{Assumption}
+\newtheorem{claim}{Claim}
+\newtheorem{remark}{Remark}
+\newtheorem{observation}{Observation}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\newtheorem{notation}{Notation}
+\newtheorem{condition}{Condition}
+
+
+% ================================================
+% ============== DOCUMENT COMMANDS ===============
+% ================================================
+\newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
+
+
+% ================================================
 % ================ HYPERREF STYLES ===============
 % ================================================
 \RequirePackage{hyperref}
@@ -78,42 +114,10 @@
 }
 
 
-
-% Standard:
-\RequirePackage{siunitx}
-\RequirePackage{array}
-\RequirePackage{booktabs}
-\RequirePackage{enumitem}
-
-
-\RequirePackage{caption}
-\captionsetup{justification=centering}
-
-% Columns:
-\RequirePackage{dcolumn}
-\newcolumntype{d}[0]{D{.}{.}{5}}
-
-\RequirePackage{etoolbox}
-
-
-
-\newtheorem{assumption}{Assumption}
-\newtheorem{claim}{Claim}
-\newtheorem{remark}{Remark}
-\newtheorem{observation}{Observation}
-\newtheorem{conjecture}{Conjecture}
-\newtheorem{question}{Question}
-\newtheorem{notation}{Notation}
-\newtheorem{condition}{Condition}
-
-
-
-
 % ================================================
 % ================== REFERENCES ==================
 % ================================================
 \RequirePackage{cleveref}
-
 
 
 % ================================================
@@ -123,7 +127,6 @@
 \RequirePackage{wrapfig}
 \RequirePackage{subcaption}
 \graphicspath{{./images/}}
-
 
 
 % ================================================
@@ -138,12 +141,12 @@
 \input{math-commands.tex}
 
 
-
 % ================================================
 % ================ TODO COMMANDS =================
 % ================================================
+\RequirePackage[breakable,skins]{tcolorbox}
+\RequirePackage{stackengine}
 \input{marking-commands.tex}
-\presetkeys{todonotes}{inline}{}
 
 
 % ================================================
@@ -162,21 +165,3 @@
   \renewcommand{\markabove}[2]{}
   \renewcommand{\markbelow}[2]{}
 }{}
-
-
-% ================================================
-% ================= FONTS/STYLES =================
-% ================================================
-% \usepackage{eulervm}
-% \usepackage{libertine}
-% \usepackage{helvet} % PSNFSS Font, in every TeX distribution
-% \renewcommand{\familydefault}{\sfdefault}
-
-% \usepackage{newtxtext}
-% \usepackage{newtxmath}
-
-% \RequirePackage[cal=cm]{mathalpha}
-\RequirePackage{framed}
-
-
-

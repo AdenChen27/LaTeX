@@ -1,55 +1,54 @@
-# LaTeX
+# adenc
 
-Files I use for taking math notes using LaTeX. 
+A personal LaTeX package for math notes and presentations, designed for use with `amsart`.
 
-- `adenc.sty`
+- **`adenc.sty`** — package for math notes/papers
+- **`adenc-beamer.sty`** — companion package for Beamer presentations
 
-    - Borrowed heavily from 
-        [Gilles Castel](https://github.com/gillescastel)'s 
-        [preamble file](https://github.com/gillescastel/lecture-notes/blob/master/algebraic-topology/preamble.tex) 
-        for his 
-        [lecture notes](https://github.com/gillescastel/lecture-notes)
-        and [Andrew Lin](https://web.stanford.edu/~lindrew/)'s
-        package, [lindrew](https://web.stanford.edu/~lindrew/lindrew.sty). 
+> **Requires `--shell-escape`** (for `minted`). Add `$pdflatex = 'pdflatex -shell-escape %O %S';` to your `.latexmkrc`, or pass `-shell-escape` directly to `pdflatex`/`lualatex`.
 
-    - Check out [a sample document](https://www.overleaf.com/read/psgmvhwzppnr#adf899) using `adenc.sty` on Overleaf.
-
-    - [Here](https://github.com/AdenChen27/Notes) are some of the notes I've taken. 
- 
-    - See end of this document for a `.tex` template using `adenc.sty`. 
-
-- `pdf2img/pdf2img.py`
-
-    - I use this script to convert and trim images I draw using Goodnotes to png.
-
-    - Check out a more detailed description [here](https://github.com/AdenChen27/LaTeX/tree/main/pdf2img).
+See [`COMMANDS.md`](COMMANDS.md) for a full command reference, and [here](https://github.com/AdenChen27/Notes) for notes taken using this package.
+You can also [preview a sample document on Overleaf](https://www.overleaf.com/read/psgmvhwzppnr#adf899).
 
 
-- `Makefile`
-    
-    - I use this makefile when I'm not using [VimTeX](https://github.com/lervag/vimtex). 
+## Package options
 
-    - Supports `make`, `make clean`, and `make view`. 
+| Option | Values | Effect |
+|--------|--------|--------|
+| `theorembox` | `none`\* / `plain` / `color` | `plain` adds tcolorbox frames; `color` adds colored frames |
+| `hideproofs` | `false`\* / `true` | Hides all proof environments |
+| `hidemarkings` | `false`\* / `true` | Hides `\markabove`/`\markbelow` annotations and `\draftnote` |
+| `workingpaper` | `false`\* / `true` | Draft watermark on first page + wide margin for `\todo` |
+| `header` | `true`\* / `false` | Running section header |
+| `clearsection` | `true`\* / `false` | Sections start on a new page |
+| `fancyqed` | `true`\* / `false` | Fancy QED symbol at end of remarks/examples |
+| `index` | `false`\* / `true` | Auto-index `\vocab` terms, printed at end |
+| `pset` | `false`\* / `true` | Preset for problem sets: `clearsection`, no header, `tocdepth=1`, colored environments |
 
-    - Uses latexmk. 
-
-    - Set `filename` before build (default is "main"). 
-
-    - Change relevant commands for `make view` if you're not on mac or do not have [skim](https://skim-app.sourceforge.io/) installed. 
-
-- See also my Neovim LuaSnip [snippets](https://github.com/AdenChen27/LaTeX/tree/main/snippets).
-
-- The scripts I used to create these packages can be found in [`scripts`](https://github.com/AdenChen27/LaTeX/tree/main/scripts).
-
-
-### Samples (`sample/`)
-
-- [`sample.tex`](https://github.com/AdenChen27/LaTeX/blob/main/sample/sample.tex) — a comprehensive showcase of `adenc.sty`: documents every package option, theorem environment, annotation command, and math shortcut, with rendered output. Good reference for what the package can do.
-
-- [`sample-notes/notes.tex`](https://github.com/AdenChen27/LaTeX/blob/main/sample/sample-notes/notes.tex) — an example of real course lecture notes built with `adenc.sty`, using `\courseinfo`, theorem environments, `\vocab`, and math shortcut commands.
+\* default value
 
 
-### `.tex` template using `adenc.sty`:
+## Samples
 
-This document can also be found at [template.tex](https://github.com/AdenChen27/LaTeX/blob/main/sample/template.tex)
+- [`sample.tex`](https://github.com/AdenChen27/LaTeX/blob/main/sample/sample.tex) — comprehensive showcase of all options, environments, and commands ([PDF](https://github.com/AdenChen27/LaTeX/blob/main/sample/sample.pdf))
+- [`pset.tex`](https://github.com/AdenChen27/LaTeX/blob/main/sample/pset.tex) — sample problem set using `\makepsethead` and `\iproblem` ([PDF](https://github.com/AdenChen27/LaTeX/blob/main/sample/pset.pdf))
+- [`sample-notes/notes.tex`](https://github.com/AdenChen27/LaTeX/blob/main/sample/sample-notes/notes.tex) — example lecture notes using `\courseinfo`, `\vocab`, and theorem environments ([PDF](https://github.com/AdenChen27/LaTeX/blob/main/sample/sample-notes/notes.pdf))
+
+
+## Also in this repo
+
+- [`pdf2img/`](https://github.com/AdenChen27/LaTeX/tree/main/pdf2img) — converts Goodnotes drawings to trimmed PNG
+- [`snippets/`](https://github.com/AdenChen27/LaTeX/tree/main/snippets) — Neovim LuaSnip snippets
+- [`Makefile`](https://github.com/AdenChen27/LaTeX/blob/main/Makefile) — `latexmk`-based build; `make filename=myfile`, `make view` (Skim), `make clean`
+- [`scripts/`](https://github.com/AdenChen27/LaTeX/tree/main/scripts) — source files used to generate the packages
+
+
+## Credits
+
+Inspired by [Gilles Castel](https://github.com/gillescastel)'s [preamble](https://github.com/gillescastel/lecture-notes/blob/master/algebraic-topology/preamble.tex) and [Andrew Lin](https://web.stanford.edu/~lindrew/)'s [lindrew](https://web.stanford.edu/~lindrew/lindrew.sty) package.
+
+
+## Template
+
+This document can also be found at [`sample/template.tex`](https://github.com/AdenChen27/LaTeX/blob/main/sample/template.tex).
 

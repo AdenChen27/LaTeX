@@ -114,6 +114,30 @@
 \RequirePackage{siunitx}
 \RequirePackage{enumitem}
 
+\RequirePackage{mathtools}
+\RequirePackage{dsfont}
+\RequirePackage{bm}
+\RequirePackage{nth}
+
+
+% ================================================
+% ================= FONTS/STYLES =================
+% ================================================
+% newtxmath pre-allocates bold/heavy math alphabet families (hmmax, bmmax default to 3).
+% Each family consumes one of LaTeX's 16 math alphabet slots, which we share with
+% other packages (thmtools, tcolorbox, etc.). Setting these to 0 before loading
+% newtxmath suppresses those pre-allocations and prevents "Too many math alphabets" errors.
+% \newcommand\hmmax{0}
+% \newcommand\bmmax{0}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{newtxtext}
+\RequirePackage[varvw]{newtxmath}
+\RequirePackage{inconsolata}
+
+\RequirePackage[cal=cm]{mathalpha}
+\RequirePackage{marvosym}
+
+
 % ================================================
 % ================ HYPERREF STYLES ===============
 % ================================================
@@ -226,13 +250,11 @@
   \newcommand{\probboxStyle}{remark}
   \adencIfPset{%
     \declaretheoremstyle[
-      headfont = \bfseries\color{colorpset},
-      notefont = \bfseries\color{colorpset},
-      bodyfont = \normalfont\color{colorpset},
-      headpunct = {. },
-      postheadspace = {0pt},
+      headformat    = {},
+      headpunct     = {},
+      postheadspace = 0pt,
+      bodyfont      = \normalfont\color{colorpset},
     ]{psetprobbox}
-    \renewcommand{\probboxStyle}{psetprobbox}
   }{}
   % End symbols for example and remark
   \adencIfFancyqed{%
@@ -285,8 +307,13 @@
 \declaretheorem[style = remark, name = Algorithm, sibling = theorem]{algorithm}
 \declaretheorem[style = remark, name = Algorithm, numbered = no]{algorithm*}
 
-\declaretheorem[style = \probboxStyle, name = Problem, sibling = theorem, qed = \probqed]{problem}
-\declaretheorem[style = \probboxStyle, name = Problem, numbered = no, qed = \probqed]{problem*}
+\adencIfPset{%
+  \declaretheorem[style = psetprobbox, name = Problem, sibling = theorem, qed = \probqed]{problem}
+  \declaretheorem[style = psetprobbox, name = Problem, numbered = no, qed = \probqed]{problem*}
+}{%
+  \declaretheorem[style = \probboxStyle, name = Problem, sibling = theorem, qed = \probqed]{problem}
+  \declaretheorem[style = \probboxStyle, name = Problem, numbered = no, qed = \probqed]{problem*}
+}
 \declaretheorem[style = \probboxStyle, name = Exercise, sibling = theorem]{exercise}
 \declaretheorem[style = \probboxStyle, name = Exercise, numbered = no]{exercise*}
 \declaretheorem[style = \probboxStyle, name = Question, sibling = theorem]{question}
@@ -341,11 +368,8 @@
 }
 \cs_new_protected:Nn \__adenc_apply_pset_thmboxes:
 {
-  \clist_map_inline:nn {problem, exercise, question}
-  {
-    \tcolorboxenvironment{##1}{adenc~psetprobbox}
-    \tcolorboxenvironment{##1*}{adenc~psetprobbox}
-  }
+  \tcolorboxenvironment{problem}{adenc~psetprobbox}
+  \tcolorboxenvironment{problem*}{adenc~psetprobbox}
 }
 \cs_new_protected:Nn \adenc_apply_thmboxes_bridge:
 {
@@ -370,6 +394,7 @@
 % ================================================
 \RequirePackage[textwidth=1.5in]{todonotes}
 \RequirePackage{comment}
+\RequirePackage{stackengine}
 \newenvironment{nomarginbox}[2]{%
   \begin{tcolorbox}[
     sharp corners,
@@ -419,7 +444,6 @@
 }
 
 % from: https://tex.stackexchange.com/questions/142242/robust-way-to-mark-draft-text
-\RequirePackage{stackengine}
 \setstackgap{L}{.5\baselineskip}
 \newcommand\markabove[2]{{%
   \sffamily\bfseries\boldmath\color{\todocolor}%
@@ -452,51 +476,9 @@
 
 
 % ================================================
-% ================= FONTS/STYLES =================
-% ================================================
-% newtxmath pre-allocates bold/heavy math alphabet families (hmmax, bmmax default to 3).
-% Each family consumes one of LaTeX's 16 math alphabet slots, which we share with
-% other packages (thmtools, tcolorbox, etc.). Setting these to 0 before loading
-% newtxmath suppresses those pre-allocations and prevents "Too many math alphabets" errors.
-\newcommand\hmmax{0}
-\newcommand\bmmax{0}
-\RequirePackage[T1]{fontenc}
-\RequirePackage{newtxtext}
-\RequirePackage[varvw]{newtxmath}
-\RequirePackage{inconsolata}
-
-\RequirePackage[cal=cm]{mathalpha}
-\RequirePackage{marvosym}
-
-
-% ================================================
-% ================= MISCELLANEOUS ================
-% ================================================
-% blfootnote:
-\newcommand\blfootnote[1]{%
-  \begingroup
-  \renewcommand\thefootnote{}\footnote{#1}%
-  \addtocounter{footnote}{-1}%
-  \endgroup
-}
-
-\adencIfPset{\setcounter{tocdepth}{1}}{\setcounter{tocdepth}{2}}
-
-
-% ================================================
 % ===================== MATH =====================
 % ================================================
-\RequirePackage{mathtools}
-
-\RequirePackage{dsfont}
-\RequirePackage{bm}
-\RequirePackage{nth}
 % ========== GENERAL MATH COMMANDS ==========
-% vocab:
-\newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
-% inline problem statement (pset purple):
-\newcommand{\iproblem}[1]{\noindent{\color{colorpset}#1\,\probqed}\par}
-
 % inverse trigs: \arcsec, \arccot, \arccsc
 \DeclareMathOperator{\arcsec}{arcsec}
 \DeclareMathOperator{\arccot}{arccot}
@@ -557,14 +539,12 @@
 \newcommand{\vphi}{\varphi}
 
 
-% ==================== MATH, BY AREA ====================
+% ========== MATH, BY AREA ==========
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator{\ran}{ran}
 
-
-
-% ========== Set Theory ==========
+% --- Set Theory ---
 % complement: \complement
 \renewcommand{\complement}{\mathsf{c}}
 % nicer emptyset
@@ -583,10 +563,10 @@
 }
 \makeatother
 
-% ========== Point Set Topology ==========
+% --- Point Set Topology ---
 \DeclareMathOperator{\Int}{Int}
 
-% ========== Probability ==========
+% --- Probability ---
 \let\Pr\relax
 \DeclareMathOperator{\Pr}{\mathds{P}}
 \let\P\Pr
@@ -625,7 +605,7 @@
 \newcommand{\Uniform}{\text{Uniform}}
 \let\Unif\Uniform
 
-% ========== Linear Algebra ==========
+% --- Linear Algebra ---
 \DeclareMathOperator{\Id}{Id}
 \DeclareMathOperator{\col}{col}
 \DeclareMathOperator{\tr}{tr}
@@ -638,9 +618,6 @@
 \newcommand\raiseT[2]{\raisebox{0.25ex}{$#1#2$}}
 \newcommand*{\tran}{\PackageWarning{adenc}{\string\tran\space is deprecated, use \string\T}\T}
 
-
-
-
 % nicer vector
 \renewcommand{\vec}[1]{\bm{#1}}
 
@@ -649,7 +626,7 @@
 \newcommand{\vmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 
-% ========== Analysis ==========
+% --- Analysis ---
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \newcommand*{\ii}{\mathrm{i}}
@@ -659,31 +636,25 @@
 \newcommand{\dd}{\mathop{}\!\mathrm{d}}
 \newcommand{\DD}{\mathrm{D}}
 
-
 \DeclareMathOperator{\dist}{dist}
 \DeclareMathOperator{\diam}{diam}
-
 \DeclareMathOperator{\epi}{epi}
-
 \DeclareMathOperator{\supp}{supp}
-
 \DeclareMathOperator{\Lip}{Lip}
-
-% convex hull
 \DeclareMathOperator{\conv}{conv}
 
-% ========== Spectral Theory ==========
+% --- Spectral Theory ---
 \DeclareMathOperator{\res}{res}
 \DeclareMathOperator{\spec}{spec}
 
-% ========== Measure Theory ==========
+% --- Measure Theory ---
 \newcommand{\weakto}{\rightharpoonup}
 
-% ========== Algebra ==========
+% --- Algebra ---
 \DeclareMathOperator{\GL}{GL}
 
 % ========== ECONOMICS ==========
-% ========== Econometrics ==========
+% --- Econometrics ---
 \DeclareMathOperator{\SST}{SST}
 \DeclareMathOperator{\SSE}{SSE}
 \DeclareMathOperator{\SSR}{SSR}
@@ -737,6 +708,19 @@
 % ================================================
 % ============== DOCUMENT COMMANDS ===============
 % ================================================
+\makeatletter
+% vocab:
+\newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
+
+% inline problem statement (pset purple):
+\NewDocumentCommand{\iproblem}{o m}{%
+  \noindent
+  {\color{colorpset}%
+    \IfValueT{#1}{\textbf{#1} }%
+    #2\,\probqed}%
+  \par
+}
+
 % \courseinfo{code}{term}{title}{lecturer}{notetaker}
 % Sets \title and \author for course lecture notes.
 % Example: \courseinfo{ECMA308}{W26}{Theory of Auctions}{Philip Reny}{Aden Chen}
@@ -744,7 +728,37 @@
   \title{#1~(#2)\\#3}%
   \author{{Lecturer:~#4} \\ {Notes by:~#5}}%
 }
- 
+
+% \makepsethead[due date]{course}{assignment}{author}
+% Renders a centered header block and TOC. Call at the top of \begin{document}.
+% Compiled date is automatic (\today). Omit due date to hide it.
+% Example: \makepsethead[2026-04-30]{MATH 101}{Problem Set 3}{John Smith}
+\newcommand{\makepsethead}[4][]{%
+  \begin{center}
+    {\large\scshape #2}\par
+    \vspace{1em}
+    {\LARGE\bfseries #3}\par
+    \vspace{1ex}
+    {#4}\par
+    \smallskip
+    {\footnotesize Compiled:~\today}\par
+  \end{center}
+  \vspace{0.5ex}
+  \noindent\rule{\linewidth}{0.4pt}\par
+  \def\@psetdue{#1}%
+  \ifx\@psetdue\@empty\else
+    {\footnotesize\itshape Due:~#1}\par
+  \fi
+  \par\vspace{2\bigskipamount}
+  \begingroup
+    \let\clearpage\relax
+    \@starttoc{toc}%
+  \endgroup
+}
+
+\adencIfPset{\setcounter{tocdepth}{1}\setcounter{secnumdepth}{0}}{\setcounter{tocdepth}{2}}
+ \makeatother
+
 
 % ================================================
 % ==================== HEADER ====================

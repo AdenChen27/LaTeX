@@ -1,43 +1,6 @@
 \ProvidesPackage{adenc-beamer}[2026/03/14]
 
 
-\usetheme{Darmstadt}
-\usecolortheme{dove}
-
-\setbeamertemplate{blocks}[default]
-
-\setbeamercolor{block title}{bg=black!10, fg=black}
-\setbeamercolor{block body}{bg=white}
-
-\setbeamerfont{block title}{series=\bfseries}
-
-
-
-\RequirePackage{calc}
-\newenvironment{transitionframe}{
-  % \definecolor{BeigeOffWhite}{RGB}{255,253,218}
-  % \setbeamercolor{background canvas}{bg=BeigeOffWhite}
-  \begin{frame}
-}{
-  \end{frame}
-}
-
-\newcommand{\twocolumns}[4]{
-  \begin{columns}[T]
-    \begin{column}{#1\textwidth}
-      #3
-    \end{column}
-    \begin{column}{#2\textwidth}
-      #4
-    \end{column}
-  \end{columns}
-}
-
-
-\setbeamertemplate{caption}{\raggedright\insertcaption\par}
-
-
-
 % ================================================
 % ================ PACKAGE OPTIONS ===============
 % ================================================
@@ -62,6 +25,79 @@
 
 
 % ================================================
+% ================= BEAMER SETUP =================
+% ================================================
+\usetheme{Darmstadt}
+\usecolortheme{dove}
+
+\setbeamertemplate{blocks}[default]
+
+\setbeamercolor{block title}{bg=black!10, fg=black}
+\setbeamercolor{block body}{bg=white}
+
+\setbeamerfont{block title}{series=\bfseries}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+\RequirePackage{calc}
+\newenvironment{transitionframe}{
+  % \definecolor{BeigeOffWhite}{RGB}{255,253,218}
+  % \setbeamercolor{background canvas}{bg=BeigeOffWhite}
+  \begin{frame}
+}{
+  \end{frame}
+}
+
+\newcommand{\twocolumns}[4]{
+  \begin{columns}[T]
+    \begin{column}{#1\textwidth}
+      #3
+    \end{column}
+    \begin{column}{#2\textwidth}
+      #4
+    \end{column}
+  \end{columns}
+}
+
+
+% ================================================
+% ================ STANDARD PACKAGES =============
+% ================================================
+\RequirePackage{siunitx}
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{enumitem}
+
+\RequirePackage{caption}
+\captionsetup{justification=centering}
+
+\RequirePackage{dcolumn}
+\newcolumntype{d}[0]{D{.}{.}{5}}
+
+\RequirePackage{etoolbox}
+\RequirePackage{framed}
+
+
+% ================================================
+% ============= THEOREM ENVIRONMENTS =============
+% ================================================
+\newtheorem{assumption}{Assumption}
+\newtheorem{claim}{Claim}
+\newtheorem{remark}{Remark}
+\newtheorem{observation}{Observation}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\newtheorem{notation}{Notation}
+\newtheorem{condition}{Condition}
+
+
+% ================================================
+% ============== DOCUMENT COMMANDS ===============
+% ================================================
+\newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
+
+
+% ================================================
 % ================ HYPERREF STYLES ===============
 % ================================================
 \RequirePackage{hyperref}
@@ -78,42 +114,10 @@
 }
 
 
-
-% Standard:
-\RequirePackage{siunitx}
-\RequirePackage{array}
-\RequirePackage{booktabs}
-\RequirePackage{enumitem}
-
-
-\RequirePackage{caption}
-\captionsetup{justification=centering}
-
-% Columns:
-\RequirePackage{dcolumn}
-\newcolumntype{d}[0]{D{.}{.}{5}}
-
-\RequirePackage{etoolbox}
-
-
-
-\newtheorem{assumption}{Assumption}
-\newtheorem{claim}{Claim}
-\newtheorem{remark}{Remark}
-\newtheorem{observation}{Observation}
-\newtheorem{conjecture}{Conjecture}
-\newtheorem{question}{Question}
-\newtheorem{notation}{Notation}
-\newtheorem{condition}{Condition}
-
-
-
-
 % ================================================
 % ================== REFERENCES ==================
 % ================================================
 \RequirePackage{cleveref}
-
 
 
 % ================================================
@@ -123,7 +127,6 @@
 \RequirePackage{wrapfig}
 \RequirePackage{subcaption}
 \graphicspath{{./images/}}
-
 
 
 % ================================================
@@ -136,11 +139,6 @@
 \RequirePackage{mathrsfs}
 \RequirePackage{nth}
 % ========== GENERAL MATH COMMANDS ==========
-% vocab:
-\newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
-% inline problem statement (pset purple):
-\newcommand{\iproblem}[1]{\noindent{\color{colorpset}#1\,\probqed}\par}
-
 % inverse trigs: \arcsec, \arccot, \arccsc
 \DeclareMathOperator{\arcsec}{arcsec}
 \DeclareMathOperator{\arccot}{arccot}
@@ -201,14 +199,12 @@
 \newcommand{\vphi}{\varphi}
 
 
-% ==================== MATH, BY AREA ====================
+% ========== MATH, BY AREA ==========
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator{\ran}{ran}
 
-
-
-% ========== Set Theory ==========
+% --- Set Theory ---
 % complement: \complement
 \renewcommand{\complement}{\mathsf{c}}
 % nicer emptyset
@@ -227,10 +223,10 @@
 }
 \makeatother
 
-% ========== Point Set Topology ==========
+% --- Point Set Topology ---
 \DeclareMathOperator{\Int}{Int}
 
-% ========== Probability ==========
+% --- Probability ---
 \let\Pr\relax
 \DeclareMathOperator{\Pr}{\mathds{P}}
 \let\P\Pr
@@ -269,7 +265,7 @@
 \newcommand{\Uniform}{\text{Uniform}}
 \let\Unif\Uniform
 
-% ========== Linear Algebra ==========
+% --- Linear Algebra ---
 \DeclareMathOperator{\Id}{Id}
 \DeclareMathOperator{\col}{col}
 \DeclareMathOperator{\tr}{tr}
@@ -282,9 +278,6 @@
 \newcommand\raiseT[2]{\raisebox{0.25ex}{$#1#2$}}
 \newcommand*{\tran}{\PackageWarning{adenc}{\string\tran\space is deprecated, use \string\T}\T}
 
-
-
-
 % nicer vector
 \renewcommand{\vec}[1]{\bm{#1}}
 
@@ -293,7 +286,7 @@
 \newcommand{\vmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 
-% ========== Analysis ==========
+% --- Analysis ---
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \newcommand*{\ii}{\mathrm{i}}
@@ -303,31 +296,25 @@
 \newcommand{\dd}{\mathop{}\!\mathrm{d}}
 \newcommand{\DD}{\mathrm{D}}
 
-
 \DeclareMathOperator{\dist}{dist}
 \DeclareMathOperator{\diam}{diam}
-
 \DeclareMathOperator{\epi}{epi}
-
 \DeclareMathOperator{\supp}{supp}
-
 \DeclareMathOperator{\Lip}{Lip}
-
-% convex hull
 \DeclareMathOperator{\conv}{conv}
 
-% ========== Spectral Theory ==========
+% --- Spectral Theory ---
 \DeclareMathOperator{\res}{res}
 \DeclareMathOperator{\spec}{spec}
 
-% ========== Measure Theory ==========
+% --- Measure Theory ---
 \newcommand{\weakto}{\rightharpoonup}
 
-% ========== Algebra ==========
+% --- Algebra ---
 \DeclareMathOperator{\GL}{GL}
 
 % ========== ECONOMICS ==========
-% ========== Econometrics ==========
+% --- Econometrics ---
 \DeclareMathOperator{\SST}{SST}
 \DeclareMathOperator{\SSE}{SSE}
 \DeclareMathOperator{\SSR}{SSR}
@@ -337,12 +324,11 @@
 
  
 
-
 % ================================================
 % ================ TODO COMMANDS =================
 % ================================================
-\RequirePackage[textwidth=1.5in]{todonotes}
-\RequirePackage{comment}
+\RequirePackage[breakable,skins]{tcolorbox}
+\RequirePackage{stackengine}
 \newenvironment{nomarginbox}[2]{%
   \begin{tcolorbox}[
     sharp corners,
@@ -392,7 +378,6 @@
 }
 
 % from: https://tex.stackexchange.com/questions/142242/robust-way-to-mark-draft-text
-\RequirePackage{stackengine}
 \setstackgap{L}{.5\baselineskip}
 \newcommand\markabove[2]{{%
   \sffamily\bfseries\boldmath\color{\todocolor}%
@@ -405,8 +390,7 @@
   \smash{\bottomlap{#1}{\scriptsize#2}}%
 }}
 
- \presetkeys{todonotes}{inline}{}
-
+ 
 
 % ================================================
 % ============== HIDING ENVIRONMENTS =============
@@ -424,21 +408,3 @@
   \renewcommand{\markabove}[2]{}
   \renewcommand{\markbelow}[2]{}
 }{}
-
-
-% ================================================
-% ================= FONTS/STYLES =================
-% ================================================
-% \usepackage{eulervm}
-% \usepackage{libertine}
-% \usepackage{helvet} % PSNFSS Font, in every TeX distribution
-% \renewcommand{\familydefault}{\sfdefault}
-
-% \usepackage{newtxtext}
-% \usepackage{newtxmath}
-
-% \RequirePackage[cal=cm]{mathalpha}
-\RequirePackage{framed}
-
-
-

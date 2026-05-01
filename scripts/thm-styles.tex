@@ -80,13 +80,11 @@
   \newcommand{\probboxStyle}{remark}
   \adencIfPset{%
     \declaretheoremstyle[
-      headfont = \bfseries\color{colorpset},
-      notefont = \bfseries\color{colorpset},
-      bodyfont = \normalfont\color{colorpset},
-      headpunct = {. },
-      postheadspace = {0pt},
+      headformat    = {},
+      headpunct     = {},
+      postheadspace = 0pt,
+      bodyfont      = \normalfont\color{colorpset},
     ]{psetprobbox}
-    \renewcommand{\probboxStyle}{psetprobbox}
   }{}
   % End symbols for example and remark
   \adencIfFancyqed{%
@@ -139,8 +137,13 @@
 \declaretheorem[style = remark, name = Algorithm, sibling = theorem]{algorithm}
 \declaretheorem[style = remark, name = Algorithm, numbered = no]{algorithm*}
 
-\declaretheorem[style = \probboxStyle, name = Problem, sibling = theorem, qed = \probqed]{problem}
-\declaretheorem[style = \probboxStyle, name = Problem, numbered = no, qed = \probqed]{problem*}
+\adencIfPset{%
+  \declaretheorem[style = psetprobbox, name = Problem, sibling = theorem, qed = \probqed]{problem}
+  \declaretheorem[style = psetprobbox, name = Problem, numbered = no, qed = \probqed]{problem*}
+}{%
+  \declaretheorem[style = \probboxStyle, name = Problem, sibling = theorem, qed = \probqed]{problem}
+  \declaretheorem[style = \probboxStyle, name = Problem, numbered = no, qed = \probqed]{problem*}
+}
 \declaretheorem[style = \probboxStyle, name = Exercise, sibling = theorem]{exercise}
 \declaretheorem[style = \probboxStyle, name = Exercise, numbered = no]{exercise*}
 \declaretheorem[style = \probboxStyle, name = Question, sibling = theorem]{question}
@@ -195,11 +198,8 @@
 }
 \cs_new_protected:Nn \__adenc_apply_pset_thmboxes:
 {
-  \clist_map_inline:nn {problem, exercise, question}
-  {
-    \tcolorboxenvironment{##1}{adenc~psetprobbox}
-    \tcolorboxenvironment{##1*}{adenc~psetprobbox}
-  }
+  \tcolorboxenvironment{problem}{adenc~psetprobbox}
+  \tcolorboxenvironment{problem*}{adenc~psetprobbox}
 }
 \cs_new_protected:Nn \adenc_apply_thmboxes_bridge:
 {

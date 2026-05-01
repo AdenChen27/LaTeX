@@ -2,7 +2,7 @@ define compile
     $(eval $@_INPUT_NAME = $(1))
     $(eval $@_OUTPUT_NAME = $(2))
 
-    latexpand ${$@_INPUT_NAME} -o ${$@_OUTPUT_NAME} --keep-comments --verbose
+    latexpand ${$@_INPUT_NAME} -o ${$@_OUTPUT_NAME} --keep-comments --makeatletter --verbose
     mv ${$@_OUTPUT_NAME} ../${$@_OUTPUT_NAME}
     cp ../${$@_OUTPUT_NAME} ../sample/${$@_OUTPUT_NAME}
 endef

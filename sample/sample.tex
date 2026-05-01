@@ -75,7 +75,12 @@ Controls whether environments such as \texttt{remark} and \texttt{example} end w
 \cmd{pset} &
 \cmd{false*}, \cmd{true} &
 Preset for problem sets: sets \cmd{clearsection=true}, \cmd{header=false}, and \cmd{tocdepth} to 1.
+Colors \cmd{problem}/\cmd{exercise}/\cmd{question} dark purple in \cmd{theorembox=none} mode.
 Options listed after \cmd{pset} override its defaults. \\
+
+\cmd{index} &
+\cmd{false*}, \cmd{true} &
+Auto-index every \cmd{\vocab} term and print the index at end of document. \\
 
 \bottomrule
 \end{tabularx}
@@ -110,8 +115,11 @@ Options listed after \cmd{pset} override its defaults. \\
   An exemplary example. 
 \end{example}
 \begin{problem}
-  A problematic problem. 
+  A problematic problem.
 \end{problem}
+\begin{algorithm}
+  A well-specified algorithm.
+\end{algorithm}
 \begin{proof}
   A precise proof.
 \end{proof}
@@ -247,6 +255,22 @@ produces the equivalent of:
 \title{ECMA308 (W26): Theory of Auctions}
 \author{{Lecturer: Philip Reny} \\ {Notes by: Aden Chen}}
 \end{verbatim}
+
+\cmd{\makepsethead[due date]\{course\}\{assignment\}\{author\}} renders a centered header block (course name, assignment title, author, compile date) followed by the table of contents. Call it at the top of \verb|\begin{document}|. The optional due date is omitted when not provided.
+\begin{verbatim}
+\makepsethead[2026-04-30]{MATH 101}{Problem Set 3}{John Smith}
+\end{verbatim}
+
+\cmd{\iproblem[label]\{text\}} typesets an inline problem statement in dark purple with a trailing QED-like symbol. The optional label (e.g.\ a problem number) is rendered in bold. Intended for use with the \cmd{pset} option.
+
+\iproblem[1.]{Show that \(\RR\) is uncountable.}
+
+\noindent Produced by:
+\begin{verbatim}
+\iproblem[1.]{Show that \(\RR\) is uncountable.}
+\end{verbatim}
+
+See \href{https://github.com/AdenChen27/LaTeX/blob/main/sample/pset.tex}{\texttt{pset.tex}} for a complete sample problem set using the \cmd{pset} option.
 
 \appendix
 \section{Credits}

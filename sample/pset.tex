@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+\usepackage[pset]{adenc}
+% pset preset: clearsection=true, header=false, tocdepth=1, secnumdepth=0
+% problem/exercise/question are typeset in dark purple with a thin border box
+% Additional options can follow pset to override its defaults, e.g.:
+%   \usepackage[pset, theorembox=color]{adenc}
+
+\begin{document}
+\makepsethead[2026-05-01]{MATH 101}{Problem Set 4}{Aden Chen}
+
+\section{Sequences and Series}
+
+\begin{problem}
+  Let \((a_n)\) be a sequence of real numbers.
+  Prove that if \(\lim_{n \to \infty} a_n = L\), then every subsequence of \((a_n)\)
+  also converges to \(L\).
+\end{problem}
+
+\begin{proof}
+  Let \((a_{n_k})\) be any subsequence of \((a_n)\).
+  Fix \(\eps > 0\).
+  Since \(a_n \to L\), there exists \(N \in \NN\) such that \(\abs{a_n - L} < \eps\)
+  for all \(n \geq N\).
+  Since \(n_k \geq k\) for all \(k\) (the indices are strictly increasing), we have
+  \(n_k \geq N\) for all \(k \geq N\), so \(\abs{a_{n_k} - L} < \eps\).
+  Hence \(a_{n_k} \to L\).
+\end{proof}
+
+\begin{problem}
+  Let \(\sum_{n=1}^{\infty} a_n\) be a convergent series of non-negative terms.
+  Show that \(\sum_{n=1}^{\infty} a_n^2\) also converges.
+\end{problem}
+
+\begin{proof}
+  Since \(\sum a_n\) converges, we have \(a_n \to 0\), so there exists \(N\) such that
+  \(a_n < 1\) for all \(n \geq N\).
+  For such \(n\), \(a_n^2 \leq a_n\).
+  The convergence of \(\sum_{n \geq N} a_n^2\) then follows by comparison.
+\end{proof}
+
+\begin{problem}
+  Determine, with proof, whether the series
+  \[
+    \sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n}
+  \]
+  converges absolutely, conditionally, or diverges.
+\end{problem}
+
+\begin{proof}
+  The series converges conditionally.
+  By the alternating series test, since \(1/n \searrow 0\), the series converges.
+  However, \(\sum 1/n\) diverges (harmonic series), so convergence is not absolute.
+\end{proof}
+
+
+\section{Continuity}
+
+\begin{problem}
+  Let \(f, g \colon \RR \to \RR\) be continuous.
+  Define \(h(x) \coloneqq \max\{f(x), g(x)\}\).
+  Show that \(h\) is continuous.
+\end{problem}
+
+\begin{proof}
+  Use the identity \(\max\{a, b\} = \frac{1}{2}(a + b + \abs{a - b})\).
+  Since \(f\) and \(g\) are continuous, so are \(f + g\) and \(f - g\), and hence
+  \(\abs{f - g}\) (as the composition of continuous functions).
+  Therefore \(h = \frac{1}{2}(f + g + \abs{f - g})\) is continuous.
+\end{proof}
+
+\begin{exercise}
+  State and prove the analogous result for \(\min\{f(x), g(x)\}\).
+\end{exercise}
+
+\iproblem[Bonus.]{Give an example of a function \(f \colon \RR \to \RR\) that is
+  continuous at exactly one point.}
+
+\end{document}

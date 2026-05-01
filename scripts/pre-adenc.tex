@@ -114,6 +114,30 @@
 \RequirePackage{siunitx}
 \RequirePackage{enumitem}
 
+\RequirePackage{mathtools}
+\RequirePackage{dsfont}
+\RequirePackage{bm}
+\RequirePackage{nth}
+
+
+% ================================================
+% ================= FONTS/STYLES =================
+% ================================================
+% newtxmath pre-allocates bold/heavy math alphabet families (hmmax, bmmax default to 3).
+% Each family consumes one of LaTeX's 16 math alphabet slots, which we share with
+% other packages (thmtools, tcolorbox, etc.). Setting these to 0 before loading
+% newtxmath suppresses those pre-allocations and prevents "Too many math alphabets" errors.
+% \newcommand\hmmax{0}
+% \newcommand\bmmax{0}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{newtxtext}
+\RequirePackage[varvw]{newtxmath}
+\RequirePackage{inconsolata}
+
+\RequirePackage[cal=cm]{mathalpha}
+\RequirePackage{marvosym}
+
+
 % ================================================
 % ================ HYPERREF STYLES ===============
 % ================================================
@@ -160,6 +184,9 @@
 % ================================================
 % ================ TODO COMMANDS =================
 % ================================================
+\RequirePackage[textwidth=1.5in]{todonotes}
+\RequirePackage{comment}
+\RequirePackage{stackengine}
 \input{marking-commands.tex}
 
 
@@ -181,58 +208,24 @@
 
 
 % ================================================
-% ================= FONTS/STYLES =================
-% ================================================
-% newtxmath pre-allocates bold/heavy math alphabet families (hmmax, bmmax default to 3).
-% Each family consumes one of LaTeX's 16 math alphabet slots, which we share with
-% other packages (thmtools, tcolorbox, etc.). Setting these to 0 before loading
-% newtxmath suppresses those pre-allocations and prevents "Too many math alphabets" errors.
-\newcommand\hmmax{0}
-\newcommand\bmmax{0}
-\RequirePackage[T1]{fontenc}
-\RequirePackage{newtxtext}
-\RequirePackage[varvw]{newtxmath}
-\RequirePackage{inconsolata}
-
-\RequirePackage[cal=cm]{mathalpha}
-\RequirePackage{marvosym}
-
-
-% ================================================
-% ================= MISCELLANEOUS ================
-% ================================================
-% blfootnote:
-\newcommand\blfootnote[1]{%
-  \begingroup
-  \renewcommand\thefootnote{}\footnote{#1}%
-  \addtocounter{footnote}{-1}%
-  \endgroup
-}
-
-\adencIfPset{\setcounter{tocdepth}{1}}{\setcounter{tocdepth}{2}}
-
-
-% ================================================
 % ===================== MATH =====================
 % ================================================
-\RequirePackage{mathtools}
-
-\RequirePackage{dsfont}
-\RequirePackage{bm}
-\RequirePackage{nth}
 \input{math-commands.tex}
 
 
 % ================================================
 % ===================== CODE =====================
 % ================================================
+\RequirePackage{minted}
 \input{code.tex}
 
 
 % ================================================
 % ============== DOCUMENT COMMANDS ===============
 % ================================================
+\makeatletter
 \input{document-commands.tex}
+\makeatother
 
 
 % ================================================

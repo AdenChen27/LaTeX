@@ -1,3 +1,15 @@
+% vocab:
+\newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
+
+% inline problem statement (pset purple):
+\NewDocumentCommand{\iproblem}{o m}{%
+  \noindent
+  {\color{colorpset}%
+    \IfValueT{#1}{\textbf{#1} }%
+    #2\,\probqed}%
+  \par
+}
+
 % \courseinfo{code}{term}{title}{lecturer}{notetaker}
 % Sets \title and \author for course lecture notes.
 % Example: \courseinfo{ECMA308}{W26}{Theory of Auctions}{Philip Reny}{Aden Chen}
@@ -5,3 +17,32 @@
   \title{#1~(#2)\\#3}%
   \author{{Lecturer:~#4} \\ {Notes by:~#5}}%
 }
+
+% \makepsethead[due date]{course}{assignment}{author}
+% Renders a centered header block and TOC. Call at the top of \begin{document}.
+% Compiled date is automatic (\today). Omit due date to hide it.
+% Example: \makepsethead[2026-04-30]{MATH 101}{Problem Set 3}{John Smith}
+\newcommand{\makepsethead}[4][]{%
+  \begin{center}
+    {\large\scshape #2}\par
+    \vspace{1em}
+    {\LARGE\bfseries #3}\par
+    \vspace{1ex}
+    {#4}\par
+    \smallskip
+    {\footnotesize Compiled:~\today}\par
+  \end{center}
+  \vspace{0.5ex}
+  \noindent\rule{\linewidth}{0.4pt}\par
+  \def\@psetdue{#1}%
+  \ifx\@psetdue\@empty\else
+    {\footnotesize\itshape Due:~#1}\par
+  \fi
+  \par\vspace{2\bigskipamount}
+  \begingroup
+    \let\clearpage\relax
+    \@starttoc{toc}%
+  \endgroup
+}
+
+\adencIfPset{\setcounter{tocdepth}{1}\setcounter{secnumdepth}{0}}{\setcounter{tocdepth}{2}}

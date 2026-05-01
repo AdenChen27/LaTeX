@@ -1,9 +1,4 @@
 % ========== GENERAL MATH COMMANDS ==========
-% vocab:
-\newcommand{\vocab}[1]{\textbf{\color{black!90}\boldmath #1}}
-% inline problem statement (pset purple):
-\newcommand{\iproblem}[1]{\noindent{\color{colorpset}#1\,\probqed}\par}
-
 % inverse trigs: \arcsec, \arccot, \arccsc
 \DeclareMathOperator{\arcsec}{arcsec}
 \DeclareMathOperator{\arccot}{arccot}
@@ -64,14 +59,12 @@
 \newcommand{\vphi}{\varphi}
 
 
-% ==================== MATH, BY AREA ====================
+% ========== MATH, BY AREA ==========
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator{\ran}{ran}
 
-
-
-% ========== Set Theory ==========
+% --- Set Theory ---
 % complement: \complement
 \renewcommand{\complement}{\mathsf{c}}
 % nicer emptyset
@@ -90,10 +83,10 @@
 }
 \makeatother
 
-% ========== Point Set Topology ==========
+% --- Point Set Topology ---
 \DeclareMathOperator{\Int}{Int}
 
-% ========== Probability ==========
+% --- Probability ---
 \let\Pr\relax
 \DeclareMathOperator{\Pr}{\mathds{P}}
 \let\P\Pr
@@ -132,7 +125,7 @@
 \newcommand{\Uniform}{\text{Uniform}}
 \let\Unif\Uniform
 
-% ========== Linear Algebra ==========
+% --- Linear Algebra ---
 \DeclareMathOperator{\Id}{Id}
 \DeclareMathOperator{\col}{col}
 \DeclareMathOperator{\tr}{tr}
@@ -145,9 +138,6 @@
 \newcommand\raiseT[2]{\raisebox{0.25ex}{$#1#2$}}
 \newcommand*{\tran}{\PackageWarning{adenc}{\string\tran\space is deprecated, use \string\T}\T}
 
-
-
-
 % nicer vector
 \renewcommand{\vec}[1]{\bm{#1}}
 
@@ -156,7 +146,7 @@
 \newcommand{\vmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 
-% ========== Analysis ==========
+% --- Analysis ---
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \newcommand*{\ii}{\mathrm{i}}
@@ -166,31 +156,25 @@
 \newcommand{\dd}{\mathop{}\!\mathrm{d}}
 \newcommand{\DD}{\mathrm{D}}
 
-
 \DeclareMathOperator{\dist}{dist}
 \DeclareMathOperator{\diam}{diam}
-
 \DeclareMathOperator{\epi}{epi}
-
 \DeclareMathOperator{\supp}{supp}
-
 \DeclareMathOperator{\Lip}{Lip}
-
-% convex hull
 \DeclareMathOperator{\conv}{conv}
 
-% ========== Spectral Theory ==========
+% --- Spectral Theory ---
 \DeclareMathOperator{\res}{res}
 \DeclareMathOperator{\spec}{spec}
 
-% ========== Measure Theory ==========
+% --- Measure Theory ---
 \newcommand{\weakto}{\rightharpoonup}
 
-% ========== Algebra ==========
+% --- Algebra ---
 \DeclareMathOperator{\GL}{GL}
 
 % ========== ECONOMICS ==========
-% ========== Econometrics ==========
+% --- Econometrics ---
 \DeclareMathOperator{\SST}{SST}
 \DeclareMathOperator{\SSE}{SSE}
 \DeclareMathOperator{\SSR}{SSR}
