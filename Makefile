@@ -4,7 +4,7 @@ filename = test
 
 $(filename): $(filename).tex
 	mkdir -p aux
-	latexmk ./$@ -pdf -jobname=./aux/$(filename)
+	latexmk ./$@ -xelatex -shell-escape -jobname=./aux/$(filename)
 	mv ./aux/$(filename).pdf ./$(filename).pdf
 
 view: $(filename).pdf
@@ -12,4 +12,3 @@ view: $(filename).pdf
 
 clean:
 	latexmk -c -output-directory=aux
-

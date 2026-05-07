@@ -1,4 +1,6 @@
 \ProvidesPackage{adenc-beamer}[2026/03/14]
+\RequirePackage{iftex}
+\RequireTUTeX
 
 
 % ================================================
@@ -22,6 +24,24 @@
 \cs_new_protected:Npn \adencIfHidemarkings #1#2 { \bool_if:NTF \l_adenc_hidemarkings_bool {#1}{#2} }
 
 \ExplSyntaxOff
+
+
+% ================================================
+% ================= FONTS/STYLES =================
+% ================================================
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\defaultfontfeatures{Ligatures=TeX}
+\setsansfont{texgyreheros-regular.otf}[
+  ItalicFont = texgyreheros-italic.otf,
+  BoldFont = texgyreheros-bold.otf,
+  BoldItalicFont = texgyreheros-bolditalic.otf
+]
+\setmonofont{Inconsolatazi4-Regular.otf}[
+  BoldFont = Inconsolatazi4-Bold.otf
+]
+\setmathfont{texgyretermes-math.otf}
+\setmathfont[range=\mathscr]{Latin Modern Math}
 
 
 % ================================================
@@ -132,11 +152,8 @@
 % ================================================
 % ===================== MATH =====================
 % ================================================
-\RequirePackage{amsfonts}
 \RequirePackage{mathtools}
 \RequirePackage{dsfont}
-\RequirePackage{bm}
-\RequirePackage{mathrsfs}
 \RequirePackage{nth}
 % ========== GENERAL MATH COMMANDS ==========
 % inverse trigs: \arcsec, \arccot, \arccsc
@@ -206,9 +223,12 @@
 
 % --- Set Theory ---
 % complement: \complement
-\renewcommand{\complement}{\mathsf{c}}
 % nicer emptyset
-\let\emptyset\varnothing
+% unicode-math defines these symbols in \AtBeginDocument; defer overrides to match.
+\AtBeginDocument{%
+  \renewcommand{\complement}{\mathsf{c}}%
+  \let\emptyset\varnothing%
+}
 % cardinality: \card
 \DeclarePairedDelimiter\card{\lvert}{\rvert}
 % indicator function
@@ -279,7 +299,7 @@
 \newcommand*{\tran}{\PackageWarning{adenc}{\string\tran\space is deprecated, use \string\T}\T}
 
 % nicer vector
-\renewcommand{\vec}[1]{\bm{#1}}
+\renewcommand{\vec}[1]{\symbf{#1}}
 
 % matrices
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
@@ -360,6 +380,22 @@
 % \DeclareRobustCommand{\draftnote}[1]{{\color{red!90!black}[#1]}}
 \NewDocumentCommand{\draftnote}{ O{Note} O{red!90!black} m }{%
   \noindent\textcolor{#2}{[#1: #3]}%
+}
+
+
+% \mnote[offset]{text} — margin note at exact vertical position
+\NewDocumentCommand{\mnote}{ O{0pt} m }{%
+  \marginnote{%
+    \begin{tcolorbox}[
+      arc=1pt,
+      boxrule=0.4pt,
+      left=2pt, right=2pt, top=2pt, bottom=2pt,
+      before skip=0pt, after skip=0pt,
+      colback=white, colframe=black,
+    ]
+    \footnotesize #2
+    \end{tcolorbox}%
+  }[#1]%
 }
 
 

@@ -66,9 +66,12 @@
 
 % --- Set Theory ---
 % complement: \complement
-\renewcommand{\complement}{\mathsf{c}}
 % nicer emptyset
-\let\emptyset\varnothing
+% unicode-math defines these symbols in \AtBeginDocument; defer overrides to match.
+\AtBeginDocument{%
+  \renewcommand{\complement}{\mathsf{c}}%
+  \let\emptyset\varnothing%
+}
 % cardinality: \card
 \DeclarePairedDelimiter\card{\lvert}{\rvert}
 % indicator function
@@ -139,7 +142,7 @@
 \newcommand*{\tran}{\PackageWarning{adenc}{\string\tran\space is deprecated, use \string\T}\T}
 
 % nicer vector
-\renewcommand{\vec}[1]{\bm{#1}}
+\renewcommand{\vec}[1]{\symbf{#1}}
 
 % matrices
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}

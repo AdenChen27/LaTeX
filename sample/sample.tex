@@ -1,3 +1,5 @@
+% !TEX program = xelatex
+% Requires XeLaTeX or LuaLaTeX (fontspec + unicode-math; pdflatex not supported).
 \documentclass[12pt]{article}
 \usepackage[theorembox=color, workingpaper, header]{adenc}
 % options: theorembox=none|plain|color, hideproofs, hidemarkings, workingpaper, index
@@ -23,6 +25,9 @@
 
 \bigskip
 Check out the \href{https://github.com/AdenChen27/latex}{Github Repository} for \texttt{adenc.sty}!
+
+\medskip\noindent
+\textbf{Engine requirement:} \texttt{adenc.sty} requires XeLaTeX or LuaLaTeX. pdfLaTeX is not supported (\texttt{fontspec} and \texttt{unicode-math} are engine-specific).
 
 
 
@@ -163,6 +168,8 @@ It is for these reasons that the following commands are introduced:
   \item \verb|\draftnote[Label][color]{text}| produces a short inline draft comment.
   The label and color are optional; they default to \verb|Note| and red, respectively.
   For example, \verb|\draftnote{fix this}| produces \draftnote{fix this} and \verb|\draftnote[TODO][blue]{rewrite}| produces \draftnote[TODO][blue]{rewrite}.
+  \item \verb|\mnote[offset]{text}| places a boxed margin note at the current vertical position.\mnote{This is a margin note.}
+  The optional offset shifts the note vertically, e.g.\ \verb|\mnote[-1ex]{note}|.
 \end{enumerate}
 \begin{verbatim}
 Test test test\markabove{l}{test1} test\markbelow{c}{I'm marking below here}.

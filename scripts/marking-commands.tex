@@ -32,6 +32,22 @@
 }
 
 
+% \mnote[offset]{text} — margin note at exact vertical position
+\NewDocumentCommand{\mnote}{ O{0pt} m }{%
+  \marginnote{%
+    \begin{tcolorbox}[
+      arc=1pt,
+      boxrule=0.4pt,
+      left=2pt, right=2pt, top=2pt, bottom=2pt,
+      before skip=0pt, after skip=0pt,
+      colback=white, colframe=black,
+    ]
+    \footnotesize #2
+    \end{tcolorbox}%
+  }[#1]%
+}
+
+
 % \markabove and \markbelow
 \usetikzlibrary{arrows.meta}
 \newcommand{\uppertip}{

@@ -1,4 +1,6 @@
 \ProvidesPackage{adenc}[2026/03/14]
+\RequirePackage{iftex}
+\RequireTUTeX
 
 
 % ================================================
@@ -78,10 +80,9 @@
 % ================================================
 % =============== STANDARD PACKAGES ==============
 % ================================================
-\RequirePackage{amsmath, amssymb, amsthm}
-\RequirePackage{mathrsfs}
+\RequirePackage{amsmath, amsthm}
 
-\RequirePackage{datetime}
+\RequirePackage{datetime2}
 
 \RequirePackage{float}
 \RequirePackage{pdfpages}
@@ -100,7 +101,7 @@
 
   \RequirePackage[firstpageonly=true]{draftwatermark}
   \SetWatermarkText{\sffamily%
-    Draft \the\year/\twodigit\month/\twodigit\day%
+    Draft \the\year/\DTMtwodigits{\month}/\DTMtwodigits{\day}%
   }
   \SetWatermarkColor{red!50}
   \SetWatermarkFontSize{20pt}
@@ -116,26 +117,34 @@
 
 \RequirePackage{mathtools}
 \RequirePackage{dsfont}
-\RequirePackage{bm}
 \RequirePackage{nth}
+\RequirePackage{cancel}
 
 
 % ================================================
 % ================= FONTS/STYLES =================
 % ================================================
-% newtxmath pre-allocates bold/heavy math alphabet families (hmmax, bmmax default to 3).
-% Each family consumes one of LaTeX's 16 math alphabet slots, which we share with
-% other packages (thmtools, tcolorbox, etc.). Setting these to 0 before loading
-% newtxmath suppresses those pre-allocations and prevents "Too many math alphabets" errors.
-% \newcommand\hmmax{0}
-% \newcommand\bmmax{0}
-\RequirePackage[T1]{fontenc}
-\RequirePackage{newtxtext}
-\RequirePackage[varvw]{newtxmath}
-\RequirePackage{inconsolata}
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{texgyretermes-regular.otf}[
+  ItalicFont = texgyretermes-italic.otf,
+  BoldFont = texgyretermes-bold.otf,
+  BoldItalicFont = texgyretermes-bolditalic.otf
+]
+\setsansfont{texgyreheros-regular.otf}[
+  ItalicFont = texgyreheros-italic.otf,
+  BoldFont = texgyreheros-bold.otf,
+  BoldItalicFont = texgyreheros-bolditalic.otf
+]
+\setmonofont{Inconsolatazi4-Regular.otf}[
+  BoldFont = Inconsolatazi4-Bold.otf
+]
+\setmathfont{texgyretermes-math.otf}
+\setmathfont[range=\mathscr]{Latin Modern Math}
 
-\RequirePackage[cal=cm]{mathalpha}
 \RequirePackage{marvosym}
+\RequirePackage{fontawesome5}
 
 
 % ================================================
@@ -184,7 +193,8 @@
 % ================================================
 % ================ TODO COMMANDS =================
 % ================================================
-\RequirePackage[textwidth=1.5in]{todonotes}
+\RequirePackage[textwidth=1.5in,textsize=scriptsize]{todonotes}
+\RequirePackage{marginnote}
 \RequirePackage{comment}
 \RequirePackage{stackengine}
 \input{marking-commands.tex}
@@ -254,7 +264,23 @@
     % Clear amsart's author/title marks so the header is empty until the first section.
     \markboth{}{}%
   }%
-}{}
+}{%
+  \adencIfPset{%
+    \RequirePackage{fancyhdr}
+    \RequirePackage{lastpage}
+    \AtBeginDocument{%
+      \pagestyle{fancy}
+      \fancyhf{}
+      \renewcommand{\headrulewidth}{0pt}
+      \fancyfoot[C]{\small Page~\thepage\ of\ \pageref*{LastPage}}
+      \fancypagestyle{plain}{%
+        \fancyhf{}%
+        \fancyfoot[C]{\small Page~\thepage\ of\ \pageref*{LastPage}}%
+        \renewcommand{\headrulewidth}{0pt}%
+      }
+    }%
+  }{}%
+}
 
 % sectionpage: new page + suppress header at each section (covers \section and \section*)
 \adencIfSectionpage{%

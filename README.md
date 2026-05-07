@@ -5,7 +5,7 @@ A personal LaTeX package for math notes and presentations, designed for use with
 - **`adenc.sty`** — package for math notes/papers
 - **`adenc-beamer.sty`** — companion package for Beamer presentations
 
-> **Requires `--shell-escape`** (for `minted`). Add `$pdflatex = 'pdflatex -shell-escape %O %S';` to your `.latexmkrc`, or pass `-shell-escape` directly to `pdflatex`/`lualatex`.
+> **Requires XeLaTeX or LuaLaTeX, and `--shell-escape`** (for `minted`). Use `latexmk -xelatex -shell-escape` / `latexmk -lualatex -shell-escape`, or configure your `.latexmkrc` accordingly. pdflatex is not supported.
 
 See [`COMMANDS.md`](COMMANDS.md) for a full command reference, and [here](https://github.com/AdenChen27/Notes) for notes taken using this package.
 You can also [preview a sample document on Overleaf](https://www.overleaf.com/read/psgmvhwzppnr#adf899).
@@ -23,7 +23,7 @@ You can also [preview a sample document on Overleaf](https://www.overleaf.com/re
 | `clearsection` | `true`\* / `false` | Sections start on a new page |
 | `fancyqed` | `true`\* / `false` | Fancy QED symbol at end of remarks/examples |
 | `index` | `false`\* / `true` | Auto-index `\vocab` terms, printed at end |
-| `pset` | `false`\* / `true` | Preset for problem sets: `clearsection`, no header, `tocdepth=1`, colored environments |
+| `pset` | `false`\* / `true` | Preset for problem sets: `clearsection`, no header, `tocdepth=1`; colors `problem` dark purple |
 
 \* default value
 
@@ -39,7 +39,7 @@ You can also [preview a sample document on Overleaf](https://www.overleaf.com/re
 
 - [`pdf2img/`](https://github.com/AdenChen27/LaTeX/tree/main/pdf2img) — converts Goodnotes drawings to trimmed PNG
 - [`snippets/`](https://github.com/AdenChen27/LaTeX/tree/main/snippets) — Neovim LuaSnip snippets
-- [`Makefile`](https://github.com/AdenChen27/LaTeX/blob/main/Makefile) — `latexmk`-based build; `make filename=myfile`, `make view` (Skim), `make clean`
+- [`Makefile`](https://github.com/AdenChen27/LaTeX/blob/main/Makefile) — `latexmk`-based build; `make filename=myfile`, `make view`, `make clean`
 - [`scripts/`](https://github.com/AdenChen27/LaTeX/tree/main/scripts) — source files used to generate the packages
 
 
@@ -51,8 +51,8 @@ Inspired by [Gilles Castel](https://github.com/gillescastel)'s [preamble](https:
 ## Template
 
 This document can also be found at [`sample/template.tex`](https://github.com/AdenChen27/LaTeX/blob/main/sample/template.tex).
-
 ```tex
+% !TEX program = xelatex
 \documentclass[oneside,reqno,letterpaper]{amsart}
 \usepackage{adenc}
 % Package options (\usepackage[...]{adenc}):
@@ -69,26 +69,22 @@ This document can also be found at [`sample/template.tex`](https://github.com/Ad
 %   pset                preset for problem sets (clearsection, no header, tocdepth=1,
 %                       problem/exercise/question in dark purple)
 
-
 % For a standalone document:
 \title{}
 \author{}
-
 % For course lecture notes, replace the two lines above with \courseinfo:
 % \courseinfo{course code}{Term}{Full Course Title}{Lecturer}{Notetaker}
 % e.g. \courseinfo{ECMA 30800}{W26}{Theory of Auctions}{Philip Reny}{Aden Chen}
 
-
 \begin{document}
 \maketitle
+
+\tableofcontents
 % For problem sets, replace \maketitle (and \tableofcontents) with \makepsethead:
 % \makepsethead[due date]{course}{assignment}{author}
 % e.g. \makepsethead[2026-05-01]{MATH 101}{Problem Set 1}{Aden Chen}
 
-\tableofcontents
-
 \section{}
-
 
 \end{document}
 ```

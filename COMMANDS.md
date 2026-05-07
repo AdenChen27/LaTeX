@@ -3,6 +3,8 @@
 This file documents every command, environment, and option provided by `adenc.sty`.
 Intended for use by coding agents generating LaTeX with this package.
 
+> **Engine requirement:** requires XeLaTeX or LuaLaTeX. pdflatex is not supported.
+
 ## Package Options
 
 ```tex
@@ -261,6 +263,7 @@ Available: `{A, B, C, D, E, F, G, H, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X
 | `\markabove{align}{label}` | `\markabove{l}{above note}` | Tikz annotation above the insertion point; `align` is `l`, `c`, or `r` |
 | `\markbelow{align}{label}` | `\markbelow{c}{below note}` | Tikz annotation below the insertion point; `align` is `l`, `c`, or `r` |
 | `\todo{text}` | `\todo{check this}` | Margin todo note (from `todonotes` package) |
+| `\mnote[offset]{text}` | `\mnote{see Thm 3}` | Boxed margin note at exact vertical position; optional offset shifts vertically |
 
 ## Document Setup Commands
 
