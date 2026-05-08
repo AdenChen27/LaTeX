@@ -7,10 +7,8 @@ $(filename): $(filename).tex
 	latexmk ./$@ -xelatex -shell-escape -jobname=./aux/$(filename)
 	mv ./aux/$(filename).pdf ./$(filename).pdf
 
-beamer: beamer-sample.tex
-	mkdir -p aux
-	latexmk ./$< -xelatex -shell-escape -jobname=./aux/beamer-sample
-	mv ./aux/beamer-sample.pdf ./beamer-sample.pdf
+beamer:
+	$(MAKE) filename=beamer-sample
 
 view: $(filename).pdf
 	open $(filename).pdf
