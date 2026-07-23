@@ -6,8 +6,6 @@
 % ================================================
 % ================ PACKAGE OPTIONS ===============
 % ================================================
-\RequirePackage{l3keys2e}
-
 \ExplSyntaxOn
 
 % Internal booleans (set by key processing below)
@@ -19,6 +17,7 @@
 \bool_new:N \l_adenc_fancyqed_bool     \bool_set_true:N  \l_adenc_fancyqed_bool
 \bool_new:N \l_adenc_header_bool       \bool_set_true:N  \l_adenc_header_bool
 \bool_new:N \l_adenc_sectionpage_bool  \bool_set_true:N  \l_adenc_sectionpage_bool
+\bool_new:N \l_adenc_tufte_bool        \bool_set_false:N \l_adenc_tufte_bool
 \bool_new:N \l_adenc_index_bool        \bool_set_false:N \l_adenc_index_bool
 \bool_new:N \l_adenc_pset_bool         \bool_set_false:N \l_adenc_pset_bool
 
@@ -37,7 +36,7 @@
   theorembox .default:n = none,
   % \usepackage[hideproofs]{adenc} to hide everything in the proof environment.
   hideproofs   .bool_set:N = \l_adenc_hideproofs_bool,   hideproofs   .default:n = true,
-  % \usepackage[hidemarkings]{adenc} to hide all \markabove and \markbelow annotations.
+  % \usepackage[hidemarkings]{adenc} to hide all \markabove, \markbelow, and \draftnote annotations.
   hidemarkings .bool_set:N = \l_adenc_hidemarkings_bool, hidemarkings .default:n = true,
   % \usepackage[workingpaper]{adenc} for wider margins (todonotes) and draft watermark.
   workingpaper .bool_set:N = \l_adenc_workingpaper_bool, workingpaper .default:n = true,
@@ -49,6 +48,18 @@
   header       .bool_set:N = \l_adenc_header_bool,       header       .default:n = true,
   % \usepackage[clearsection=false]{adenc} to disable new-page at each section.
   clearsection .bool_set:N = \l_adenc_sectionpage_bool,  clearsection .default:n = true,
+  % \usepackage[tufte]{adenc} for a narrow text block with a wide outer margin.
+  % Sets clearsection=false. Individual options after tufte override its defaults.
+  tufte .choices:nn = { true, false } {
+    \int_case:nn { \l_keys_choice_int } {
+      { 1 } {
+        \bool_set_true:N  \l_adenc_tufte_bool
+        \bool_set_false:N \l_adenc_sectionpage_bool
+      }
+      { 2 } { \bool_set_false:N \l_adenc_tufte_bool }
+    }
+  },
+  tufte .default:n = true,
   % \usepackage[pset]{adenc} — preset for problem sets.
   % Sets clearsection=true, header=false, tocdepth=1.
   % Individual options after pset override its defaults.
@@ -60,7 +71,7 @@
   pset .default:n = {},
 }
 
-\ProcessKeysOptions { adenc }
+\ProcessKeyOptions [ adenc ]
 
 % Bridge macros: valid LaTeX2e csnames callable outside \ExplSyntaxOn
 \cs_new_protected:Npn \adencIfColor        #1#2 { \bool_if:NTF \l_adenc_color_bool {#1}{#2} }
@@ -71,6 +82,7 @@
 \cs_new_protected:Npn \adencIfFancyqed     #1#2 { \bool_if:NTF \l_adenc_fancyqed_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfHeader       #1#2 { \bool_if:NTF \l_adenc_header_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfSectionpage  #1#2 { \bool_if:NTF \l_adenc_sectionpage_bool {#1}{#2} }
+\cs_new_protected:Npn \adencIfTufte        #1#2 { \bool_if:NTF \l_adenc_tufte_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfIndex        #1#2 { \bool_if:NTF \l_adenc_index_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfPset         #1#2 { \bool_if:NTF \l_adenc_pset_bool {#1}{#2} }
 
@@ -92,12 +104,29 @@
 \RequirePackage{booktabs}
 \RequirePackage{tabularx}
 
+\adencIfTufte{%
+  \RequirePackage{geometry}
+  \geometry{
+    top=0.9in,
+    bottom=0.9in,
+    inner=0.85in,
+    outer=2.4in,
+    marginparsep=0.25in,
+    marginparwidth=1.65in,
+    includehead,
+    includefoot,
+    headheight=14pt,
+    heightrounded,
+  }
+}{}
 
 % increase pad 3cm to both left and right sides of the page for todonotes
 \adencIfWorkingpaper{%
-  \paperwidth=\dimexpr \paperwidth + 3cm\relax
-  \evensidemargin=\dimexpr\evensidemargin + 3cm\relax
-  \marginparwidth=\dimexpr \marginparwidth + 3cm\relax
+  \adencIfTufte{}{%
+    \paperwidth=\dimexpr \paperwidth + 3cm\relax
+    \evensidemargin=\dimexpr\evensidemargin + 3cm\relax
+    \marginparwidth=\dimexpr \marginparwidth + 3cm\relax
+  }
 
   \RequirePackage[firstpageonly=true]{draftwatermark}
   \SetWatermarkText{\sffamily%
@@ -114,6 +143,8 @@
 \RequirePackage[dvipsnames]{xcolor}
 \RequirePackage{siunitx}
 \RequirePackage{enumitem}
+\setlist[itemize]{topsep=0.3em, itemsep=0.15em, parsep=0em}
+\setlist[enumerate]{topsep=0.3em, itemsep=0.15em, parsep=0em}
 
 \RequirePackage{mathtools}
 \RequirePackage{dsfont}
@@ -225,6 +256,8 @@
   rightrule = 0.6pt,
   toprule = 0.6pt,
   bottomrule = 0.6pt,
+  top = 2pt,
+  bottom = 2pt,
   right = .75em,
 }}
 
@@ -275,8 +308,8 @@
   }{%
     \newcommand\defqed{\(\square\)}
     \newcommand\remqed{\(\diamond\)}
-    \newcommand\exqed{\(\triangleleft\)}
-    \newcommand\probqed{\(\triangle\)}
+    \newcommand\exqed{\(\vartriangleleft\)}
+    \newcommand\probqed{\(\scriptstyle\triangle\)}
   }
 }
 
@@ -501,6 +534,7 @@
 \adencIfHidemarkings{%
   \renewcommand{\markabove}[2]{}
   \renewcommand{\markbelow}[2]{}
+  \RenewDocumentCommand{\draftnote}{ O{Note} O{red!90!black} m }{}
 }{}
 
 
@@ -624,17 +658,17 @@
 
 \newcommand{\iidsim}{\overset{\mathrm{iid}}{\sim}}
 
-\newcommand{\Bernoulli}{Bernoulli}
-\newcommand{\Binomial}{Binomial}
-\newcommand{\Multinomial}{Multinomial}
-\newcommand{\Geometric}{Geometric}
-\newcommand{\Poisson}{Poisson}
-\newcommand{\Exponential}{Exponential}
-\newcommand{\DirichletDist}{Dirichlet}
-\newcommand{\GammaDist}{Gamma}
-\newcommand{\BetaDist}{Beta}
+\DeclareMathOperator{\Bernoulli}{Bernoulli}
+\DeclareMathOperator{\Binomial}{Binomial}
+\DeclareMathOperator{\Multinomial}{Multinomial}
+\DeclareMathOperator{\Geometric}{Geometric}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\Exponential}{Exponential}
+\DeclareMathOperator{\DirichletDist}{Dirichlet}
+\DeclareMathOperator{\GammaDist}{Gamma}
+\DeclareMathOperator{\BetaDist}{Beta}
 \newcommand{\Normal}{\mathcal{N}}
-\newcommand{\Uniform}{\text{Uniform}}
+\DeclareMathOperator{\Uniform}{Uniform}
 \let\Unif\Uniform
 
 % --- Linear Algebra ---
@@ -759,6 +793,44 @@
 \newcommand{\courseinfo}[5]{%
   \title{#1~(#2)\\#3}%
   \author{{Lecturer:~#4} \\ {Notes by:~#5}}%
+}
+
+% Author attributions for individual chapters and sections.
+% Each command must immediately follow the corresponding heading command.
+\newif\ifadenc@sectionnumbered
+\AddToHook{cmd/section/before}{%
+  \global\adenc@sectionnumberedfalse
+}
+\AddToHook{cmd/@sect/before}{%
+  \global\adenc@sectionnumberedtrue
+}
+\AddToHook{cmd/@ssect/before}{%
+  \global\adenc@sectionnumberedfalse
+}
+
+\newcommand{\chapterauthor}[1]{%
+  \par\nobreak
+  \vspace{-2\baselineskip}%
+  \noindent{\large\normalfont\scshape #1\par}%
+  \nobreak
+  \vspace{.75\baselineskip}%
+  \@afterindentfalse
+  \@afterheading
+}
+
+\newcommand{\sectionauthor}[1]{%
+  \par\nobreak
+  \vspace{-.6\baselineskip}%
+  \noindent
+  \ifadenc@sectionnumbered
+    \settowidth{\@tempdima}{{\Large\bfseries\@seccntformat{section}}}%
+    \hspace*{\@tempdima}%
+  \fi
+  {\small\normalfont\scshape #1\par}%
+  \nobreak
+  \vspace{.35\baselineskip}%
+  \@afterindentfalse
+  \@afterheading
 }
 
 % \makepsethead[due date]{course}{assignment}{author}

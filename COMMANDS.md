@@ -3,7 +3,7 @@
 This file documents every command, environment, and option provided by `adenc.sty`.
 Intended for use by coding agents generating LaTeX with this package.
 
-> **Engine requirement:** requires XeLaTeX or LuaLaTeX. pdflatex is not supported.
+> **Engine requirement:** requires XeLaTeX or LuaLaTeX. pdflatex is not supported. `minted` v3 on current TeX Live can usually run through the trusted `latexminted` executable without unrestricted `--shell-escape`; older TeX Live or MiKTeX setups may still need shell escape or explicit trusted-command configuration.
 
 ## Package Options
 
@@ -15,13 +15,14 @@ Intended for use by coding agents generating LaTeX with this package.
 |---|---|---|---|
 | `theorembox` | `none`, `plain`, `color` | `none` | `plain`: tcolorbox boxes (b/w). `color`: tcolorbox boxes with color. `none`: plain amsthm styles |
 | `hideproofs` | `true`, `false` | `false` | Hides all `proof` environments |
-| `hidemarkings` | `true`, `false` | `false` | Hides `\markabove` / `\markbelow` annotations |
+| `hidemarkings` | `true`, `false` | `false` | Hides `\markabove`, `\markbelow`, and `\draftnote` annotations |
 | `workingpaper` | `true`, `false` | `false` | Draft watermark + wider margins for `\todo` |
 | `header` | `true`, `false` | `true` | Running section header in page header |
 | `clearsection` | `true`, `false` | `true` | `\section` starts on a new page |
+| `tufte` | `true`, `false` | `false` | Narrow text block with a wide outer margin; sets `clearsection=false`. Options listed after `tufte` override its defaults. |
 | `fancyqed` | `true`, `false` | `true` | Decorative QED symbols for remark/example environments |
 | `index` | `true`, `false` | `false` | Auto-index `\vocab` terms; prints index at end of document |
-| `pset` | (flag) | `false` | Preset for problem sets: sets `clearsection=true`, `header=false`, `tocdepth=1`; colors `problem`/`exercise`/`question` dark purple. Options listed after `pset` override its defaults. |
+| `pset` | (flag) | `false` | Preset for problem sets: sets `clearsection=true`, `header=false`, `tocdepth=1`; gives `problem` a dark-purple style. Options listed after `pset` override its defaults. |
 
 ## Theorem-like Environments
 
@@ -133,7 +134,7 @@ Available: `{A, B, C, D, E, F, G, H, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X
 
 | Command | Syntax | Output |
 |---|---|---|
-| `\vec{v}` | `\vec{v}` | Bold `v` (uses `\bm`) |
+| `\vec{v}` | `\vec{v}` | Bold `v` (uses `\symbf`) |
 | `\bmat{...}` | `\bmat{1 & 2 \\ 3 & 4}` | Bracket matrix `[...]` |
 | `\pmat{...}` | `\pmat{1 & 2 \\ 3 & 4}` | Parenthesis matrix `(...)` |
 | `\vmat{...}` | `\vmat{1 & 2 \\ 3 & 4}` | Determinant matrix `\|...\|` |
@@ -278,6 +279,21 @@ Sets `\title` and `\author` for course lecture notes.
 % produces:
 %   \title{ECMA308~(W26)\\Theory of Auctions}
 %   \author{Lecturer:~Philip Reny \\ Notes by:~Aden Chen}
+```
+
+```tex
+\chapterauthor{author names}
+\sectionauthor{author names}
+```
+
+Typesets an understated small-caps author attribution beneath a chapter or section heading. A numbered section's attribution aligns with its title rather than its number; starred sections and chapter attributions are flush left. Place the command immediately after the corresponding numbered or starred heading. The attribution does not affect the table of contents, running headers, PDF bookmarks, or document-level `\author`.
+
+```tex
+\chapter{Information Economics}
+\chapterauthor{Aden Chen and Jane Doe}
+
+\section*{Common Knowledge}
+\sectionauthor{Robert Aumann}
 ```
 
 ```tex

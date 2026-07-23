@@ -6,8 +6,6 @@
 % ================================================
 % ================ PACKAGE OPTIONS ===============
 % ================================================
-\RequirePackage{l3keys2e}
-
 \ExplSyntaxOn
 
 \bool_new:N \l_adenc_hideproofs_bool   \bool_set_false:N \l_adenc_hideproofs_bool
@@ -18,7 +16,7 @@
   hidemarkings .bool_set:N = \l_adenc_hidemarkings_bool, hidemarkings .default:n = true,
 }
 
-\ProcessKeysOptions { adenc-beamer }
+\ProcessKeyOptions [ adenc-beamer ]
 
 \cs_new_protected:Npn \adencIfHideproofs   #1#2 { \bool_if:NTF \l_adenc_hideproofs_bool {#1}{#2} }
 \cs_new_protected:Npn \adencIfHidemarkings #1#2 { \bool_if:NTF \l_adenc_hidemarkings_bool {#1}{#2} }
@@ -87,6 +85,8 @@
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{enumitem}
+\setlist[itemize]{topsep=0.3em, itemsep=0.15em, parsep=0em}
+\setlist[enumerate]{topsep=0.3em, itemsep=0.15em, parsep=0em}
 
 \RequirePackage{caption}
 \captionsetup{justification=centering}
@@ -181,4 +181,5 @@
 \adencIfHidemarkings{%
   \renewcommand{\markabove}[2]{}
   \renewcommand{\markbelow}[2]{}
+  \RenewDocumentCommand{\draftnote}{ O{Note} O{red!90!black} m }{}
 }{}

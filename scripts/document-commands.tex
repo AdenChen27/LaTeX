@@ -18,6 +18,44 @@
   \author{{Lecturer:~#4} \\ {Notes by:~#5}}%
 }
 
+% Author attributions for individual chapters and sections.
+% Each command must immediately follow the corresponding heading command.
+\newif\ifadenc@sectionnumbered
+\AddToHook{cmd/section/before}{%
+  \global\adenc@sectionnumberedfalse
+}
+\AddToHook{cmd/@sect/before}{%
+  \global\adenc@sectionnumberedtrue
+}
+\AddToHook{cmd/@ssect/before}{%
+  \global\adenc@sectionnumberedfalse
+}
+
+\newcommand{\chapterauthor}[1]{%
+  \par\nobreak
+  \vspace{-2\baselineskip}%
+  \noindent{\large\normalfont\scshape #1\par}%
+  \nobreak
+  \vspace{.75\baselineskip}%
+  \@afterindentfalse
+  \@afterheading
+}
+
+\newcommand{\sectionauthor}[1]{%
+  \par\nobreak
+  \vspace{-.6\baselineskip}%
+  \noindent
+  \ifadenc@sectionnumbered
+    \settowidth{\@tempdima}{{\Large\bfseries\@seccntformat{section}}}%
+    \hspace*{\@tempdima}%
+  \fi
+  {\small\normalfont\scshape #1\par}%
+  \nobreak
+  \vspace{.35\baselineskip}%
+  \@afterindentfalse
+  \@afterheading
+}
+
 % \makepsethead[due date]{course}{assignment}{author}
 % Renders a centered header block and TOC. Call at the top of \begin{document}.
 % Compiled date is automatic (\today). Omit due date to hide it.

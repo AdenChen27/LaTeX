@@ -1,11 +1,13 @@
-.PHONY: clean, view
+.PHONY: clean view
 filename = test
 
 
-$(filename): $(filename).tex
+$(filename).pdf: $(filename).tex
 	mkdir -p aux
-	latexmk ./$@ -xelatex -shell-escape -jobname=./aux/$(filename)
+	latexmk ./$(filename) -xelatex -shell-escape -jobname=./aux/$(filename)
 	mv ./aux/$(filename).pdf ./$(filename).pdf
+
+$(filename): $(filename).pdf
 
 view: $(filename).pdf
 	open $(filename).pdf
